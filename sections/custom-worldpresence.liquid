@@ -1,0 +1,426 @@
+<style>
+  /* Base section styling */
+  .our-trailblazers-section {
+    position: relative;
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.bg_color }};
+    overflow: hidden; /* Ensures cards outside the section don't cause scrollbars */
+  }
+
+  /* Logo Watermark */
+  .logo-watermark {
+    position: absolute;
+    top: 50%;
+    left: 90%;
+    width: {{ section.settings.logo_width }}px;
+    height: auto;
+    z-index: 1; /* Puts it behind the main content */
+  }
+
+  /* Title container and styling */
+  .section-title-container {
+    text-align: center;
+    position: relative;
+    z-index: 2; /* Puts the title above the watermark */
+    margin-bottom: 50px;
+  }
+
+  .section-title-container h2 {
+    font-size: {{ section.settings.title_font_size }}px;
+    font-weight: {{ section.settings.title_font_weight }};
+    color: {{ section.settings.title_color }};
+    margin: 0;
+  }
+
+  /* Founders image */
+  .founders-image {
+    position: relative;
+    z-index: 3;
+    display: block;
+    margin: 0 auto; /* Centers the image */
+    width: {{ section.settings.image_width }}px;
+    height: {{ section.settings.image_height }}px;
+    object-fit: cover;
+  }
+
+  /* Main element styling as requested */
+  .main-container {
+    width: 1200px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    margin: 0 auto;
+  }
+
+  /* CSS for the quote cards and their blocks */
+  .quote-card {
+    position: absolute;
+    z-index: 4;
+    width: {{ block.settings.card_width }}px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  /* Apply card texture as background image */
+  {% for block in section.blocks %}
+    {% if block.type == 'quote_card' and block.settings.card_texture_image %}
+      .quote-card.card-{{ forloop.index }} {
+        background-image: url('{{ block.settings.card_texture_image | image_url }}');
+      }
+    {% endif %}
+  {% endfor %}
+
+  .quote-card-content {
+    position: relative;
+    padding: 20px;
+  }
+
+  .quote-card-quote {
+    font-size: {{ block.settings.quote_font_size }}px;
+    font-weight: {{ block.settings.quote_font_weight }};
+    color: {{ block.settings.quote_color }};
+    line-height: 1.4;
+    margin-bottom: 10px;
+  }
+
+  .quote-card-name,
+  .quote-card-designation {
+    font-size: {{ block.settings.name_font_size }}px;
+    font-weight: {{ block.settings.name_font_weight }};
+    color: {{ block.settings.name_color }};
+    line-height: 1.2;
+    margin: 0;
+  }
+
+  .card-tape {
+    position: absolute;
+    z-index: 5;
+    width: 60px;
+    height: auto;
+    display: block;
+  }
+
+  /* Positioning for the two blocks */
+  {% for block in section.blocks %}
+  .quote-card.card-{{ forloop.index }} {
+    top: calc(50% + {{ block.settings.vertical_position }}px);
+    left: calc(50% + {{ block.settings.horizontal_position }}px);
+    transform: translate(-50%, -50%) rotate({{ block.settings.card_rotation }}deg);
+  }
+  {% endfor %}
+
+  /* Positioning for the tape image */
+  .card-tape.tape-1 {
+    top: -15px;
+    right: 20px;
+    transform: rotate(-10deg);
+  }
+
+  .card-tape.tape-2 {
+    top: -15px;
+    left: 20px;
+    transform: rotate(10deg);
+  }
+</style>
+
+<div class="our-trailblazers-section">
+  {% if section.settings.logo_watermark_behind %}
+    <img src="{{ section.settings.logo_watermark_behind | image_url }}" alt="Logo Watermark" class="logo-watermark">
+  {% endif %}
+
+  <div class="section-title-container">
+    <h2>{{ section.settings.title }}</h2>
+  </div>
+
+  <div class="main-container">
+    {% if section.settings.center_image %}
+      <img src="{{ section.settings.center_image | image_url }}" alt="Founders Image" class="founders-image">
+    {% endif %}
+
+    {% for block in section.blocks %}
+      {% if block.type == 'quote_card' %}
+        <div class="quote-card card-{{ forloop.index }}" {{ block.shopify_attributes }}>
+          {% if block.settings.tape_image %}
+            <img src="{{ block.settings.tape_image | image_url }}" alt="Tape" class="card-tape tape-{{ forloop.index }}">
+          {% endif %}
+
+          <div class="quote-card-content">
+            <p class="quote-card-quote">{{ block.settings.quote | strip_html | replace: '\"', '"' }}</p>
+            <p class="quote-card-name">{{ block.settings.name }}</p>
+            <p class="quote-card-designation">{{ block.settings.designation }}</p>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Our Trailblazers",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f9f9f9"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Section Padding (px)",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Section Padding (px)",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "default": 100
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "OUR TRAILBLAZERS"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "label": "Title Font Size (px)",
+      "min": 24,
+      "max": 72,
+      "step": 1,
+      "default": 48
+    },
+    {
+      "type": "select",
+      "id": "title_font_weight",
+      "label": "Title Font Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi-Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra-Bold" }
+      ],
+      "default": "600"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "image_picker",
+      "id": "center_image",
+      "label": "Center Image"
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "label": "Image Width (px)",
+      "min": 100,
+      "max": 1000,
+      "step": 10,
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image Height (px)",
+      "min": 100,
+      "max": 1000,
+      "step": 10,
+      "default": 400
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_watermark_behind",
+      "label": "Logo Watermark Behind Founders"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "Logo Width (px)",
+      "min": 50,
+      "max": 500,
+      "step": 5,
+      "default": 200
+    }
+  ],
+  "blocks": [
+    {
+      "type": "quote_card",
+      "name": "Quote Card",
+      "settings": [
+        {
+          "type": "range",
+          "id": "card_width",
+          "label": "Card Width (px)",
+          "min": 100,
+          "max": 500,
+          "step": 10,
+          "default": 300
+        },
+        {
+          "type": "image_picker",
+          "id": "card_texture_image",
+          "label": "Card Background Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "tape_image",
+          "label": "Tape Image"
+        },
+        {
+          "type": "richtext",
+          "id": "quote",
+          "label": "Quote",
+          "default": "<p>\"Share a memorable quote here.\"</p>"
+        },
+        {
+          "type": "range",
+          "id": "quote_font_size",
+          "label": "Quote Font Size (px)",
+          "min": 12,
+          "max": 36,
+          "step": 1,
+          "default": 16
+        },
+        {
+          "type": "select",
+          "id": "quote_font_weight",
+          "label": "Quote Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "color",
+          "id": "quote_color",
+          "label": "Quote Color",
+          "default": "#000000"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Name"
+        },
+        {
+          "type": "range",
+          "id": "name_font_size",
+          "label": "Name Font Size (px)",
+          "min": 12,
+          "max": 36,
+          "step": 1,
+          "default": 14
+        },
+        {
+          "type": "select",
+          "id": "name_font_weight",
+          "label": "Name Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "700"
+        },
+        {
+          "type": "color",
+          "id": "name_color",
+          "label": "Name Font Color",
+          "default": "#000000"
+        },
+        {
+          "type": "text",
+          "id": "designation",
+          "label": "Designation",
+          "default": "Co-founder & Director"
+        },
+        {
+          "type": "range",
+          "id": "designation_font_size",
+          "label": "Designation Font Size (px)",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "default": 12
+        },
+        {
+          "type": "select",
+          "id": "designation_font_weight",
+          "label": "Designation Font Weight",
+          "options": [
+            { "value": "300", "label": "Light" },
+            { "value": "400", "label": "Normal" },
+            { "value": "500", "label": "Medium" },
+            { "value": "600", "label": "Semi-Bold" },
+            { "value": "700", "label": "Bold" }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "color",
+          "id": "designation_color",
+          "label": "Designation Font Color",
+          "default": "#000000"
+        },
+        {
+          "type": "range",
+          "id": "card_rotation",
+          "label": "Card Rotation (degrees)",
+          "min": -30,
+          "max": 30,
+          "step": 1,
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "horizontal_position",
+          "label": "Horizontal Position (px)",
+          "min": -500,
+          "max": 500,
+          "step": 10,
+          "default": 0,
+          "info": "Positive values move right, negative values move left"
+        },
+        {
+          "type": "range",
+          "id": "vertical_position",
+          "label": "Vertical Position (px)",
+          "min": -500,
+          "max": 500,
+          "step": 10,
+          "default": 0,
+          "info": "Positive values move down, negative values move up"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Our Trailblazers",
+      "category": "Custom Content"
+    }
+  ]
+}
+{% endschema %}

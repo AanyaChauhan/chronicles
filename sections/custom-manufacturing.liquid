@@ -1,0 +1,212 @@
+<section class="manufacturing-section">
+    {% if section.settings.main_image != blank %}
+      <div class="manufacturing-image-wrapper">
+        <img src="{{ section.settings.main_image | image_url: width:600 }}" alt="Manufacturing Image" />
+      </div>
+    {% endif %}
+    <div class="manufacturing-container">
+    <div class="manufacturing-text-content">
+      <h2 class="manufacturing-heading">
+        {{ section.settings.heading }}
+      </h2>
+      <p class="manufacturing-description">
+        {{ section.settings.description }}
+      </p>
+      <a href="{{ section.settings.button_link }}" class="manufacturing-button">
+        {{ section.settings.button_text }}
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .manufacturing-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 113px 100px 113px 100px;
+    position: relative;
+    background: {{ section.settings.bg_color }};
+    min-height: 360px;
+  }
+
+  .manufacturing-image-wrapper {
+    position: absolute;
+    left: 40px;
+    top: 70px;
+    width: 370px;
+    height: 276.65px;
+    max-width: 370px;
+    max-height: 276.65px;
+    transform: rotate(-10deg);
+    border-radius: 4.5px;
+    overflow: hidden;
+  }
+
+  .manufacturing-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .manufacturing-container {
+    max-width: 514px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .manufacturing-text-content {
+    flex: 2 1 420px;
+    max-width: 514px;
+    color: {{ section.settings.text_color }};
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .manufacturing-heading {
+    font-family: 'Givonic', sans-serif;
+    font-weight: 400;
+    margin-bottom: 45px;
+    font-size: {{ section.settings.heading_font_size }}px;
+    color: {{ section.settings.text_color }};
+  }
+
+  .manufacturing-description {
+    font-family: 'Montserrat', sans-serif;
+    line-height: 28px;
+    font-weight: 400;
+    margin-bottom: 85px;
+    font-size: {{ section.settings.desc_font_size }}px;
+    color: {{ section.settings.text_color }};
+  }
+
+  .manufacturing-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 30px; 
+    border: 1px solid {{ section.settings.text_color }};
+    border-radius: 4.6px;
+    text-decoration: none;
+    font-size: {{ section.settings.button_font_size }}px;
+    letter-spacing: 0.03em;
+    color: {{ section.settings.button_text_color }};
+    background: {{ section.settings.button_bg_color }};
+  }
+
+  @media (max-width: 720px) {
+    .manufacturing-section {
+      flex-direction: column;
+      justify-content: flex-start;
+      padding-top: 32px;
+    }
+
+    .manufacturing-image-wrapper {
+      position: static;
+      transform: none;
+      margin-bottom: 32px;
+    }
+
+    .manufacturing-container {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "manufacturing",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#fcf6d9"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main Image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "ZERO LIQUID DISCHARGE MANUFACTURING"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Our manufacturing facility is ZLD (Zero Liquid Discharge) certified, meaning 100% of our water is treated and reused, leaving nothing harmful behind. Water is sacred — and we take every step to preserve it."
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#212121"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading Font Size (px)",
+      "min": 16,
+      "max": 48,
+      "step": 1,
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "desc_font_size",
+      "label": "Description Font Size (px)",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "KNOW MORE"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Button Font Size (px)",
+      "min": 2,
+      "max": 48,
+      "step": 1,
+      "default": 28
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#212121"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#fff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Manufacturing"
+    }
+  ]
+}
+{% endschema %}

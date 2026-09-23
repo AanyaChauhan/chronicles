@@ -1,0 +1,533 @@
+{% comment %}
+  Carousel Journey Section - Custom Shopify Section
+{% endcomment %}
+<section class="carousel-journey-section">
+  <div class="carousel-journey-container">
+    <div class="carousel-journey-content">
+      
+      {% if section.settings.title != blank or section.settings.description != blank %}
+      <div class="carousel-journey-text-row">
+        {% if section.settings.title != blank %}
+          <h2 class="carousel-journey-title">{{ section.settings.title }}</h2>
+        {% endif %}
+        {% if section.settings.description != blank %}
+          <div class="carousel-journey-description">
+            {{ section.settings.description }}
+          </div>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <div class="carousel-journey-media">
+        <div class="carousel-journey-track">
+          {% comment %} Original items {% endcomment %}
+          {% for block in section.blocks %}
+            <div class="carousel-journey-item" {{ block.shopify_attributes }}>
+              {% if block.settings.media_type == 'image' and block.settings.image != blank %}
+                <img 
+                  src="{{ block.settings.image | image_url: width: 400 }}"
+                  alt="{{ block.settings.image.alt | default: block.settings.overlay_title }}"
+                  loading="lazy"
+                >
+              {% elsif block.settings.media_type == 'video' %}
+                {% if block.settings.video != blank %}
+                  {% if block.settings.video.sources %}
+                    <video 
+                      autoplay 
+                      muted 
+                      loop 
+                      playsinline
+                      width="100%"
+                      height="100%"
+                    >
+                      {% for source in block.settings.video.sources %}
+                        <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                      {% endfor %}
+                    </video>
+                  {% else %}
+                    <video 
+                      autoplay 
+                      muted 
+                      loop 
+                      playsinline
+                      width="100%"
+                      height="100%"
+                      src="{{ block.settings.video }}"
+                    ></video>
+                  {% endif %}
+                {% elsif block.settings.video_url != blank %}
+                  <video 
+                    autoplay 
+                    muted 
+                    loop 
+                    playsinline
+                    width="100%"
+                    height="100%"
+                    src="{{ block.settings.video_url }}"
+                  ></video>
+                {% else %}
+                  <div class="carousel-journey-placeholder">
+                    Add Video
+                  </div>
+                {% endif %}
+              {% else %}
+                  <div class="carousel-journey-placeholder">
+                    Add Image or Video
+                  </div>
+              {% endif %}
+
+              {% if block.settings.overlay_title != blank or block.settings.overlay_text != blank %}
+                <div class="carousel-journey-overlay">
+                  {% if block.settings.overlay_title != blank %}
+                    <h4 class="carousel-journey-overlay-title">{{ block.settings.overlay_title }}</h4>
+                  {% endif %}
+                  {% if block.settings.overlay_text != blank %}
+                    <p class="carousel-journey-overlay-text">{{ block.settings.overlay_text }}</p>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+          {% comment %} Duplicate for seamless loop {% endcomment %}
+          {% for block in section.blocks %}
+            <div class="carousel-journey-item">
+              {% if block.settings.media_type == 'image' and block.settings.image != blank %}
+                <img 
+                  src="{{ block.settings.image | image_url: width: 400 }}"
+                  alt="{{ block.settings.image.alt | default: block.settings.overlay_title }}"
+                  loading="lazy"
+                >
+              {% elsif block.settings.media_type == 'video' %}
+                {% if block.settings.video != blank %}
+                  {% if block.settings.video.sources %}
+                    <video 
+                      autoplay 
+                      muted 
+                      loop 
+                      playsinline
+                      width="100%"
+                      height="100%"
+                    >
+                      {% for source in block.settings.video.sources %}
+                        <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                      {% endfor %}
+                    </video>
+                  {% else %}
+                    <video 
+                      autoplay 
+                      muted 
+                      loop 
+                      playsinline
+                      width="100%"
+                      height="100%"
+                      src="{{ block.settings.video }}"
+                    ></video>
+                  {% endif %}
+                {% elsif block.settings.video_url != blank %}
+                  <video 
+                    autoplay 
+                    muted 
+                    loop 
+                    playsinline
+                    width="100%"
+                    height="100%"
+                    src="{{ block.settings.video_url }}"
+                  ></video>
+                {% else %}
+                  <div class="carousel-journey-placeholder">
+                    Add Video
+                  </div>
+                {% endif %}
+              {% else %}
+                <div class="carousel-journey-placeholder">
+                  Add Image or Video
+                </div>
+              {% endif %}
+
+              {% if block.settings.overlay_title != blank or block.settings.overlay_text != blank %}
+                <div class="carousel-journey-overlay">
+                  {% if block.settings.overlay_title != blank %}
+                    <h4 class="carousel-journey-overlay-title">{{ block.settings.overlay_title }}</h4>
+                  {% endif %}
+                  {% if block.settings.overlay_text != blank %}
+                    <p class="carousel-journey-overlay-text">{{ block.settings.overlay_text }}</p>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .carousel-journey-section {
+    background-color: {{ section.settings.bg_color }};
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .carousel-journey-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    width: 100%;
+  }
+
+  .carousel-journey-content {
+    grid-template-columns: 400px 1fr;
+    align-items: flex-start;
+    min-height: 400px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .carousel-journey-text {
+    z-index: 10;
+    display: block;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-width: 100%;
+  }
+  
+  .carousel-journey-text-row {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 40px; 
+    max-width: 100%;
+    padding: 0 91px 55px 91px; 
+  }
+  
+  .carousel-journey-title {
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: {{ section.settings.title_weight }};
+    color: {{ section.settings.title_color }};
+    font-family: 'Givonic', sans-serif;
+    margin-bottom: 20px;
+    flex: 0 0 35%;
+    margin: 0;
+  }
+
+  .carousel-journey-description {
+    font-size: {{ section.settings.description_size }}px;
+    color: {{ section.settings.description_color }};
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.75;
+    flex: 1 1 0;
+    margin: 0;
+  }
+  
+  .carousel-journey-description p {
+    margin: 0;
+  }
+
+  .carousel-journey-media {
+    position: relative;
+    height: 402px;
+    overflow: hidden;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .carousel-journey-track {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: max-content; /* Automatically fit children */
+    animation: slideCarousel-{{ section.id }} {{ section.settings.animation_duration }}s linear infinite;
+    will-change: transform;
+  }
+
+  .carousel-journey-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 402px;
+    height: 402px;
+    width: 402px;
+    margin-right: 30px;
+    border-radius: {{ section.settings.image_border_radius }}px;
+    overflow: hidden;
+    background: #fff;
+    position: relative;
+  }
+
+  .carousel-journey-item img,
+  .carousel-journey-item video {
+   transition: transform 0.3s ease;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+  display: block;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border-radius: inherit;
+  }
+
+  .carousel-journey-item:hover img,
+  .carousel-journey-item:hover video {
+    transform: scale(1.05);
+  }
+
+  .carousel-journey-placeholder {
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    width: 100%;
+    height: 100%;
+  }
+
+  .carousel-journey-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+    color: white;
+    padding: 20px;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+  }
+
+  .carousel-journey-overlay-title {
+    margin: 0 0 8px 0;
+    font-size: 16px;
+  }
+
+  .carousel-journey-overlay-text {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.9;
+  }
+
+  .carousel-journey-item:hover .carousel-journey-overlay {
+    transform: translateY(0);
+  }
+
+  {% assign total_width = section.blocks.size | times: 402 %}
+  {% assign total_gap = section.blocks.size | times: 30 %}
+  {% assign translate_distance = total_width | plus: total_gap %}
+
+  @keyframes slideCarousel-{{ section.id }} {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-{{ translate_distance }}px);
+    }
+  }
+
+  .carousel-journey-track:hover {
+    animation-play-state: paused;
+  }
+
+</style>
+
+{% schema %}
+{
+  "name": "Carousel Journey Section",
+  "tag": "section",
+  "class": "section-carousel-journey",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f5f3f0"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "unit": "px",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Text Layout Settings"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "CAROUSEL JOURNEY SECTION"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#2c2c2c"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Font Size",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "default": 32
+    },
+    {
+      "type": "select",
+      "id": "title_weight",
+      "label": "Title Font Weight",
+      "options": [
+        { "value": "300", "label": "Light" },
+        { "value": "400", "label": "Normal" },
+        { "value": "500", "label": "Medium" },
+        { "value": "600", "label": "Semi Bold" },
+        { "value": "700", "label": "Bold" },
+        { "value": "800", "label": "Extra Bold" }
+      ],
+      "default": "700"
+    },
+    {
+      "type": "header",
+      "content": "Description Settings"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>From humble beginnings in a small garage, we have grown into one of India's leading silver jewellery houses — with in-house manufacturing, a dedicated design studio, and a global presence. Today, with over 5,000 employees across our units, we continue to blend craftsmanship, innovation, and integrity to bring silver jewellery from India to the world.</p>"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Color",
+      "default": "#666666"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Description Font Size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Carousel Settings"
+    },
+    {
+      "type": "range",
+      "id": "animation_duration",
+      "label": "Animation Duration",
+      "info": "Time for one complete cycle in seconds",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "label": "Image Border Radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    }
+  ],
+  "blocks": [
+    {
+      "type": "media_item",
+      "name": "Media Item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "media_type",
+          "label": "Media Type",
+          "options": [
+            { "value": "image", "label": "Image" },
+            { "value": "video", "label": "Video" }
+          ],
+          "default": "image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "Supports MP4, WebM. For best results, use MP4 format."
+        },
+        {
+          "type": "url",
+          "id": "video_url",
+          "label": "Video URL (Alternative)",
+          "info": "If video picker doesn't work, paste direct video URL here"
+        },
+        {
+          "type": "text",
+          "id": "overlay_title",
+          "label": "Overlay Title (on hover)"
+        },
+        {
+          "type": "text",
+          "id": "overlay_text",
+          "label": "Overlay Text (on hover)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Carousel Journey",
+      "blocks": [
+        {
+          "type": "media_item"
+        },
+        {
+          "type": "media_item"
+        },
+        {
+          "type": "media_item"
+        },
+        {
+          "type": "media_item"
+        },
+        {
+          "type": "media_item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

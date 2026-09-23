@@ -1,0 +1,2413 @@
+<style>
+.custom-section-image-{{ section.id }} {
+  position: relative;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px 0;
+  height: 640px;
+  min-height: 600px;
+}
+
+.section-heading-image-{{ section.id }} {
+  position: absolute;
+  text-align: left;
+  color: {{ section.settings.title_color }};
+  z-index: 2;
+  width: {{ section.settings.title_width }}px;
+  max-width: 90%;
+}
+
+/* Heading positioning classes */
+.section-heading-image-{{ section.id }}.position-top-left {
+  top: 50px;
+  left: 50px;
+  text-align: left;
+  transform: none;
+}
+
+.section-heading-image-{{ section.id }}.position-top-center {
+  top: 50px;
+  left: 50%;
+  text-align: center;
+  transform: translateX(-50%);
+}
+
+.section-heading-image-{{ section.id }}.position-top-right {
+  top: 50px;
+  right: 50px;
+  text-align: left;
+  transform: none;
+}
+
+.section-heading-image-{{ section.id }}.position-center-left {
+  top: 50%;
+  left: 50px;
+  text-align: left;
+  transform: translateY(-50%);
+}
+
+.section-heading-image-{{ section.id }}.position-center-center {
+  top: 50%;
+  left: 50%;
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.section-heading-image-{{ section.id }}.position-center-right {
+  top: 50%;
+  right: 50px;
+  text-align: left;
+  transform: translateY(-30%);
+}
+
+.section-heading-image-{{ section.id }}.position-bottom-left {
+  bottom: 50px;
+  left: 50px;
+  text-align: left;
+  transform: none;
+}
+
+.section-heading-image-{{ section.id }}.position-bottom-center {
+  bottom: 50px;
+  left: 50%;
+  text-align: center;
+  transform: translateX(-50%);
+}
+
+.section-heading-image-{{ section.id }}.position-bottom-right {
+  bottom: 50px;
+  right: 50px;
+  text-align: right;
+  transform: none;
+}
+
+.section-heading-image-{{ section.id }} h2 {
+  font-size: {{ section.settings.title_size }}px;
+  margin: 0 0 10px 0;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.section-heading-image-{{ section.id }} p {
+  font-size: {{ section.settings.subtitle_size }}px;
+  margin: 0;
+  width: 100%;
+  color: {{ section.settings.subtitle_color }};
+  line-height: 1.4;
+}
+
+.cards-wrapper-image-{{ section.id }} {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.custom-card-image-{{ section.id }} {
+  position: absolute;
+  text-align: center;
+  color: #ffffff;
+  font-weight: bold;
+  transform-origin: center center;
+  will-change: transform;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.custom-card-image-{{ section.id }}[data-has-hover-text="true"] {
+  cursor: pointer;
+}
+
+.custom-card-image-wrapper-{{ section.id }} {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center center;
+}
+
+/* Audio Card Styles */
+.custom-audio-card-{{ section.id }} {
+  position: absolute;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  transform-origin: center center;
+  will-change: transform;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.audio-content-{{ section.id }} {
+  position: relative;
+  padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+ 
+}
+
+.audio-controls-{{ section.id }} {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.play-button-{{ section.id }} {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.play-button-{{ section.id }}:hover {
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+}
+
+.play-button-{{ section.id }} svg {
+  width: 20px;
+  height: 20px;
+  fill: #000;
+}
+
+.audio-title-{{ section.id }} {
+  flex: 1;
+  text-align: left;
+  margin: 0;
+
+  letter-spacing: 2px;
+}
+
+.audio-progress-wrapper-{{ section.id }} {
+  margin-bottom: 15px;
+}
+
+.audio-progress-{{ section.id }} {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.audio-progress-bar-{{ section.id }} {
+  height: 100%;
+  background: white;
+  width: 0%;
+  transition: width 0.1s ease;
+}
+
+.audio-subtitle-{{ section.id }} {
+  margin: 0;
+  opacity: 0.9;
+  line-height: 1.4;
+}
+
+.audio-time-{{ section.id }} {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 300;
+  display: none;
+}
+
+/* Hover rotation for each block */
+{% for block in section.blocks %}
+  {% if block.type == 'card' %}
+    .custom-card-image-{{ section.id }}[data-block-id="{{ block.id }}"]:hover .custom-card-image-wrapper-{{ section.id }} {
+      transform: rotate({{ block.settings.rotation | default: 0 | plus: block.settings.hover_rotation | default: 0 }}deg);
+    }
+
+    .custom-card-image-{{ section.id }}[data-block-id="{{ block.id }}"]:hover {
+      transform: translate(-50%, -50%) rotate({{ block.settings.rotation | default: 0 | plus: block.settings.hover_rotation | default: 0 }}deg);
+    }
+  {% elsif block.type == 'audio_card' %}
+    .custom-audio-card-{{ section.id }}[data-block-id="{{ block.id }}"]:hover {
+      transform: translate(-50%, -50%) rotate({{ block.settings.rotation | default: 0 | plus: block.settings.hover_rotation | default: 0 }}deg) scale(1.05);
+    }
+  {% endif %}
+{% endfor %}
+
+.custom-card-image-{{ section.id }}.animated-auto-rotate-{{ section.id }} {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(var(--card-rotation, 0deg)) !important;
+}
+
+.custom-card-image-{{ section.id }}.animated-auto-rotate-{{ section.id }} img {
+  animation: auto-rotate-{{ section.id }} var(--animation-duration) linear var(--animation-delay) infinite;
+  transform-origin: center center;
+}
+
+.custom-card-image-{{ section.id }}.animated-auto-rotate-{{ section.id }} .custom-card-image-text-{{ section.id }},
+.custom-card-image-{{ section.id }}.animated-auto-rotate-{{ section.id }} .custom-card-image-hover-text-{{ section.id }} {
+  transform: translate(-50%, -50%);
+}
+
+.custom-card-image-{{ section.id }} img {
+  width: {{ block.settings.image_width | default: 100 }}%;
+  max-width: 100%;
+  border-radius: 0;
+  display: block;
+  margin: 0 auto;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Image hover rotation */
+{% for block in section.blocks %}
+  {% if block.type == 'card' %}
+    .custom-card-image-{{ section.id }}[data-block-id="{{ block.id }}"]:hover img {
+      transform: rotate({{ block.settings.hover_rotation | default: 0 }}deg);
+    }
+  {% endif %}
+{% endfor %}
+
+.custom-card-image-text-{{ section.id }} {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: {{ section.settings.overlay_text_size }}px;
+  pointer-events: none;
+  width: 90%;
+  transition: opacity 0.3s ease;
+}
+
+.custom-card-image-{{ section.id }}[data-has-hover-text="true"]:hover .custom-card-image-text-{{ section.id }} {
+  opacity: 0;
+}
+
+.custom-card-image-hover-text-{{ section.id }} {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-weight: 400;
+  transform: translate(-50%, -50%);
+  font-size: {{ section.settings.overlay_text_size }}px;
+  pointer-events: none;
+  width: 90%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+{% for block in section.blocks %}
+  {% if block.type == 'card' %}
+    .custom-card-image-{{ section.id }}[data-block-id="{{ block.id }}"] .custom-card-image-hover-text-{{ section.id }} {
+      color: {{ block.settings.hover_text_color | default: '#ffffff' }};
+    }
+
+    .custom-card-image-{{ section.id }}[data-block-id="{{ block.id }}"]:hover .custom-card-image-hover-text-{{ section.id }} {
+      opacity: 1;
+    }
+  {% endif %}
+{% endfor %}
+
+/* Button Styles */
+.custom-card-button-{{ section.id }} {
+  position: absolute;
+  display: inline-block;
+  padding: {{ section.settings.button_padding_y }}px {{ section.settings.button_padding_x }}px;
+  background-color: {{ section.settings.button_bg_color }};
+  color: {{ section.settings.button_color }};
+  font-size: {{ section.settings.button_font_size_desktop }}px;
+  border-radius: {{ section.settings.button_border_radius }}px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  z-index: 3;
+  border: none;
+  cursor: pointer;
+  font-weight: 400;
+}
+
+.custom-card-button-{{ section.id }}:hover {
+  background-color: {{ section.settings.button_hover_bg_color }};
+  color: {{ section.settings.button_hover_color }};
+  transform: translateY(-2px);
+}
+
+.custom-card-button-{{ section.id }}.button-top-left {
+  top: 10px;
+  left: 10px;
+}
+
+.custom-card-button-{{ section.id }}.button-top-center {
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.custom-card-button-{{ section.id }}.button-top-right {
+  top: 10px;
+  right: 10px;
+}
+
+.custom-card-button-{{ section.id }}.button-middle-left {
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+}
+
+.custom-card-button-{{ section.id }}.button-middle-center {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.custom-card-button-{{ section.id }}.button-middle-right {
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+}
+
+.custom-card-button-{{ section.id }}.button-bottom-left {
+  bottom: 10px;
+  left: 10px;
+}
+
+.custom-card-button-{{ section.id }}.button-bottom-center {
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.custom-card-button-{{ section.id }}.button-bottom-right {
+  bottom: 10px;
+  right: 10px;
+}
+
+/* Word highlighting styles */
+.title-{{ section.id }} .color-group-1-{{ section.id }} {
+  color: {{ section.settings.color_group_1 }};
+}
+
+.title-{{ section.id }} .color-group-2-{{ section.id }} {
+  color: {{ section.settings.color_group_2 }};
+}
+
+.title-{{ section.id }} .color-group-3-{{ section.id }} {
+  color: {{ section.settings.color_group_3 }};
+}
+
+.title-{{ section.id }} .title-line-{{ section.id }} {
+  display: inline-block;
+}
+
+/* Animation ready state */
+.custom-card-image-{{ section.id }}.animation-ready,
+.custom-audio-card-{{ section.id }}.animation-ready {
+  opacity: 0;
+}
+
+/* Animation Keyframes */
+@keyframes fade-in-{{ section.id }} {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up-{{ section.id }} {
+  from { 
+    transform: translate(-50%, -50%) translateY(100px) rotate(var(--card-rotation, 0deg)); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translate(-50%, -50%) translateY(0) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+}
+
+@keyframes slide-down-{{ section.id }} {
+  from { 
+    transform: translate(-50%, -50%) translateY(-100px) rotate(var(--card-rotation, 0deg)); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translate(-50%, -50%) translateY(0) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+}
+
+@keyframes slide-left-{{ section.id }} {
+  from { 
+    transform: translate(-50%, -50%) translateX(100px) rotate(var(--card-rotation, 0deg)); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translate(-50%, -50%) translateX(0) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+}
+
+@keyframes slide-right-{{ section.id }} {
+  from { 
+    transform: translate(-50%, -50%) translateX(-100px) rotate(var(--card-rotation, 0deg)); 
+    opacity: 0; 
+  }
+  to { 
+    transform: translate(-50%, -50%) translateX(0) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+}
+
+@keyframes zoom-in-{{ section.id }} {
+  0% { 
+    transform: translate(-50%, -50%) scale(0.2) rotate(var(--card-rotation, 0deg)); 
+    opacity: 0; 
+  }
+  100% { 
+    transform: translate(-50%, -50%) scale(1) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+}
+
+@keyframes zoom-out-{{ section.id }} {
+  0% { 
+    transform: translate(-50%, -50%) scale(2) rotate(var(--card-rotation, 0deg)); 
+    opacity: 0; 
+  }
+  100% { 
+    transform: translate(-50%, -50%) scale(1) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+}
+
+@keyframes flip-{{ section.id }} {
+  0% { 
+    transform: translate(-50%, -50%) perspective(400px) rotateY(90deg) rotate(var(--card-rotation, 0deg)); 
+    opacity: 0; 
+  }
+  100% { 
+    transform: translate(-50%, -50%) perspective(400px) rotateY(0deg) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+}
+
+@keyframes flip-x-{{ section.id }} {
+  0% { 
+    transform: translate(-50%, -50%) perspective(400px) rotateX(90deg) rotate(var(--card-rotation, 0deg)); 
+    opacity: 0; 
+  }
+  100% { 
+    transform: translate(-50%, -50%) perspective(400px) rotateX(0deg) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+}
+
+@keyframes bounce-{{ section.id }} {
+  0%, 20%, 50%, 80%, 100% { 
+    transform: translate(-50%, -50%) translateY(0) rotate(var(--card-rotation, 0deg)); 
+  }
+  40% { 
+    transform: translate(-50%, -50%) translateY(-40px) rotate(var(--card-rotation, 0deg)); 
+  }
+  60% { 
+    transform: translate(-50%, -50%) translateY(-20px) rotate(var(--card-rotation, 0deg)); 
+  }
+}
+
+@keyframes pulse-{{ section.id }} {
+  0% { 
+    transform: translate(-50%, -50%) scale(1) rotate(var(--card-rotation, 0deg)); 
+  }
+  50% { 
+    transform: translate(-50%, -50%) scale(1.1) rotate(var(--card-rotation, 0deg)); 
+  }
+  100% { 
+    transform: translate(-50%, -50%) scale(1) rotate(var(--card-rotation, 0deg)); 
+  }
+}
+
+@keyframes shake-{{ section.id }} {
+  0%, 100% { 
+    transform: translate(-50%, -50%) translateX(0) rotate(var(--card-rotation, 0deg)); 
+  }
+  10%, 30%, 50%, 70%, 90% { 
+    transform: translate(-50%, -50%) translateX(-15px) rotate(var(--card-rotation, 0deg)); 
+  }
+  20%, 40%, 60%, 80% { 
+    transform: translate(-50%, -50%) translateX(15px) rotate(var(--card-rotation, 0deg)); 
+  }
+}
+
+@keyframes float-{{ section.id }} {
+  0% { 
+    transform: translate(-50%, -50%) translateY(0) rotate(var(--card-rotation, 0deg)); 
+  }
+  50% { 
+    transform: translate(-50%, -50%) translateY(-20px) rotate(var(--card-rotation, 0deg)); 
+  }
+  100% { 
+    transform: translate(-50%, -50%) translateY(0) rotate(var(--card-rotation, 0deg)); 
+  }
+}
+
+@keyframes swing-{{ section.id }} {
+  0% { 
+    transform: translate(-50%, -50%) rotate(calc(var(--card-rotation, 0deg) - 10deg)); 
+  }
+  50% { 
+    transform: translate(-50%, -50%) rotate(calc(var(--card-rotation, 0deg) + 10deg)); 
+  }
+  100% { 
+    transform: translate(-50%, -50%) rotate(calc(var(--card-rotation, 0deg) - 10deg)); 
+  }
+}
+
+@keyframes rotate-in-{{ section.id }} {
+  0% { 
+    transform: translate(-50%, -50%) rotate(calc(var(--card-rotation, 0deg) - 90deg)); 
+    opacity: 0; 
+  }
+  100% { 
+    transform: translate(-50%, -50%) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+}
+
+@keyframes drop-in-{{ section.id }} {
+  0% { 
+    transform: translate(-50%, -50%) translateY(-300px) rotate(var(--card-rotation, 0deg)); 
+    opacity: 0; 
+  }
+  70% { 
+    transform: translate(-50%, -50%) translateY(20px) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+  85% { 
+    transform: translate(-50%, -50%) translateY(-10px) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+  100% { 
+    transform: translate(-50%, -50%) translateY(0) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+}
+
+@keyframes expansion-{{ section.id }} {
+  0% { 
+    transform: translate(-50%, -50%) scale(0) rotate(var(--card-rotation, 0deg)); 
+    opacity: 0; 
+  }
+  60% { 
+    transform: translate(-50%, -50%) scale(1.2) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+  100% { 
+    transform: translate(-50%, -50%) scale(1) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+}
+
+@keyframes slide-right-swing-{{ section.id }} {
+  0% {
+    transform: translate(-50%, -50%) translateX(-100px) rotate(calc(var(--card-rotation, 0deg) - 15deg));
+    opacity: 0;
+  }
+  60% {
+    transform: translate(-50%, -50%) translateX(0) rotate(calc(var(--card-rotation, 0deg) + 10deg));
+    opacity: 1;
+  }
+  80% {
+    transform: translate(-50%, -50%) translateX(0) rotate(calc(var(--card-rotation, 0deg) - 5deg));
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) translateX(0) rotate(var(--card-rotation, 0deg));
+    opacity: 1;
+  }
+}
+
+@keyframes slide-left-swing-{{ section.id }} {
+  0% {
+    transform: translate(-50%, -50%) translateX(100px) rotate(calc(var(--card-rotation, 0deg) + 15deg));
+    opacity: 0;
+  }
+  60% {
+    transform: translate(-50%, -50%) translateX(0) rotate(calc(var(--card-rotation, 0deg) - 10deg));
+    opacity: 1;
+  }
+  80% {
+    transform: translate(-50%, -50%) translateX(0) rotate(calc(var(--card-rotation, 0deg) + 5deg));
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) translateX(0) rotate(var(--card-rotation, 0deg));
+    opacity: 1;
+  }
+}
+
+@keyframes heartbeat-{{ section.id }} {
+  0% { 
+    transform: translate(-50%, -50%) scale(1) rotate(var(--card-rotation, 0deg)); 
+  }
+  14% { 
+    transform: translate(-50%, -50%) scale(1.15) rotate(var(--card-rotation, 0deg)); 
+  }
+  28% { 
+    transform: translate(-50%, -50%) scale(1) rotate(var(--card-rotation, 0deg)); 
+  }
+  42% { 
+    transform: translate(-50%, -50%) scale(1.15) rotate(var(--card-rotation, 0deg)); 
+  }
+  70% { 
+    transform: translate(-50%, -50%) scale(1) rotate(var(--card-rotation, 0deg)); 
+  }
+  100% { 
+    transform: translate(-50%, -50%) scale(1) rotate(var(--card-rotation, 0deg)); 
+  }
+}
+
+@keyframes jelly-{{ section.id }} {
+  0% { 
+    transform: translate(-50%, -50%) scale(1, 1) rotate(var(--card-rotation, 0deg)); 
+    opacity: 0; 
+  }
+  30% { 
+    transform: translate(-50%, -50%) scale(1.25, 0.75) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+  40% { 
+    transform: translate(-50%, -50%) scale(0.75, 1.25) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+  50% { 
+    transform: translate(-50%, -50%) scale(1.15, 0.85) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+  65% { 
+    transform: translate(-50%, -50%) scale(0.95, 1.05) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+  75% { 
+    transform: translate(-50%, -50%) scale(1.05, 0.95) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+  100% { 
+    transform: translate(-50%, -50%) scale(1, 1) rotate(var(--card-rotation, 0deg)); 
+    opacity: 1; 
+  }
+}
+
+@keyframes moonwalk-dance-{{ section.id }} {
+  0% { 
+    transform: translate(-50%, -50%) translateX(0) translateY(0) rotate(var(--card-rotation, 0deg)); 
+  }
+  25% { 
+    transform: translate(-50%, -50%) translateX(-30px) translateY(-5px) rotate(calc(var(--card-rotation, 0deg) - 5deg)); 
+  }
+  50% { 
+    transform: translate(-50%, -50%) translateX(-60px) translateY(0) rotate(calc(var(--card-rotation, 0deg) - 10deg)); 
+  }
+  75% { 
+    transform: translate(-50%, -50%) translateX(-30px) translateY(5px) rotate(calc(var(--card-rotation, 0deg) - 5deg)); 
+  }
+  100% { 
+    transform: translate(-50%, -50%) translateX(0) translateY(0) rotate(var(--card-rotation, 0deg)); 
+  }
+}
+
+@keyframes monkey-wiggle-waggle-{{ section.id }} {
+  0% { 
+    transform: translate(-50%, -50%) translateX(0) translateY(0) skewX(0deg) rotate(var(--card-rotation, 0deg)); 
+  }
+  20% { 
+    transform: translate(-50%, -50%) translateX(-15px) translateY(-8px) skewX(-10deg) rotate(calc(var(--card-rotation, 0deg) - 8deg)); 
+  }
+  40% { 
+    transform: translate(-50%, -50%) translateX(15px) translateY(8px) skewX(10deg) rotate(calc(var(--card-rotation, 0deg) + 8deg)); 
+  }
+  60% { 
+    transform: translate(-50%, -50%) translateX(-12px) translateY(-5px) skewX(-8deg) rotate(calc(var(--card-rotation, 0deg) - 5deg)); 
+  }
+  80% { 
+    transform: translate(-50%, -50%) translateX(12px) translateY(5px) skewX(8deg) rotate(calc(var(--card-rotation, 0deg) + 5deg)); 
+  }
+  100% { 
+    transform: translate(-50%, -50%) translateX(0) translateY(0) skewX(0deg) rotate(var(--card-rotation, 0deg)); 
+  }
+}
+
+@keyframes auto-rotate-{{ section.id }} {
+  0% { 
+    transform: rotate(0deg); 
+  }
+  100% { 
+    transform: rotate(360deg); 
+  }
+}
+
+/* Animation classes for both image and audio cards */
+.custom-card-image-{{ section.id }}.animated-fade-in-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-fade-in-{{ section.id }} {
+  animation: fade-in-{{ section.id }} var(--animation-duration) ease-out var(--animation-delay) forwards;
+}
+
+.custom-card-image-{{ section.id }}.animated-slide-up-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-slide-up-{{ section.id }} {
+  animation: slide-up-{{ section.id }} var(--animation-duration) ease-out var(--animation-delay) forwards;
+}
+
+.custom-card-image-{{ section.id }}.animated-slide-down-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-slide-down-{{ section.id }} {
+  animation: slide-down-{{ section.id }} var(--animation-duration) ease-out var(--animation-delay) forwards;
+}
+
+.custom-card-image-{{ section.id }}.animated-slide-left-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-slide-left-{{ section.id }} {
+  animation: slide-left-{{ section.id }} var(--animation-duration) ease-out var(--animation-delay) forwards;
+}
+
+.custom-card-image-{{ section.id }}.animated-slide-right-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-slide-right-{{ section.id }} {
+  animation: slide-right-{{ section.id }} var(--animation-duration) ease-out var(--animation-delay) forwards;
+}
+
+.custom-card-image-{{ section.id }}.animated-zoom-in-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-zoom-in-{{ section.id }} {
+  animation: zoom-in-{{ section.id }} var(--animation-duration) ease-out var(--animation-delay) forwards;
+}
+
+.custom-card-image-{{ section.id }}.animated-zoom-out-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-zoom-out-{{ section.id }} {
+  animation: zoom-out-{{ section.id }} var(--animation-duration) ease-out var(--animation-delay) forwards;
+}
+
+.custom-card-image-{{ section.id }}.animated-flip-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-flip-{{ section.id }} {
+  animation: flip-{{ section.id }} var(--animation-duration) ease-out var(--animation-delay) forwards;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.custom-card-image-{{ section.id }}.animated-flip-x-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-flip-x-{{ section.id }} {
+  animation: flip-x-{{ section.id }} var(--animation-duration) ease-out var(--animation-delay) forwards;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.custom-card-image-{{ section.id }}.animated-bounce-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-bounce-{{ section.id }} {
+  animation: bounce-{{ section.id }} var(--animation-duration) ease-in-out var(--animation-delay) infinite;
+  opacity: 1;
+}
+
+.custom-card-image-{{ section.id }}.animated-pulse-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-pulse-{{ section.id }} {
+  animation: pulse-{{ section.id }} var(--animation-duration) ease-in-out var(--animation-delay) infinite;
+  opacity: 1;
+}
+
+.custom-card-image-{{ section.id }}.animated-shake-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-shake-{{ section.id }} {
+  animation: shake-{{ section.id }} var(--animation-duration) ease-in-out var(--animation-delay) forwards;
+  opacity: 1;
+}
+
+.custom-card-image-{{ section.id }}.animated-float-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-float-{{ section.id }} {
+  animation: float-{{ section.id }} var(--animation-duration) ease-in-out var(--animation-delay) infinite;
+  opacity: 1;
+}
+
+.custom-card-image-{{ section.id }}.animated-swing-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-swing-{{ section.id }} {
+  animation: swing-{{ section.id }} var(--animation-duration) ease-in-out var(--animation-delay) infinite;
+  transform-origin: 50% 0%;
+  opacity: 1;
+}
+
+.custom-card-image-{{ section.id }}.animated-rotate-in-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-rotate-in-{{ section.id }} {
+  animation: rotate-in-{{ section.id }} var(--animation-duration) ease-out var(--animation-delay) forwards;
+}
+
+.custom-card-image-{{ section.id }}.animated-drop-in-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-drop-in-{{ section.id }} {
+  animation: drop-in-{{ section.id }} var(--animation-duration) ease-out var(--animation-delay) forwards;
+}
+
+.custom-card-image-{{ section.id }}.animated-expansion-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-expansion-{{ section.id }} {
+  animation: expansion-{{ section.id }} var(--animation-duration) ease-out var(--animation-delay) forwards;
+}
+
+.custom-card-image-{{ section.id }}.animated-slide-right-swing-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-slide-right-swing-{{ section.id }} {
+  animation: slide-right-swing-{{ section.id }} var(--animation-duration) ease-out var(--animation-delay) forwards;
+}
+
+.custom-card-image-{{ section.id }}.animated-slide-left-swing-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-slide-left-swing-{{ section.id }} {
+  animation: slide-left-swing-{{ section.id }} var(--animation-duration) ease-out var(--animation-delay) forwards;
+}
+
+.custom-card-image-{{ section.id }}.animated-heartbeat-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-heartbeat-{{ section.id }} {
+  animation: heartbeat-{{ section.id }} calc(var(--animation-duration) * 1.5) ease-in-out var(--animation-delay) infinite;
+  opacity: 1;
+}
+
+.custom-card-image-{{ section.id }}.animated-jelly-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-jelly-{{ section.id }} {
+  animation: jelly-{{ section.id }} var(--animation-duration) ease-out var(--animation-delay) forwards;
+}
+
+.custom-card-image-{{ section.id }}.animated-moonwalk-dance-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-moonwalk-dance-{{ section.id }} {
+  animation: moonwalk-dance-{{ section.id }} calc(var(--animation-duration) * 1.5) ease-in-out var(--animation-delay) infinite;
+  opacity: 1;
+}
+
+.custom-card-image-{{ section.id }}.animated-monkey-wiggle-waggle-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-monkey-wiggle-waggle-{{ section.id }} {
+  animation: monkey-wiggle-waggle-{{ section.id }} var(--animation-duration) ease-in-out var(--animation-delay) infinite;
+  opacity: 1;
+}
+
+.custom-card-image-{{ section.id }}.animated-auto-rotate-{{ section.id }},
+.custom-audio-card-{{ section.id }}.animated-auto-rotate-{{ section.id }} {
+  animation: auto-rotate-{{ section.id }} var(--animation-duration) linear var(--animation-delay) infinite;
+  opacity: 1;
+}
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+  .custom-section-image-{{ section.id }} {
+    height: 400px;
+    min-height: 400px;
+    padding: {{ section.settings.padding_top_mobile }}px 0 {{ section.settings.padding_bottom_mobile }}px 0;
+  }
+  
+  .section-heading-image-{{ section.id }} {
+    width: {{ section.settings.title_width_mobile }}px;
+    max-width: 85%;
+  }
+  
+  .section-heading-image-{{ section.id }}.position-top-left,
+  .section-heading-image-{{ section.id }}.position-center-left,
+  .section-heading-image-{{ section.id }}.position-bottom-left {
+    left: 20px;
+  }
+  
+  .section-heading-image-{{ section.id }}.position-top-right,
+  .section-heading-image-{{ section.id }}.position-center-right,
+  .section-heading-image-{{ section.id }}.position-bottom-right {
+    right: 20px;
+  }
+  
+  .section-heading-image-{{ section.id }}.position-top-left,
+  .section-heading-image-{{ section.id }}.position-top-center,
+  .section-heading-image-{{ section.id }}.position-top-right {
+    top: 30px;
+  }
+  
+  .section-heading-image-{{ section.id }}.position-bottom-left,
+  .section-heading-image-{{ section.id }}.position-bottom-center,
+  .section-heading-image-{{ section.id }}.position-bottom-right {
+    bottom: 30px;
+  }
+  
+  .section-heading-image-{{ section.id }} h2 {
+    font-size: {{ section.settings.title_size_mobile }}px;
+  }
+  
+  .section-heading-image-{{ section.id }} p {
+    font-size: {{ section.settings.subtitle_size_mobile }}px;
+  }
+  
+  .custom-card-image-text-{{ section.id }} {
+    font-size: {{ section.settings.overlay_text_size_mobile }}px;
+  }
+  
+  .custom-card-image-hover-text-{{ section.id }} {
+    font-size: {{ section.settings.overlay_text_size_mobile }}px;
+  }
+
+  .custom-card-button-{{ section.id }} {
+    font-size: {{ section.settings.button_font_size_mobile }}px;
+    padding: {{ section.settings.button_padding_y | times: 0.8 }}px {{ section.settings.button_padding_x | times: 0.8 }}px;
+  }
+
+  .audio-content-{{ section.id }} {
+    padding: 15px;
+  }
+
+  .play-button-{{ section.id }} {
+    width: 20px;
+    height: 20px;
+  }
+
+  .play-button-{{ section.id }} svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+</style>
+
+<div class="custom-section-image-{{ section.id }}" style="background-image: url({{ section.settings.background_image | image_url }});">
+  {% if section.settings.button_text != blank and section.settings.button_link != blank %}
+    <a 
+      href="{{ section.settings.button_link }}" 
+      class="custom-card-button-{{ section.id }} button-{{ section.settings.button_position }}"
+      style="
+        background-color: {{ section.settings.button_bg_color }};
+        color: {{ section.settings.button_color }};
+        font-size: {{ section.settings.button_font_size_desktop }}px;
+        padding: {{ section.settings.button_padding_y }}px {{ section.settings.button_padding_x }}px;
+        border-radius: {{ section.settings.button_border_radius }}px;
+      "
+      onmouseover="this.style.backgroundColor='{{ section.settings.button_hover_bg_color }}'; this.style.color='{{ section.settings.button_hover_color }}'"
+      onmouseout="this.style.backgroundColor='{{ section.settings.button_bg_color }}'; this.style.color='{{ section.settings.button_color }}'"
+    >
+      {{ section.settings.button_text }}
+    </a>
+  {% endif %}
+  
+  <div class="section-heading-image-{{ section.id }} position-{{ section.settings.heading_position }}">
+    {% if section.settings.title != blank %}
+      <h2 class="title-{{ section.id }}">
+        {% assign title = section.settings.title %}
+        
+        {% comment %} Process the title with line breaks if enabled {% endcomment %}
+        {% if section.settings.enable_line_breaks %}
+          {% assign title_parts = title | split: '||' %}
+          {% for part in title_parts %}
+            <span class="title-line-{{ section.id }}">
+              {% comment %} Process word highlighting within each part {% endcomment %}
+              {% if section.settings.enable_word_highlighting %}
+                {% assign original_words = part | split: ' ' %}
+                {% for word in original_words %}
+                  {% assign word_with_punctuation = word | strip %}
+                  {% assign word_clean = word_with_punctuation | downcase | replace: ',', '' | replace: '.', '' | replace: '!', '' | replace: '?', '' | replace: ':', '' | replace: ';', '' %}
+                  {% assign word_processed = false %}
+                  
+                  {% comment %} Check against Color Group 1 {% endcomment %}
+                  {% if section.settings.color_group_1_words != blank %}
+                    {% assign color_words = section.settings.color_group_1_words | downcase | split: ',' %}
+                    {% for color_word in color_words %}
+                      {% assign trimmed_color_word = color_word | strip %}
+                      {% if word_clean == trimmed_color_word %}
+                        <span class="highlighted-word-{{ section.id }} color-group-1-{{ section.id }}">{{ word_with_punctuation }}</span>
+                        {% assign word_processed = true %}
+                        {% break %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                  
+                  {% comment %} Check against Color Group 2 {% endcomment %}
+                  {% if word_processed == false and section.settings.color_group_2_words != blank %}
+                    {% assign color_words = section.settings.color_group_2_words | downcase | split: ',' %}
+                    {% for color_word in color_words %}
+                      {% assign trimmed_color_word = color_word | strip %}
+                      {% if word_clean == trimmed_color_word %}
+                        <span class="highlighted-word-{{ section.id }} color-group-2-{{ section.id }}">{{ word_with_punctuation }}</span>
+                        {% assign word_processed = true %}
+                        {% break %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                  
+                  {% comment %} Check against Color Group 3 {% endcomment %}
+                  {% if word_processed == false and section.settings.color_group_3_words != blank %}
+                    {% assign color_words = section.settings.color_group_3_words | downcase | split: ',' %}
+                    {% for color_word in color_words %}
+                      {% assign trimmed_color_word = color_word | strip %}
+                      {% if word_clean == trimmed_color_word %}
+                        <span class="highlighted-word-{{ section.id }} color-group-3-{{ section.id }}">{{ word_with_punctuation }}</span>
+                        {% assign word_processed = true %}
+                        {% break %}
+                      {% endif %}
+                    {% endfor %}
+                  {% endif %}
+                  
+                  {% comment %} Output the regular word if not colored {% endcomment %}
+                  {% if word_processed == false %}
+                    {{ word_with_punctuation }}
+                  {% endif %}
+                  
+                  {% comment %} Add space between words {% endcomment %}
+                  {% unless forloop.last %} {% endunless %}
+                {% endfor %}
+              {% else %}
+                {{ part }}
+              {% endif %}
+            </span>
+            {% unless forloop.last %}<br>{% endunless %}
+          {% endfor %}
+        {% else %}
+          {% comment %} Process the title without line breaks {% endcomment %}
+          {% if section.settings.enable_word_highlighting %}
+            {% assign original_words = title | split: ' ' %}
+            {% for word in original_words %}
+              {% assign word_with_punctuation = word | strip %}
+              {% assign word_clean = word_with_punctuation | downcase | replace: ',', '' | replace: '.', '' | replace: '!', '' | replace: '?', '' | replace: ':', '' | replace: ';', '' %}
+              {% assign word_processed = false %}
+              
+              {% comment %} Check against Color Group 1 {% endcomment %}
+              {% if section.settings.color_group_1_words != blank %}
+                {% assign color_words = section.settings.color_group_1_words | downcase | split: ',' %}
+                {% for color_word in color_words %}
+                  {% assign trimmed_color_word = color_word | strip %}
+                  {% if word_clean == trimmed_color_word %}
+                    <span class="highlighted-word-{{ section.id }} color-group-1-{{ section.id }}">{{ word_with_punctuation }}</span>
+                    {% assign word_processed = true %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+              
+              {% comment %} Check against Color Group 2 {% endcomment %}
+              {% if word_processed == false and section.settings.color_group_2_words != blank %}
+                {% assign color_words = section.settings.color_group_2_words | downcase | split: ',' %}
+                {% for color_word in color_words %}
+                  {% assign trimmed_color_word = color_word | strip %}
+                  {% if word_clean == trimmed_color_word %}
+                    <span class="highlighted-word-{{ section.id }} color-group-2-{{ section.id }}">{{ word_with_punctuation }}</span>
+                    {% assign word_processed = true %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+              
+              {% comment %} Check against Color Group 3 {% endcomment %}
+              {% if word_processed == false and section.settings.color_group_3_words != blank %}
+                {% assign color_words = section.settings.color_group_3_words | downcase | split: ',' %}
+                {% for color_word in color_words %}
+                  {% assign trimmed_color_word = color_word | strip %}
+                  {% if word_clean == trimmed_color_word %}
+                    <span class="highlighted-word-{{ section.id }} color-group-3-{{ section.id }}">{{ word_with_punctuation }}</span>
+                    {% assign word_processed = true %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+              
+              {% comment %} Output the regular word if not colored {% endcomment %}
+              {% if word_processed == false %}
+                {{ word_with_punctuation }}
+              {% endif %}
+              
+              {% comment %} Add space between words {% endcomment %}
+              {% unless forloop.last %} {% endunless %}
+            {% endfor %}
+          {% else %}
+            {{ title }}
+          {% endif %}
+        {% endif %}
+      </h2>
+    {% endif %}
+
+    {% if section.settings.section_subtitle != blank %}
+      <p>{{ section.settings.section_subtitle }}</p>
+    {% endif %}  
+  </div>
+  
+  <div class="cards-wrapper-image-{{ section.id }}">
+    {% for block in section.blocks %}
+      {% if block.type == 'card' %}
+        <div class="custom-card-image-{{ section.id }} {% if block.settings.animation_style != 'none' %}animation-ready{% endif %}"
+             data-animation-style="{{ block.settings.animation_style }}"
+             data-animate-on-scroll="{{ block.settings.animate_on_scroll }}"
+             data-auto-animate="{{ block.settings.auto_animate }}"
+             data-section-id="{{ section.id }}"
+             data-block-id="{{ block.id }}"
+             data-has-hover-text="{% if block.settings.hover_text and block.settings.hover_text != blank %}true{% else %}false{% endif %}"
+             style="
+               left: calc(50% + {{ block.settings.position_x_desktop }}px);
+               top: calc(50% + {{ block.settings.position_y_desktop }}px);
+               transform: translate(-50%, -50%) rotate({{ block.settings.rotation | default: 0 }}deg);
+               width: {{ block.settings.card_width }}px;
+               z-index: {{ block.settings.z_index }};
+               --animation-duration: {{ block.settings.animation_duration }}s;
+               --animation-delay: {{ block.settings.animation_delay }}s;
+               --card-rotation: {{ block.settings.rotation | default: 0 }}deg;
+               --hover-rotation: {{ block.settings.hover_rotation | default: 0 }}deg;
+               {% if block.settings.animation_style == 'none' %}opacity: 1;{% endif %}
+             ">
+          <div class="custom-card-image-wrapper-{{ section.id }}" 
+               style="transform: rotate({{ block.settings.rotation | default: 0 }}deg);">
+            {% if block.settings.card_image %}
+              <img src="{{ block.settings.card_image | image_url: width: block.settings.card_width }}" 
+                   alt="Card Image"
+                   style="width: {{ block.settings.image_width | default: 100 }}%;">
+            {% endif %}
+          </div>
+          
+          {% if block.settings.card_text %}
+            <div class="custom-card-image-text-{{ section.id }}" 
+                 style="color: {{ block.settings.overlay_text_color }};">
+              {{ block.settings.card_text }}
+            </div>
+          {% endif %}
+          
+          {% if block.settings.hover_text %}
+            <div class="custom-card-image-hover-text-{{ section.id }}">
+              {{ block.settings.hover_text }}
+            </div>
+          {% endif %}
+        </div>
+      {% elsif block.type == 'audio_card' %}
+        <div class="custom-audio-card-{{ section.id }} {% if block.settings.animation_style != 'none' %}animation-ready{% endif %}"
+             data-animation-style="{{ block.settings.animation_style }}"
+             data-animate-on-scroll="{{ block.settings.animate_on_scroll }}"
+             data-auto-animate="{{ block.settings.auto_animate }}"
+             data-section-id="{{ section.id }}"
+             data-block-id="{{ block.id }}"
+             style="
+               left: calc(50% + {{ block.settings.position_x_desktop }}px);
+               top: calc(50% + {{ block.settings.position_y_desktop }}px);
+               transform: translate(-50%, -50%) rotate({{ block.settings.rotation | default: 0 }}deg);
+               width: {{ block.settings.card_width }}px;
+               height: {{ block.settings.card_height }}px;
+               z-index: {{ block.settings.z_index }};
+               --animation-duration: {{ block.settings.animation_duration }}s;
+               --animation-delay: {{ block.settings.animation_delay }}s;
+               --card-rotation: {{ block.settings.rotation | default: 0 }}deg;
+               --hover-rotation: {{ block.settings.hover_rotation | default: 0 }}deg;
+               background-color: {{ block.settings.audio_bg_color }};
+               {% if block.settings.audio_bg_image %}background-image: url({{ block.settings.audio_bg_image | image_url }});{% endif %}
+               {% if block.settings.animation_style == 'none' %}opacity: 1;{% endif %}
+             ">
+          
+          <div class="audio-content-{{ section.id }}">
+            <div class="audio-controls-{{ section.id }}">
+              <button class="play-button-{{ section.id }}" 
+                      onclick="toggleAudio('audio-{{ section.id }}-{{ block.id }}', this)" 
+                      aria-label="Play/Pause Audio">
+                <svg class="play-icon" viewBox="0 0 24 24">
+                  <polygon points="8,5 19,12 8,19"></polygon>
+                </svg>
+                <svg class="pause-icon" viewBox="0 0 24 24" style="display: none;">
+                  <rect x="6" y="4" width="4" height="16"></rect>
+                  <rect x="14" y="4" width="4" height="16"></rect>
+                </svg>
+              </button>
+              
+              {% if block.settings.audio_title %}
+                <h3 class="audio-title-{{ section.id }}" 
+                    style="
+                      color: {{ block.settings.title_color }};
+                      font-size: {{ block.settings.title_size }}px;
+                      font-weight: {{ block.settings.title_weight }};
+                      font-family: 'libre franklin';
+                    ">
+                  {{ block.settings.audio_title }}
+                </h3>
+              {% endif %}
+            </div>
+            
+            <div class="audio-progress-wrapper-{{ section.id }}">
+              <div class="audio-progress-{{ section.id }}" 
+                   onclick="seekAudio(event, 'audio-{{ section.id }}-{{ block.id }}')">
+                <div class="audio-progress-bar-{{ section.id }}" 
+                     id="progress-{{ section.id }}-{{ block.id }}"></div>
+              </div>
+            </div>
+            
+            {% if block.settings.audio_subtitle %}
+              <p class="audio-subtitle-{{ section.id }}"
+                 style="
+                   color: {{ block.settings.subtitle_color }};
+                   font-size: {{ block.settings.subtitle_size }}px;
+                   font-weight: {{ block.settings.subtitle_weight }};
+                   font-family: 'ebgaramond';
+                 ">
+                {{ block.settings.audio_subtitle }}
+              </p>
+            {% endif %}
+            
+            <div class="audio-time-{{ section.id }}" id="time-{{ section.id }}-{{ block.id }}">
+              0:00 / 0:00
+            </div>
+          </div>
+          
+          {% if block.settings.audio_file %}
+            <audio id="audio-{{ section.id }}-{{ block.id }}" 
+                   preload="metadata"
+                   ontimeupdate="updateProgress('{{ section.id }}', '{{ block.id }}')"
+                   onloadedmetadata="updateDuration('{{ section.id }}', '{{ block.id }}')"
+                   onended="resetAudio('{{ section.id }}', '{{ block.id }}')">
+              <source src="{{ block.settings.audio_file }}" type="audio/mpeg">
+              <source src="{{ block.settings.audio_file }}" type="audio/wav">
+              <source src="{{ block.settings.audio_file }}" type="audio/ogg">
+              Your browser does not support the audio element.
+            </audio>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get all cards for this specific section (both image and audio cards)
+    const imageCards = document.querySelectorAll('.custom-card-image-{{ section.id }}');
+    const audioCards = document.querySelectorAll('.custom-audio-card-{{ section.id }}');
+    const allCards = [...imageCards, ...audioCards];
+    
+    // Process each card based on animation settings
+    allCards.forEach(card => {
+      const animationStyle = card.getAttribute('data-animation-style');
+      const animateOnScroll = card.getAttribute('data-animate-on-scroll') === 'true';
+      const autoAnimate = card.getAttribute('data-auto-animate') === 'true';
+      const sectionId = card.getAttribute('data-section-id');
+      
+      // Initialize cards that should auto-animate on page load
+      if (animationStyle !== 'none' && autoAnimate && !animateOnScroll) {
+        // Short timeout to ensure styles are applied after page load
+        setTimeout(() => {
+          card.classList.add(`animated-${animationStyle}-${sectionId}`);
+        }, 100);
+      }
+      
+      // For continuous animations like bounce, pulse, etc. that should start visible
+      if (['bounce', 'pulse', 'float', 'swing', 'heartbeat', 'moonwalk-dance', 'monkey-wiggle-waggle', 'auto-rotate'].includes(animationStyle)) {
+        card.style.opacity = '1';
+      }
+    });
+    
+    // Set up scroll observer for scroll-triggered animations
+    const observerOptions = {
+      root: null, // viewport
+      rootMargin: '0px',
+      threshold: 0.1 // trigger when 10% of the element is visible
+    };
+    
+    const observerCallback = (entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const card = entry.target;
+          const animationStyle = card.getAttribute('data-animation-style');
+          const animateOnScroll = card.getAttribute('data-animate-on-scroll') === 'true';
+          const sectionId = card.getAttribute('data-section-id');
+          
+          if (animationStyle && animationStyle !== 'none' && animateOnScroll) {
+            card.classList.add(`animated-${animationStyle}-${sectionId}`);
+          }
+          
+          // Unobserve after animation is triggered
+          observer.unobserve(card);
+        }
+      });
+    };
+    
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    
+    // Observe cards that should animate on scroll
+    allCards.forEach(card => {
+      const animateOnScroll = card.getAttribute('data-animate-on-scroll') === 'true';
+      const animationStyle = card.getAttribute('data-animation-style');
+      
+      if (animateOnScroll && animationStyle !== 'none') {
+        observer.observe(card);
+      }
+    });
+  });
+
+  // Audio functionality
+  function toggleAudio(audioId, button) {
+    const audio = document.getElementById(audioId);
+    const playIcon = button.querySelector('.play-icon');
+    const pauseIcon = button.querySelector('.pause-icon');
+    
+    if (audio.paused) {
+      // Pause all other audio elements
+      const allAudio = document.querySelectorAll('audio');
+      allAudio.forEach(a => {
+        if (a !== audio && !a.paused) {
+          a.pause();
+          // Reset other play buttons
+          const otherButtons = document.querySelectorAll('.play-button-{{ section.id }}');
+          otherButtons.forEach(b => {
+            if (b !== button) {
+              b.querySelector('.play-icon').style.display = 'block';
+              b.querySelector('.pause-icon').style.display = 'none';
+            }
+          });
+        }
+      });
+      
+      audio.play();
+      playIcon.style.display = 'none';
+      pauseIcon.style.display = 'block';
+    } else {
+      audio.pause();
+      playIcon.style.display = 'block';
+      pauseIcon.style.display = 'none';
+    }
+  }
+
+  function updateProgress(sectionId, blockId) {
+    const audio = document.getElementById(`audio-${sectionId}-${blockId}`);
+    const progressBar = document.getElementById(`progress-${sectionId}-${blockId}`);
+    const timeDisplay = document.getElementById(`time-${sectionId}-${blockId}`);
+    
+    if (audio.duration) {
+      const progress = (audio.currentTime / audio.duration) * 100;
+      progressBar.style.width = progress + '%';
+      
+      const currentMinutes = Math.floor(audio.currentTime / 60);
+      const currentSeconds = Math.floor(audio.currentTime % 60);
+      const durationMinutes = Math.floor(audio.duration / 60);
+      const durationSeconds = Math.floor(audio.duration % 60);
+      
+      timeDisplay.textContent = `${currentMinutes}:${currentSeconds.toString().padStart(2, '0')} / ${durationMinutes}:${durationSeconds.toString().padStart(2, '0')}`;
+    }
+  }
+
+  function updateDuration(sectionId, blockId) {
+    const audio = document.getElementById(`audio-${sectionId}-${blockId}`);
+    const timeDisplay = document.getElementById(`time-${sectionId}-${blockId}`);
+    
+    if (audio.duration) {
+      const durationMinutes = Math.floor(audio.duration / 60);
+      const durationSeconds = Math.floor(audio.duration % 60);
+      timeDisplay.textContent = `0:00 / ${durationMinutes}:${durationSeconds.toString().padStart(2, '0')}`;
+    }
+  }
+
+  function seekAudio(event, audioId) {
+    const audio = document.getElementById(audioId);
+    const progressBar = event.currentTarget;
+    const rect = progressBar.getBoundingClientRect();
+    const percent = (event.clientX - rect.left) / rect.width;
+    
+    if (audio.duration) {
+      audio.currentTime = percent * audio.duration;
+    }
+  }
+
+  function resetAudio(sectionId, blockId) {
+    const button = document.querySelector(`[onclick="toggleAudio('audio-${sectionId}-${blockId}', this)"]`);
+    const playIcon = button.querySelector('.play-icon');
+    const pauseIcon = button.querySelector('.pause-icon');
+    
+    playIcon.style.display = 'block';
+    pauseIcon.style.display = 'none';
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Arrange Images",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "header",
+      "content": "Heading Position"
+    },
+    {
+      "type": "select",
+      "id": "heading_position",
+      "label": "Heading Position",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "Top Left"
+        },
+        {
+          "value": "top-center",
+          "label": "Top Center"
+        },
+        {
+          "value": "top-right",
+          "label": "Top Right"
+        },
+        {
+          "value": "center-left",
+          "label": "Center Left"
+        },
+        {
+          "value": "center-center",
+          "label": "Center Center"
+        },
+        {
+          "value": "center-right",
+          "label": "Center Right"
+        },
+        {
+          "value": "bottom-left",
+          "label": "Bottom Left"
+        },
+        {
+          "value": "bottom-center",
+          "label": "Bottom Center"
+        },
+        {
+          "value": "bottom-right",
+          "label": "Bottom Right"
+        }
+      ],
+      "default": "center-center"
+    },
+    {
+      "type": "range",
+      "id": "title_width",
+      "label": "Title Container Width (px)",
+      "min": 400,
+      "max": 1400,
+      "step": 10,
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "title_width_mobile",
+      "label": "Title Container Width Mobile (px)",
+      "min": 150,
+      "max": 400,
+      "step": 10,
+      "default": 300
+    },
+    {
+      "type": "header",
+      "content": "Padding Settings"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top Padding Desktop (px)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom Padding Desktop (px)",
+      "min": 0,
+      "max": 200,
+      "step": 5,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top Padding Mobile (px)",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom Padding Mobile (px)",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "default": 30
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "subtitle_color",
+      "label": "Subtitle Color",
+      "default": "#000000"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Your Title"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_line_breaks",
+      "label": "Enable title line breaks",
+      "default": false,
+      "info": "Use '||' to create line breaks in your title"
+    },
+    {
+      "type": "header",
+      "content": "Word Highlighting"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_word_highlighting",
+      "label": "Enable word highlighting",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "color_group_1_words",
+      "label": "Color Group 1: Words",
+      "default": "test",
+      "info": "Enter words separated by commas. These words will be highlighted with Color 1."
+    },
+    {
+      "type": "color",
+      "id": "color_group_1",
+      "label": "Color Group 1: Color",
+      "default": "#ff6b6b"
+    },
+    {
+      "type": "text",
+      "id": "color_group_2_words",
+      "label": "Color Group 2: Words",
+      "default": "test",
+      "info": "Enter words separated by commas. These words will be highlighted with Color 2."
+    },
+    {
+      "type": "color",
+      "id": "color_group_2",
+      "label": "Color Group 2: Color",
+      "default": "#4ecdc4"
+    },
+    {
+      "type": "text",
+      "id": "color_group_3_words",
+      "label": "Color Group 3: Words",
+      "default": "test",
+      "info": "Enter words separated by commas. These words will be highlighted with Color 3."
+    },
+    {
+      "type": "color",
+      "id": "color_group_3",
+      "label": "Color Group 3: Color",
+      "default": "#ffb347"
+    },
+    {
+      "type": "text",
+      "id": "section_subtitle",
+      "label": "Subtitle",
+      "default": "Your Subtitle Here"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "label": "Title Size Desktop (px)",
+      "min": 24,
+      "max": 60,
+      "step": 1,
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "title_size_mobile",
+      "label": "Title Size Mobile (px)",
+      "min": 16,
+      "max": 36,
+      "step": 1,
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "label": "Subtitle Size Desktop (px)",
+      "min": 14,
+      "max": 36,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size_mobile",
+      "label": "Subtitle Size Mobile (px)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "overlay_text_size",
+      "label": "Overlay Text Size Desktop (px)",
+      "min": 14,
+      "max": 36,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "range",
+      "id": "overlay_text_size_mobile",
+      "label": "Overlay Text Size Mobile (px)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button Hover Text Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_bg_color",
+      "label": "Button Hover Background Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size_desktop",
+      "label": "Button Font Size (Desktop)",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size_mobile",
+      "label": "Button Font Size (Mobile)",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_padding_x",
+      "label": "Button Horizontal Padding",
+      "min": 5,
+      "max": 50,
+      "step": 1,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_padding_y",
+      "label": "Button Vertical Padding",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Button Border Radius",
+      "min": 0,
+      "max": 50,
+      "step": 1,
+      "default": 4,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "button_position",
+      "label": "Button Position",
+      "options": [
+        {
+          "value": "top-left",
+          "label": "Top Left"
+        },
+        {
+          "value": "top-center",
+          "label": "Top Center"
+        },
+        {
+          "value": "top-right",
+          "label": "Top Right"
+        },
+        {
+          "value": "middle-left",
+          "label": "Middle Left"
+        },
+        {
+          "value": "middle-center",
+          "label": "Middle Center"
+        },
+        {
+          "value": "middle-right",
+          "label": "Middle Right"
+        },
+        {
+          "value": "bottom-left",
+          "label": "Bottom Left"
+        },
+        {
+          "value": "bottom-center",
+          "label": "Bottom Center"
+        },
+        {
+          "value": "bottom-right",
+          "label": "Bottom Right"
+        }
+      ],
+      "default": "bottom-center"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Image Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "card_image",
+          "label": "Card Image"
+        },
+        {
+          "type": "range",
+          "id": "card_width",
+          "label": "Card Width (px)",
+          "min": 20,
+          "max": 500,
+          "step": 10,
+          "default": 300
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "label": "Image Width (%)",
+          "min": 10,
+          "max": 100,
+          "step": 1,
+          "default": 100,
+          "unit": "%"
+        },
+        {
+          "type": "text",
+          "id": "card_text",
+          "label": "Overlay Text"
+        },
+        {
+          "type": "text",
+          "id": "hover_text",
+          "label": "Hover Text",
+          "info": "Text to show when hovering over the card"
+        },
+        {
+          "type": "color",
+          "id": "hover_text_color",
+          "label": "Hover Text Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "overlay_text_color",
+          "label": "Overlay Text Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "range",
+          "id": "rotation",
+          "label": "Card Rotation (degrees)",
+          "min": -45,
+          "max": 45,
+          "step": 1,
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "hover_rotation",
+          "label": "Hover Rotation (degrees)",
+          "min": -180,
+          "max": 180,
+          "step": 5,
+          "default": 0,
+          "info": "Additional rotation angle when hovering over the card"
+        },
+        {
+          "type": "number",
+          "id": "position_x_desktop",
+          "label": "Horizontal Position Desktop (px)",
+          "default": 0,
+          "info": "Positive values move right, negative values move left"
+        },
+        {
+          "type": "number",
+          "id": "position_x",
+          "label": "Horizontal Position Mobile (px)",
+          "default": 0,
+          "info": "Positive values move right, negative values move left"
+        },
+        {
+          "type": "number",
+          "id": "position_y_desktop",
+          "label": "Vertical Position Desktop (px)",
+          "default": 0,
+          "info": "Positive values move down, negative values move up (can be outside section)"
+        },
+        {
+          "type": "number",
+          "id": "position_y",
+          "label": "Vertical Position Mobile (px)",
+          "default": 0,
+          "info": "Positive values move down, negative values move up (can be outside section)"
+        },
+        {
+          "type": "number",
+          "id": "z_index",
+          "label": "Z-Index (Layer Order)",
+          "default": 1,
+          "info": "Higher values appear on top of lower values. Use values like 1, 2, 3, etc."
+        },   
+        {
+          "type": "header",
+          "content": "Animation Settings"
+        },
+        {
+          "type": "select",
+          "id": "animation_style",
+          "label": "Animation Style",
+          "options": [
+            {
+              "value": "none",
+              "label": "No Animation"
+            },
+            {
+              "value": "fade-in",
+              "label": "Fade In"
+            },
+            {
+              "value": "slide-up",
+              "label": "Slide Up"
+            },
+            {
+              "value": "slide-down",
+              "label": "Slide Down"
+            },
+            {
+              "value": "slide-left",
+              "label": "Slide Left"
+            },
+            {
+              "value": "slide-right",
+              "label": "Slide Right"
+            },
+            {
+              "value": "zoom-in",
+              "label": "Zoom In"
+            },
+            {
+              "value": "zoom-out",
+              "label": "Zoom Out"
+            },
+            {
+              "value": "flip",
+              "label": "Flip Horizontal"
+            },
+            {
+              "value": "flip-x",
+              "label": "Flip Vertical"
+            },
+            {
+              "value": "bounce",
+              "label": "Bounce"
+            },
+            {
+              "value": "pulse",
+              "label": "Pulse"
+            },
+            {
+              "value": "shake",
+              "label": "Shake"
+            },
+            {
+              "value": "float",
+              "label": "Float"
+            },
+            {
+              "value": "swing",
+              "label": "Swing"
+            },
+            {
+              "value": "rotate-in",
+              "label": "Rotate In"
+            },
+            {
+              "value": "drop-in",
+              "label": "Drop In"
+            },
+            {
+              "value": "expansion",
+              "label": "Expansion"
+            },
+            {
+              "value": "moonwalk-dance",
+              "label": "Moonwalk Dance"
+            },
+            {
+              "value": "monkey-wiggle-waggle",
+              "label": "Monkey Wiggle Waggle"
+            },
+            {
+              "value": "slide-right-swing",
+              "label": "Slide Right and Swing"
+            },
+            {
+              "value": "slide-left-swing",
+              "label": "Slide Left and Swing"
+            },
+            {
+              "value": "heartbeat",
+              "label": "Heartbeat"
+            },
+            {
+              "value": "jelly",
+              "label": "Jelly"
+            },
+            {
+              "value": "auto-rotate",
+              "label": "Auto Rotate"
+            }
+          ],
+          "default": "none"
+        },  
+        {
+          "type": "range",
+          "id": "animation_duration",
+          "label": "Animation Duration (seconds)",
+          "min": 0.5,
+          "max": 5,
+          "step": 0.1,
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "animation_delay",
+          "label": "Animation Delay (seconds)",
+          "min": 0,
+          "max": 3,
+          "step": 0.1,
+          "default": 0
+        },
+        {
+          "type": "checkbox",
+          "id": "animate_on_scroll",
+          "label": "Animate on scroll into view",
+          "default": false,
+          "info": "Animation will trigger when card becomes visible"
+        },
+        {
+          "type": "checkbox",
+          "id": "auto_animate",
+          "label": "Animate on page load",
+          "default": true,
+          "info": "Animation will trigger immediately when page loads"
+        }
+      ]
+    },
+    {
+      "type": "audio_card",
+      "name": "Audio Card",
+      "settings": [
+        {
+          "type": "url",
+          "id": "audio_file",
+          "label": "Audio File URL",
+          "info": "Upload your audio file to Files section, then paste the URL here"
+        },
+        {
+          "type": "range",
+          "id": "card_width",
+          "label": "Card Width (px)",
+          "min": 200,
+          "max": 600,
+          "step": 10,
+          "default": 400
+        },
+        {
+          "type": "range",
+          "id": "card_height",
+          "label": "Card Height (px)",
+          "min": 120,
+          "max": 300,
+          "step": 10,
+          "default": 180
+        },
+        {
+          "type": "header",
+          "content": "Audio Card Appearance"
+        },
+        {
+          "type": "color",
+          "id": "audio_bg_color",
+          "label": "Background Color",
+          "default": "#2a2a2a"
+        },
+        {
+          "type": "image_picker",
+          "id": "audio_bg_image",
+          "label": "Background Image"
+        },
+        {
+          "type": "header",
+          "content": "Audio Title Settings"
+        },
+        {
+          "type": "text",
+          "id": "audio_title",
+          "label": "Audio Title",
+          "default": "WHERE I STARTED"
+        },
+        {
+          "type": "color",
+          "id": "title_color",
+          "label": "Title Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "range",
+          "id": "title_size",
+          "label": "Title Font Size (px)",
+          "min": 12,
+          "max": 32,
+          "step": 1,
+          "default": 18
+        },
+        {
+          "type": "select",
+          "id": "title_weight",
+          "label": "Title Font Weight",
+          "options": [
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi Bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            },
+            {
+              "value": "800",
+              "label": "Extra Bold"
+            }
+          ],
+          "default": "600"
+        },
+        {
+          "type": "font_picker",
+          "id": "title_font",
+          "label": "Title Font",
+          "default": "helvetica_n4"
+        },
+        {
+          "type": "header",
+          "content": "Audio Subtitle Settings"
+        },
+        {
+          "type": "text",
+          "id": "audio_subtitle",
+          "label": "Audio Subtitle",
+          "default": "Hi, I'm Rachna and the story of Flout begins with my own..."
+        },
+        {
+          "type": "color",
+          "id": "subtitle_color",
+          "label": "Subtitle Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "range",
+          "id": "subtitle_size",
+          "label": "Subtitle Font Size (px)",
+          "min": 10,
+          "max": 24,
+          "step": 1,
+          "default": 14
+        },
+        {
+          "type": "select",
+          "id": "subtitle_weight",
+          "label": "Subtitle Font Weight",
+          "options": [
+            {
+              "value": "300",
+              "label": "Light"
+            },
+            {
+              "value": "400",
+              "label": "Normal"
+            },
+            {
+              "value": "500",
+              "label": "Medium"
+            },
+            {
+              "value": "600",
+              "label": "Semi Bold"
+            },
+            {
+              "value": "700",
+              "label": "Bold"
+            }
+          ],
+          "default": "400"
+        },
+        {
+          "type": "font_picker",
+          "id": "subtitle_font",
+          "label": "Subtitle Font",
+          "default": "helvetica_n4"
+        },
+        {
+          "type": "header",
+          "content": "Position & Animation"
+        },
+        {
+          "type": "range",
+          "id": "rotation",
+          "label": "Card Rotation (degrees)",
+          "min": -45,
+          "max": 45,
+          "step": 1,
+          "default": 0
+        },
+        {
+          "type": "range",
+          "id": "hover_rotation",
+          "label": "Hover Rotation (degrees)",
+          "min": -180,
+          "max": 180,
+          "step": 5,
+          "default": 0,
+          "info": "Additional rotation angle when hovering over the card"
+        },
+        {
+          "type": "number",
+          "id": "position_x_desktop",
+          "label": "Horizontal Position Desktop (px)",
+          "default": 0,
+          "info": "Positive values move right, negative values move left"
+        },
+        {
+          "type": "number",
+          "id": "position_x",
+          "label": "Horizontal Position Mobile (px)",
+          "default": 0,
+          "info": "Positive values move right, negative values move left"
+        },
+        {
+          "type": "number",
+          "id": "position_y_desktop",
+          "label": "Vertical Position Desktop (px)",
+          "default": 0,
+          "info": "Positive values move down, negative values move up"
+        },
+        {
+          "type": "number",
+          "id": "position_y",
+          "label": "Vertical Position Mobile (px)",
+          "default": 0,
+          "info": "Positive values move down, negative values move up"
+        },
+        {
+          "type": "number",
+          "id": "z_index",
+          "label": "Z-Index (Layer Order)",
+          "default": 1,
+          "info": "Higher values appear on top of lower values"
+        },
+        {
+          "type": "header",
+          "content": "Animation Settings"
+        },
+        {
+          "type": "select",
+          "id": "animation_style",
+          "label": "Animation Style",
+          "options": [
+            {
+              "value": "none",
+              "label": "No Animation"
+            },
+            {
+              "value": "fade-in",
+              "label": "Fade In"
+            },
+            {
+              "value": "slide-up",
+              "label": "Slide Up"
+            },
+            {
+              "value": "slide-down",
+              "label": "Slide Down"
+            },
+            {
+              "value": "slide-left",
+              "label": "Slide Left"
+            },
+            {
+              "value": "slide-right",
+              "label": "Slide Right"
+            },
+            {
+              "value": "zoom-in",
+              "label": "Zoom In"
+            },
+            {
+              "value": "zoom-out",
+              "label": "Zoom Out"
+            },
+            {
+              "value": "flip",
+              "label": "Flip Horizontal"
+            },
+            {
+              "value": "flip-x",
+              "label": "Flip Vertical"
+            },
+            {
+              "value": "bounce",
+              "label": "Bounce"
+            },
+            {
+              "value": "pulse",
+              "label": "Pulse"
+            },
+            {
+              "value": "shake",
+              "label": "Shake"
+            },
+            {
+              "value": "float",
+              "label": "Float"
+            },
+            {
+              "value": "swing",
+              "label": "Swing"
+            },
+            {
+              "value": "rotate-in",
+              "label": "Rotate In"
+            },
+            {
+              "value": "drop-in",
+              "label": "Drop In"
+            },
+            {
+              "value": "expansion",
+              "label": "Expansion"
+            },
+            {
+              "value": "moonwalk-dance",
+              "label": "Moonwalk Dance"
+            },
+            {
+              "value": "monkey-wiggle-waggle",
+              "label": "Monkey Wiggle Waggle"
+            },
+            {
+              "value": "slide-right-swing",
+              "label": "Slide Right and Swing"
+            },
+            {
+              "value": "slide-left-swing",
+              "label": "Slide Left and Swing"
+            },
+            {
+              "value": "heartbeat",
+              "label": "Heartbeat"
+            },
+            {
+              "value": "jelly",
+              "label": "Jelly"
+            },
+            {
+              "value": "auto-rotate",
+              "label": "Auto Rotate"
+            }
+          ],
+          "default": "none"
+        },
+        {
+          "type": "range",
+          "id": "animation_duration",
+          "label": "Animation Duration (seconds)",
+          "min": 0.5,
+          "max": 5,
+          "step": 0.1,
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "animation_delay",
+          "label": "Animation Delay (seconds)",
+          "min": 0,
+          "max": 3,
+          "step": 0.1,
+          "default": 0
+        },
+        {
+          "type": "checkbox",
+          "id": "animate_on_scroll",
+          "label": "Animate on scroll into view",
+          "default": false,
+          "info": "Animation will trigger when card becomes visible"
+        },
+        {
+          "type": "checkbox",
+          "id": "auto_animate",
+          "label": "Animate on page load",
+          "default": true,
+          "info": "Animation will trigger immediately when page loads"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Arrange Images"
+    }
+  ]
+}
+{% endschema %}

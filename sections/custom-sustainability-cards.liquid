@@ -1,0 +1,333 @@
+<div class="rjc-section" style="background: {{ section.settings.section_bg_color }};">
+  <div class="rjc-card-wrap">
+    <!-- CARD 1 -->
+    <div class="rjc-card card1" style="background-image: url('{{ section.settings.card1_bg_image | image_url: width: 500 }}');">
+      <div class="card-content card1-content">
+        <div 
+          class="card1-text" 
+          style="
+            color: {{ section.settings.card1_text_color }};
+            font-size: {{ section.settings.card1_text_size }}px;
+          ">
+          {{ section.settings.card1_text }}
+        </div>
+        <div 
+          class="card1-id"
+          style="
+            color: {{ section.settings.card1_id_color }};
+            font-size: {{ section.settings.card1_id_size }}px;
+          ">
+          {{ section.settings.card1_id }}
+        </div>
+      </div>
+    </div>
+    
+    <!-- CARD 2 -->
+    <div class="rjc-card card2" style="background: {{ section.settings.card2_bg_color }};">
+      <div class="card-content card2-content">
+        <div 
+          class="card2-text"
+          style="
+            color: {{ section.settings.card2_text_color }};
+            font-size: {{ section.settings.card2_text_size }}px;
+          ">
+          {{ section.settings.card2_text }}
+        </div>
+        {% if section.settings.card2_btn_toggle %}
+        <a 
+          href="{{ section.settings.card2_btn_url | default: '#' }}"
+          class="card2-btn"
+          style="
+            background: {{ section.settings.card2_btn_bg_color }};
+            color: {{ section.settings.card2_btn_text_color }};
+            font-size: {{ section.settings.card2_btn_text_size }}px;
+          ">
+          {{ section.settings.card2_btn_text }}
+        </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- CARD 3 -->
+    <div class="rjc-card card3" style="background-image: url('{{ section.settings.card3_bg_image | image_url: width: 500 }}');">
+      <div class="card-content card3-content">
+        <!-- Card 3 content can be added here if needed -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Section Styles */
+.rjc-section {
+  padding: 50px 100px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.rjc-card-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap:20px;
+  justify-items: center;
+  align-items: stretch;
+}
+
+/* Base Card Styles - Inherited by all cards */
+.rjc-card {
+  flex: 1;
+  width:100%;
+  min-height: 423px;
+  border-radius: 16px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Base Content Styles - Inherited by all card contents */
+.card-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* Card 1 Specific Styles */
+.card1 {
+  align-items: flex-end;
+}
+
+.card1-content {
+  padding-bottom: 85px;
+  justify-content: flex-end;
+}
+
+.card1-text {
+  font-family: 'Givonic', sans-serif;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+.card1-id {
+  font-family: 'Givonic', sans-serif;
+  font-weight: 400;
+}
+
+/* Card 2 Specific Styles */
+.card2-text {
+  max-width: 317px;
+  margin-bottom: 64px;
+  font-family: 'Montserrat', sans-serif;
+  line-height: 28px;
+  font-weight: 500;
+}
+
+.card2-btn {
+  border-radius: 4.65px;
+  border: 1px solid #000000;
+  cursor: pointer;
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  width: 150px;               /* Set desired width */
+  height: 30px;               /* Set desired height */
+  display: flex;              /* Enable flex for centering */
+  align-items: center;        /* Vertical centering */
+  justify-content: center;    /* Horizontal centering */
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.card2-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: #222324;
+}
+
+/* Card 3 Specific Styles */
+.card3-content {
+  /* Add specific content styles for card 3 if needed */
+}
+
+@media (max-width: 768px) {
+  .rjc-section {
+    padding: 30px 20px;
+  }
+  
+  .rjc-card-wrap {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .rjc-card {
+    min-width: 100%;
+    min-height: 300px;
+  }
+  
+  .card1-content {
+    padding-bottom: 60px;
+  }
+  
+  .card2-text {
+    margin-bottom: 40px;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Sustainability Cards",
+  "settings": [
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section Background Color",
+      "default": "#FBFAF1"
+    },
+    {
+      "type": "header",
+      "content": "Card 1 Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "card1_bg_image",
+      "label": "Card 1 Background Image"
+    },
+    {
+      "type": "text",
+      "id": "card1_text",
+      "label": "Card 1 Text",
+      "default": "RESPONSIBLE JEWELLERY COUNCIL"
+    },
+    {
+      "type": "color",
+      "id": "card1_text_color",
+      "label": "Card 1 Text Color",
+      "default": "#363F3C"
+    },
+    {
+      "type": "range",
+      "id": "card1_text_size",
+      "label": "Card 1 Text Size",
+      "min": 18,
+      "max": 32,
+      "step": 1,
+      "default": 22
+    },
+    {
+      "type": "text",
+      "id": "card1_id",
+      "label": "Card 1 ID",
+      "default": "0000 5007"
+    },
+    {
+      "type": "color",
+      "id": "card1_id_color",
+      "label": "Card 1 ID Color",
+      "default": "#995522"
+    },
+    {
+      "type": "range",
+      "id": "card1_id_size",
+      "label": "Card 1 ID Font Size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "header",
+      "content": "Card 2 Settings"
+    },
+    {
+      "type": "color",
+      "id": "card2_bg_color",
+      "label": "Card 2 Background Color",
+      "default": "#D9EBF5"
+    },
+    {
+      "type": "textarea",
+      "id": "card2_text",
+      "label": "Card 2 Text"
+    },
+    {
+      "type": "color",
+      "id": "card2_text_color",
+      "label": "Card 2 Text Color",
+      "default": "#222324"
+    },
+    {
+      "type": "range",
+      "id": "card2_text_size",
+      "label": "Card 2 Text Size",
+      "min": 16,
+      "max": 26,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "checkbox",
+      "id": "card2_btn_toggle",
+      "label": "Show Button",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "card2_btn_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "color",
+      "id": "card2_btn_bg_color",
+      "label": "Button Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "text",
+      "id": "card2_btn_text",
+      "label": "Button Text",
+      "default": "KNOW MORE"
+    },
+    {
+      "type": "range",
+      "id": "card2_btn_text_size",
+      "label": "Button Text Font Size",
+      "min": 4,
+      "max": 24,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "card2_btn_text_color",
+      "label": "Button Font Color",
+      "default": "#222324"
+    },
+    {
+      "type": "header",
+      "content": "Card 3 Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "card3_bg_image",
+      "label": "Card 3 Background Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sustainability Cards",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,467 @@
+<!-- FAQ SECTION START -->
+<div class="faq-section" style="background: {{ section.settings.background }}">
+  <h2 class="faq-heading">FAQs</h2>
+  
+  <div class="faq-layout">
+    <!-- Sidebar with tabs -->
+    <div class="faq-sidebar">
+      <ul class="faq-tabs">
+        <div class="slider"></div>
+        {% for block in section.blocks %}
+          {% if block.type == 'category' %}
+            <li class="faq-tab" data-tab="{{ block.id }}">
+              {{ block.settings.tab_title }}
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- Content area -->
+    <div class="faq-content">
+      {% for block in section.blocks %}
+        {% if block.type == 'category' %}
+          <div class="faq-tab-content" data-tab-content="{{ block.id }}">
+            {% assign has_content = false %}
+            {% assign collecting_questions = false %}
+            
+            {% for question_block in section.blocks %}
+              {% if question_block.type == 'category' %}
+                {% if question_block.id == block.id %}
+                  {% assign collecting_questions = true %}
+                {% else %}
+                  {% assign collecting_questions = false %}
+                {% endif %}
+              {% elsif question_block.type == 'question' and collecting_questions %}
+                {% if question_block.settings.question != blank and question_block.settings.answer != blank %}
+                  {% assign has_content = true %}
+                  <div class="faq-item">
+                    <button class="faq-question" aria-expanded="false">
+                      <span class="faq-question-text">{{ question_block.settings.question }}</span>
+                      <span class="faq-icon" aria-hidden="true">+</span>
+                    </button>
+                    <div class="faq-answer">
+                      <div class="faq-answer-content">{{ question_block.settings.answer }}</div>
+                    </div>
+                    <hr class="faq-divider">
+                  </div>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+            
+            {% unless has_content %}
+              <div class="faq-no-content">
+                <p>No questions available for this section.</p>
+              </div>
+            {% endunless %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+<!-- FAQ SECTION END -->
+
+<style>
+/* Base styles */
+.faq-section {
+  padding: 48px 0; 
+  background: inherit;
+}
+
+.faq-heading {
+  text-align: center;
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 44px;
+  line-height: 50px;
+  font-weight: 600;
+  padding-bottom: 30px;
+  color: #1a1a1a;
+  margin: 0;
+  border: none;
+}
+
+.faq-layout {
+  display: flex;
+  gap: 350px; /* natural comfortable space between sidebar and content */
+  align-items: flex-start;
+  max-width: 1500px; /* slightly reduce from 1674px for better centering */
+  margin: 0 130px;    /* keep FAQ section centered horizontally */
+  padding: 0 24px;   /* horizontal padding inside container */
+}
+
+.faq-sidebar {
+  min-width: 205px;
+  position: relative;
+}
+
+.faq-tabs {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-left: 2px solid #e5e5e5;
+  position: relative;
+}
+
+.faq-tabs .slider {
+  position: absolute;
+  left: -2px;
+  width: 4px;
+  background: #1a1a1a;
+  transition: top 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  z-index: 2;
+  display: none;
+}
+
+.faq-tab {
+  font-family: 'Libre Franklin', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 18px 0 18px 20px;
+  cursor: pointer;
+  color: #666;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.faq-tab.active {
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.faq-tab:hover {
+  color: #1a1a1a;
+}
+
+.faq-content {
+  flex: 1;
+  padding-left: 0;        /* no extra left padding; already spaced by flex gap */
+  max-width: 772px;       /* matches figma specification */
+  min-width: 330px;
+}
+
+.faq-tab-content {
+  display: none;
+  animation: fadeIn 0.4s ease;
+}
+
+.faq-tab-content:first-child {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px);}
+  to   { opacity: 1; transform: translateY(0);}
+}
+
+.faq-item {
+  margin-bottom: 0;
+}
+
+.faq-question {
+  background: none;
+  border: none;
+  font-size: 24px;
+  font-family: 'EB Garamond', serif;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  color: #1a1a1a;
+  font-weight: 400;
+  padding: 24px 0 24px 0;
+  outline: none;
+  transition: color 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-question:hover {
+  color: #444;
+}
+
+.faq-question-text {
+  flex: 1;
+  text-align: left;
+}
+
+.faq-icon {
+  font-size: 22px;
+  font-weight: 400;
+  color: #666;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  margin-left: 18px;
+  display: inline-block;
+  min-width: 22px;
+  text-align: center;
+  transform-origin: center center;
+}
+
+.faq-question.active .faq-icon {
+  transform: rotate(45deg);
+  color: #666;
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  margin-top: 0;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  opacity: 0;
+}
+
+.faq-answer-content {
+  color: #333;
+  font-size: 16px;
+  line-height: 1.8;
+  padding: 0 0 8px 0;
+}
+
+.faq-divider {
+  border: none;
+  border-bottom: 2px solid #1a1a1a;
+  width: 100%;
+  margin: 0;
+}
+
+.faq-no-content {
+  padding: 40px 0;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 900px) {
+  .faq-layout {
+    flex-direction: column;
+    gap: 32px;
+    margin: 0 8px;
+    padding: 0 8px;
+  }
+  .faq-sidebar {
+    min-width: unset;
+    padding-bottom: 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+    width: 100%;
+  }
+  .faq-sidebar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+  .faq-tabs {
+    border-left: none;
+    border-bottom: 2px solid #e5e5e5;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    min-width: max-content;
+    position: relative;
+    padding-bottom: 0;
+    padding-right: 20px; /* Add padding to prevent cutoff */
+    width: max-content;
+  }
+  .faq-tabs .slider {
+    left: 0;
+    top: unset;
+    bottom: -2px;
+    height: 4px !important;
+    width: unset;
+    transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), width 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 1; /* Changed from z-index: 3 to z-index: 1 to appear below tabs */
+  }
+  .faq-tab {
+    border-left: none;
+    padding: 12px 8px 16px 0;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: max-content;
+    font-size: 15px;
+    z-index: 2; /* Added z-index to ensure tabs appear above slider */
+  }
+  .faq-content {
+    padding-left: 0;
+    max-width: unset;
+  }
+}
+
+@media (max-width: 600px) {
+  .faq-section {
+  padding: 40px 12px; 
+  background: inherit;
+}
+  .faq-heading {
+    font-size: 28px;
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+  }
+  
+  .faq-layout {
+    margin: 0;
+    padding: 0 12px;
+  }
+  
+  .faq-tab {
+    font-size: 13px;
+    padding: 10px 2px 14px 0;
+    max-width: 100px;
+  }
+  
+  .faq-question {
+    font-size: 16px;
+    padding: 16px 0 10px 0;
+  }
+  
+  .faq-answer-content {
+    font-size: 14px;
+    padding-bottom: 10px;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const tabs = document.querySelectorAll('.faq-tab');
+  const contents = document.querySelectorAll('.faq-tab-content');
+  const slider = document.querySelector('.slider');
+
+  function setActiveTab(activeIndex) {
+    tabs.forEach((tab, index) => {
+      const isActive = index === activeIndex;
+      tab.classList.toggle('active', isActive);
+      contents[index].style.display = isActive ? 'block' : 'none';
+    });
+
+    // Position slider
+    const activeTab = tabs[activeIndex];
+    if (activeTab && slider) {
+      const top = activeTab.offsetTop - activeTab.parentNode.offsetTop;
+      slider.style.top = `${top}px`;
+      slider.style.height = `${activeTab.offsetHeight}px`;
+      slider.style.display = 'block';
+    }
+  }
+
+  function setActiveMobileTab(activeIndex) {
+    tabs.forEach((tab, index) => {
+      const isActive = index === activeIndex;
+      tab.classList.toggle('active', isActive);
+      contents[index].style.display = isActive ? 'block' : 'none';
+    });
+
+    // Position mobile slider
+    const activeTab = tabs[activeIndex];
+    if (activeTab && slider && window.innerWidth <= 900) {
+      slider.style.left = `${activeTab.offsetLeft}px`;
+      slider.style.width = `${activeTab.offsetWidth}px`;
+      slider.style.display = 'block';
+    }
+  }
+
+  function updateSliderPosition() {
+    const activeIndex = Array.from(tabs).findIndex(tab => tab.classList.contains('active'));
+    if (activeIndex > -1) {
+      if (window.innerWidth <= 900) {
+        setActiveMobileTab(activeIndex);
+      } else {
+        setActiveTab(activeIndex);
+      }
+    }
+  }
+
+  // Tab click handlers
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => {
+      if (window.innerWidth <= 900) {
+        setActiveMobileTab(index);
+      } else {
+        setActiveTab(index);
+      }
+    });
+  });
+
+  // FAQ toggle handlers - FIXED: No more text content changes
+  document.querySelectorAll('.faq-question').forEach(question => {
+    question.addEventListener('click', () => {
+      const isActive = question.classList.toggle('active');
+      const answer = question.nextElementSibling;
+      
+      question.setAttribute('aria-expanded', isActive);
+
+      if (isActive) {
+        // Open animation - the CSS will handle rotating the + to look like a cross
+        answer.style.maxHeight = `${answer.scrollHeight}px`;
+        answer.style.opacity = '1';
+      } else {
+        // Close animation - the CSS will rotate back to +
+        answer.style.maxHeight = '0px';
+        answer.style.opacity = '0';
+      }
+    });
+  });
+
+  // Initialize first tab
+  if (tabs.length > 0) {
+    if (window.innerWidth <= 900) {
+      setActiveMobileTab(0);
+    } else {
+      setActiveTab(0);
+    }
+  }
+
+  // Handle window resize
+  window.addEventListener('resize', updateSliderPosition);
+});
+</script>
+
+{% schema %}
+{
+  "name": "Custom FAQ",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background color",
+      "default": "#fcfcf8"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_title",
+          "label": "Category Name"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Answer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom FAQ",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

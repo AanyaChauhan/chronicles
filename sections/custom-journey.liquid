@@ -1,0 +1,634 @@
+<section class="custom-journey-section">
+   <div class="custom-journey-bg desktop-bg" style="background-image: url({{ section.settings.bg_img | img_url: 'master' }});"></div>
+  <div class="custom-journey-bg mobile-bg" style="background-image: url({{ section.settings.mobile_bg_img | img_url: 'master' }});"></div>
+  
+  <div class="custom-journey-wrapper">
+    <div class="custom-journey-main-heading-wrapper">
+      <h2 class="custom-journey-main-heading">
+        <span style="color:{{ section.settings.main_heading_color_1 }};font-size:{{ section.settings.main_heading_font_size }}px;">{{ section.settings.main_heading_part_1 }}</span>
+        <span style="color:{{ section.settings.main_heading_color_2 }};font-size:{{ section.settings.main_heading_font_size }}px;">{{ section.settings.main_heading_part_2 }}</span>
+      </h2>
+      {% if section.settings.mobile_description != blank %}
+      <div class="custom-journey-mobile-description" style="color:{{ section.settings.mobile_description_color }};font-size:{{ section.settings.mobile_description_font_size }}px;">
+        {{ section.settings.mobile_description }}
+      </div>
+      {% endif %}
+    </div>
+    
+    <div class="custom-journey-steps-wrapper">
+      {% if section.settings.show_journey_1 %}
+      <div class="custom-journey-step-wrapper custom-journey-step-1-wrapper {% if section.settings.journey_1_align_right %}text-align-right{% else %}text-align-left{% endif %}">
+        <div class="custom-journey-heading" style="color:{{ section.settings.journey_1_color }};font-size:{{ section.settings.journey_1_font_size }}px;">{{ section.settings.journey_1_heading }}</div>
+        <div class="custom-journey-content" style="color:{{ section.settings.journey_1_content_color }};font-size:{{ section.settings.journey_1_content_font_size }}px;">{{ section.settings.journey_1_content }}</div>
+      </div>
+      {% endif %}
+      
+      {% if section.settings.show_center_image and section.settings.center_image != blank %}
+      <div class="custom-journey-center-image-wrapper desktop-only">
+        <img src="{{ section.settings.center_image | img_url: 'master' }}" 
+             alt="{{ section.settings.center_image_alt }}"
+             class="custom-journey-center-image"
+             style="width:{{ section.settings.center_image_width }}px;height:{{ section.settings.center_image_height }}px;">
+      </div>
+      {% endif %}
+      
+      {% if section.settings.show_journey_2 %}
+      <div class="custom-journey-step-wrapper custom-journey-step-2-wrapper {% if section.settings.journey_2_align_right %}text-align-right{% else %}text-align-left{% endif %}">
+        <div class="custom-journey-heading" style="color:{{ section.settings.journey_2_color }};font-size:{{ section.settings.journey_2_font_size }}px;">{{ section.settings.journey_2_heading }}</div>
+        <div class="custom-journey-content" style="color:{{ section.settings.journey_2_content_color }};font-size:{{ section.settings.journey_2_content_font_size }}px;">{{ section.settings.journey_2_content }}</div>
+      </div>
+      {% endif %}
+      {% if section.settings.show_journey_3 %}
+      <div class="custom-journey-step-wrapper custom-journey-step-3-wrapper {% if section.settings.journey_3_align_right %}text-align-right{% else %}text-align-left{% endif %}">
+        <div class="custom-journey-heading" style="color:{{ section.settings.journey_3_color }};font-size:{{ section.settings.journey_3_font_size }}px;">{{ section.settings.journey_3_heading }}</div>
+        <div class="custom-journey-content" style="color:{{ section.settings.journey_3_content_color }};font-size:{{ section.settings.journey_3_content_font_size }}px;">{{ section.settings.journey_3_content }}</div>
+      </div>
+      {% endif %}
+    </div>
+    
+    {% if section.settings.show_center_image and section.settings.center_image != blank %}
+    <div class="custom-journey-center-image-wrapper mobile-only">
+      <img src="{{ section.settings.center_image | img_url: 'master' }}" 
+           alt="{{ section.settings.center_image_alt }}"
+           class="custom-journey-center-image"
+           style="width:{{ section.settings.center_image_mobile_width }}px;height:{{ section.settings.center_image_mobile_height }}px;">
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+.custom-journey-section {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  aspect-ratio: 360/187;
+  overflow: visible;
+  padding-bottom: 150px;
+}
+
+.custom-journey-bg {
+  display: block !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
+}
+
+.mobile-bg {
+  display: none;
+}
+
+.mobile-only {
+  display: none;
+}
+
+.desktop-only {
+  display: block;
+}
+
+.custom-journey-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0 135px 80px 135px;
+  box-sizing: border-box;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-journey-main-heading-wrapper {
+  text-align: left;
+  margin-bottom: 0;
+  position: absolute;
+  top: 0;
+  left: 135px;
+}
+
+.custom-journey-main-heading {
+  font-family:'Anton', sans-serif;
+  font-weight: 400;
+  line-height: 120%;
+  margin: 0;
+}
+
+.custom-journey-mobile-description {
+  display: none;
+  font-family:'Termina', sans-serif;
+  font-weight: 500;
+  line-height: 150%;
+}
+
+.custom-journey-steps-wrapper {
+  position: absolute;
+  width: calc(100% - 262px);
+  height: calc(100% - 312px);
+  top: 59px;
+  left: 132px;
+}
+
+.custom-journey-center-image-wrapper {
+  position: absolute;
+  top: 83%;
+  left: 38%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+
+.custom-journey-center-image {
+  display: block;
+  object-fit: contain;
+}
+
+.custom-journey-step-wrapper {
+  position: absolute;
+  width: 270px;
+}
+
+.custom-journey-step-1-wrapper {
+  text-align: left;
+  bottom: -3%;
+  left: 0;
+}
+
+.custom-journey-step-2-wrapper {
+  text-align: center;
+  top: 50%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+}
+
+.custom-journey-step-3-wrapper {
+  text-align: right;
+  top: 0;
+  right: 0;
+}
+
+.custom-journey-heading {
+  font-family:'Anton', sans-serif;
+  font-weight: 700;
+  line-height: 150%;
+  margin-bottom: 1%;
+  font-weight: bold;
+  line-height: 1.3;
+}
+
+.custom-journey-content {
+  font-family:'Termina', sans-serif;
+  font-weight: 500;
+  line-height: 150%;
+}
+
+.text-align-right {
+  text-align: right;
+}
+
+.text-align-left {
+  text-align: left;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .custom-journey-section {
+    aspect-ratio: 103/233;
+    padding-bottom: 80px;
+  }
+
+  .desktop-bg {
+    display: none !important;
+  }
+
+  .mobile-bg {
+    display: block !important;
+    background-size: contain;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: block !important;
+    position: absolute;
+    top: 70%;
+    left: 10%;
+    transform: translate(-50%, -50%);
+    z-index: 5;
+  }
+
+  .custom-journey-wrapper {
+    padding: 0 16px 40px 16px;
+  }
+
+  .custom-journey-main-heading-wrapper {
+    position: static;
+    text-align: left;
+    padding: 0;
+    margin-bottom: 0px;
+  }
+
+  .custom-journey-main-heading span {
+    font-size: 28px !important;
+  }
+
+  .custom-journey-mobile-description {
+    margin-top: 24px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .custom-journey-steps-wrapper {
+    position: static;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .custom-journey-center-image-wrapper {
+    position: absolute;
+    transform: none;
+    text-align: center;
+    margin: 40px auto;
+    order: 2;
+  }
+
+  .custom-journey-center-image {
+    max-width: 100%;
+    height: auto;
+    width: {{ section.settings.center_image_mobile_width }}px !important;
+    height: {{ section.settings.center_image_mobile_height }}px !important;
+  }
+
+  .custom-journey-step-wrapper {
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    transform: none !important;
+    text-align: left !important;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .custom-journey-step-1-wrapper {
+    text-align: right !important;
+    align-items: flex-end;
+  }
+
+  .custom-journey-step-2-wrapper {
+    text-align: left !important;
+    align-items: flex-start;
+    margin-bottom: 67%;
+  }
+
+  .custom-journey-step-3-wrapper {
+    text-align: right !important;
+    align-items: flex-end;
+    margin-bottom: 35px;
+  }
+
+  .custom-journey-heading {
+    font-size: 20px !important;
+    margin-bottom: 8px;
+    width: 100%;
+  }
+
+  .custom-journey-content {
+    font-size: 14px !important;
+    max-width: 270px;
+    width: 270px;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Custom Journey Section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_img",
+      "label": "Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_bg_img",
+      "label": "Mobile Background Image"
+    },
+    {
+      "type": "header",
+      "content": "Main Heading Settings"
+    },
+    {
+      "type": "text",
+      "id": "main_heading_part_1",
+      "label": "Main Heading - Part 1",
+      "default": "OUR"
+    },
+    {
+      "type": "color",
+      "id": "main_heading_color_1",
+      "label": "Main Heading - Part 1 Color",
+      "default": "#000000"
+    },
+    {
+      "type": "text",
+      "id": "main_heading_part_2",
+      "label": "Main Heading - Part 2",
+      "default": "JOURNEY"
+    },
+    {
+      "type": "color",
+      "id": "main_heading_color_2",
+      "label": "Main Heading - Part 2 Color",
+      "default": "#74a740"
+    },
+    {
+      "type": "range",
+      "id": "main_heading_font_size",
+      "label": "Main Heading Font Size",
+      "min": 24,
+      "max": 64,
+      "step": 1,
+      "default": 36
+    },
+    {
+      "type": "header",
+      "content": "Mobile Description Settings"
+    },
+    {
+      "type": "textarea",
+      "id": "mobile_description",
+      "label": "Mobile Description",
+      "default": "At 6KIOM, we believe motorcycling isn't just a passion – it's a way of life.",
+      "info": "This description will only be visible on mobile view below the main heading"
+    },
+    {
+      "type": "color",
+      "id": "mobile_description_color",
+      "label": "Mobile Description Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "mobile_description_font_size",
+      "label": "Mobile Description Font Size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Center Image Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_center_image",
+      "label": "Show Center Image",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "center_image",
+      "label": "Center Image",
+      "info": "This image will appear in the center of the journey path"
+    },
+    {
+      "type": "text",
+      "id": "center_image_alt",
+      "label": "Center Image Alt Text",
+      "default": "Journey center image"
+    },
+    {
+      "type": "range",
+      "id": "center_image_width",
+      "label": "Center Image Width (Desktop)",
+      "min": 50,
+      "max": 400,
+      "step": 10,
+      "default": 150,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "center_image_height",
+      "label": "Center Image Height (Desktop)",
+      "min": 50,
+      "max": 400,
+      "step": 10,
+      "default": 150,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "center_image_mobile_width",
+      "label": "Center Image Width (Mobile)",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "default": 120,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "center_image_mobile_height",
+      "label": "Center Image Height (Mobile)",
+      "min": 50,
+      "max": 300,
+      "step": 10,
+      "default": 120,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Journey Step 1 (Left)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_journey_1",
+      "label": "Show Journey Step 1",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "journey_1_heading",
+      "label": "Journey 1 Heading",
+      "default": "2015"
+    },
+    {
+      "type": "color",
+      "id": "journey_1_color",
+      "label": "Journey 1 Heading Color",
+      "default": "#74a740"
+    },
+    {
+      "type": "range",
+      "id": "journey_1_font_size",
+      "label": "Journey 1 Heading Font Size",
+      "min": 16,
+      "max": 48,
+      "step": 1,
+      "default": 22
+    },
+    {
+      "type": "textarea",
+      "id": "journey_1_content",
+      "label": "Journey 1 Content",
+      "default": "A humble 20x30 ft. store, quickly evolved into something much bigger."
+    },
+    {
+      "type": "color",
+      "id": "journey_1_content_color",
+      "label": "Journey 1 Content Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "journey_1_content_font_size",
+      "label": "Journey 1 Content Font Size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "journey_1_align_right",
+      "label": "Align Journey 1 Text Right",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Journey Step 2 (Center)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_journey_2",
+      "label": "Show Journey Step 2",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "journey_2_heading",
+      "label": "Journey 2 Heading",
+      "default": "2017"
+    },
+    {
+      "type": "color",
+      "id": "journey_2_color",
+      "label": "Journey 2 Heading Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "journey_2_font_size",
+      "label": "Journey 2 Heading Font Size",
+      "min": 16,
+      "max": 48,
+      "step": 1,
+      "default": 22
+    },
+    {
+      "type": "textarea",
+      "id": "journey_2_content",
+      "label": "Journey 2 Content",
+      "default": "We launched our 10,000 sq. ft. experience centre – the largest of its kind in the heart of Bengaluru – a haven for riders, dreamers, and adventurers."
+    },
+    {
+      "type": "color",
+      "id": "journey_2_content_color",
+      "label": "Journey 2 Content Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "journey_2_content_font_size",
+      "label": "Journey 2 Content Font Size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "journey_2_align_right",
+      "label": "Align Journey 2 Text Right",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Journey Step 3 (Right)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_journey_3",
+      "label": "Show Journey Step 3",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "journey_3_heading",
+      "label": "Journey 3 Heading",
+      "default": "Today"
+    },
+    {
+      "type": "color",
+      "id": "journey_3_color",
+      "label": "Journey 3 Heading Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "journey_3_font_size",
+      "label": "Journey 3 Heading Font Size",
+      "min": 16,
+      "max": 48,
+      "step": 1,
+      "default": 22
+    },
+    {
+      "type": "textarea",
+      "id": "journey_3_content",
+      "label": "Journey 3 Content",
+      "default": "Under the leadership of Sambhav Nahar, 6KIOM has become much more than a gear store. We're a movement."
+    },
+    {
+      "type": "color",
+      "id": "journey_3_content_color",
+      "label": "Journey 3 Content Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "journey_3_content_font_size",
+      "label": "Journey 3 Content Font Size",
+      "min": 12,
+      "max": 32,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "checkbox",
+      "id": "journey_3_align_right",
+      "label": "Align Journey 3 Text Right",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Journey Section",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

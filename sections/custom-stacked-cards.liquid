@@ -1,0 +1,389 @@
+<div class="stacked-cards-section" style="background: {{ section.settings.bg_color }};">
+  <div class="stacked-cards-list">
+    {% for block in section.blocks %}
+      <div class="stacked-card stacked-card-animate{% if block.settings.reverse_layout %} reverse-layout{% endif %}"
+        data-desktop-clip="{{ block.settings.card_clip_path }}"
+           data-mobile-clip="{{ block.settings.card_clip_path_mobile }}"
+            
+           style="
+             background: {{ block.settings.card_color }};
+              clip-path: {{ block.settings.card_clip_path }};
+           ">
+        
+        <!-- Desktop View -->
+        <div class="stacked-card-inner desktop-view">
+          <img 
+            class="stacked-card-img" 
+            src="{{ block.settings.card_image | img_url: 'medium' }}"
+            alt="{{ block.settings.card_title | escape }}"
+          >
+          <div class="stacked-card-content">
+            <h3 class="stacked-card-title" style="font-size:{{ block.settings.card_title_size }}px;color:{{ block.settings.card_title_color }};">
+              {{ block.settings.card_title }}
+            </h3>
+            <p class="stacked-card-desc" style="font-size:{{ block.settings.card_desc_size }}px;color:{{ block.settings.card_desc_color }};">
+              {{ block.settings.card_desc }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Mobile View -->
+        <div class="stacked-card-inner mobile-view">
+          <div class="mobile-image-title-wrapper">
+            <img 
+              class="stacked-card-img" 
+              src="{{ block.settings.card_image | img_url: 'medium' }}"
+              alt="{{ block.settings.card_title | escape }}"
+            >
+            <h3 class="stacked-card-title" style="font-size:{{ block.settings.card_title_size }}px;color:{{ block.settings.card_title_color }};">
+              {{ block.settings.card_title }}
+            </h3>
+          </div>
+          <div class="mobile-description-wrapper">
+            <p class="stacked-card-desc" style="font-size:{{ block.settings.card_desc_size }}px;color:{{ block.settings.card_desc_color }};">
+              {{ block.settings.card_desc }}
+            </p>
+          </div>
+        </div>
+
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+.stacked-cards-section {
+  position: relative;
+  padding-bottom: 60px;
+  width: 100%;
+  overflow: visible;
+  z-index: 3;
+  top: -162.1px;
+  margin-bottom: -162.1px;
+}
+
+.stacked-cards-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.stacked-card {
+  width: 100%;
+  max-width: 1290px;
+  height: 325px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;  
+  box-shadow: 0 4px 24px rgba(0,0,0,0.13);
+  transition: box-shadow 0.3s, transform 0.4s;
+  position: relative;
+  z-index: 1;
+}
+
+.stacked-card-inner {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  padding: 28px 32px;
+  box-sizing: border-box;
+}
+
+/* Show desktop view by default, hide mobile */
+.desktop-view {
+  display: flex;
+}
+
+.mobile-view {
+  display: none;
+}
+
+.stacked-card-img {
+  width: 342px;
+  height: 296px;
+  object-fit: contain;
+  flex-shrink: 0;
+  margin-right: 60px;
+  margin-left: 0;
+}
+
+.stacked-card-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.stacked-card-title {
+  font-family: 'Termina', sans-serif;
+  font-weight: 600;
+  margin: 0 0 10px 0;
+  line-height: 120%;
+}
+
+.stacked-card-desc {
+  font-family: 'Termina',  sans-serif;
+  margin: 0;
+  font-weight: 500;
+  line-height: 150%;
+  width: 744px;
+}
+
+/* Reverse Layout - Desktop only */
+.stacked-card.reverse-layout .desktop-view {
+  flex-direction: row-reverse;
+}
+
+.stacked-card.reverse-layout .desktop-view .stacked-card-img {
+  margin-right: 0;
+  margin-left: 60px;
+}
+
+.stacked-card.reverse-layout .desktop-view .stacked-card-content {
+  align-items: flex-end;
+}
+
+.stacked-card.reverse-layout .desktop-view .stacked-card-title,
+.stacked-card.reverse-layout .desktop-view .stacked-card-desc {
+  text-align: right;
+}
+
+@media (max-width: 1320px) {
+  .stacked-card {
+    width: 95%;
+  }
+}
+
+@media (max-width: 700px) {
+  .stacked-cards-section {
+    top: -60px;
+    margin-bottom: 0;
+    padding-bottom: 40px;
+  }
+
+  .stacked-cards-list {
+    gap: 16px;
+  }
+
+  .stacked-card {
+    height: auto;
+    width: calc(100% - 32px);
+    margin: 0 16px;
+  }
+
+  /* Hide desktop view, show mobile view */
+  .desktop-view {
+    display: none !important;
+  }
+
+  .mobile-view {
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 11px 16px 17px 16px;
+  }
+
+  /* Mobile wrapper for image and title */
+  .mobile-image-title-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  /* Mobile wrapper for description */
+  .mobile-description-wrapper {
+    width: 100%;
+  }
+
+  .mobile-view .stacked-card-img {
+    width: 97.85px;
+    height: 84.69px;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .mobile-view .stacked-card-title {
+    font-size: 20px !important;
+    margin: 0;
+    text-align: left;
+    width: 100px !important;
+  }
+
+  .mobile-view .stacked-card-desc {
+    font-size: 14px !important;
+    width: 100%;
+    text-align: left;
+    margin: 0;
+  }
+
+  /* Reverse layout on mobile */
+  .stacked-card.reverse-layout .mobile-view {
+    align-items: flex-end;
+  }
+
+  .stacked-card.reverse-layout .mobile-image-title-wrapper {
+    flex-direction: row-reverse;
+  }
+
+  .stacked-card.reverse-layout .mobile-view .stacked-card-title {
+    text-align: right;
+  }
+
+  .stacked-card.reverse-layout .mobile-view .stacked-card-desc {
+    text-align: right;
+  }
+}
+
+/* Stacked Card Animation */
+.stacked-card-animate {
+  opacity: 0;
+  transform: translateY(60px) scale(0.96);
+  transition: opacity 0.5s cubic-bezier(.2,.8,.5,1), transform 0.5s cubic-bezier(.2,.8,.5,1);
+}
+
+.stacked-card-animate.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const cards = document.querySelectorAll('.stacked-card-animate');
+  // Function to apply correct clip-path based on screen size
+  function applyClipPath() {
+    const isMobile = window.innerWidth <= 768;
+    cards.forEach(card => {
+      const desktopClip = card.getAttribute('data-desktop-clip');
+      const mobileClip = card.getAttribute('data-mobile-clip');
+      card.style.clipPath = isMobile ? mobileClip : desktopClip;
+    });
+  }
+  
+  // Apply on load and resize
+  applyClipPath();
+  window.addEventListener('resize', applyClipPath);
+  
+  // Scroll animation
+  const onScroll = () => {
+    cards.forEach(card => {
+      const rect = card.getBoundingClientRect();
+      if(rect.top < window.innerHeight - 100) {
+        card.classList.add('visible');
+      }
+    });
+  };
+  window.addEventListener('scroll', onScroll);
+  onScroll(); // for initial load
+});
+</script>
+
+{% schema %}
+{
+  "name": "Stacked Cards Section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "transparent"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Stacked Card",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "reverse_layout",
+          "label": "Reverse Layout",
+          "default": false,
+          "info": "Toggle ON to show content on left and image on right"
+        },
+        {
+          "type": "color",
+          "id": "card_color",
+          "label": "Card Background Color",
+          "default": "#393838"
+        },
+        {
+          "type": "image_picker",
+          "id": "card_image",
+          "label": "Main Card Image"
+        },
+        {
+          "type": "text",
+          "id": "card_title",
+          "label": "Card Title Text",
+          "default": "Card Title"
+        },
+        {
+          "type": "range",
+          "id": "card_title_size",
+          "min": 16,
+          "max": 38,
+          "step": 1,
+          "unit": "px",
+          "label": "Title Font Size",
+          "default": 24
+        },
+        {
+          "type": "color",
+          "id": "card_title_color",
+          "label": "Title Font Color",
+          "default": "#FFFFFF"
+        },
+        {
+          "type": "textarea",
+          "id": "card_desc",
+          "label": "Description Text",
+          "default": "Card description here."
+        },
+        {
+          "type": "range",
+          "id": "card_desc_size",
+          "min": 13,
+          "max": 22,
+          "step": 1,
+          "unit": "px",
+          "label": "Description Font Size",
+          "default": 18
+        },
+        {
+          "type": "color",
+          "id": "card_desc_color",
+          "label": "Description Font Color",
+          "default": "#CCCCCC"
+        },
+        {
+          "type": "text",
+          "id": "card_clip_path",
+          "label": "Desktop Clip Path",
+          "default": "polygon(48px 0%, calc(100% - 48px) 0%, 100% 50%, calc(100% - 48px) 100%, 48px 100%, 0% 50%)",
+          "info": "Hexagon shape for desktop view"
+        },
+        {
+          "type": "text",
+          "id": "card_clip_path_mobile",
+          "label": "Mobile Clip Path",
+          "default": "polygon(0% 8%, 100% 8%, 100% 92%, 0% 92%)",
+          "info": "Shape for mobile view (default: rounded rectangle)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Stacked Cards",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

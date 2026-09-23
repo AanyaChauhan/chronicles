@@ -1,0 +1,390 @@
+<div class="custom-section-wrapper">
+  <div class="bg-color-wrapper">
+    <div class="bg-texture-layer">
+    {% if section.settings.bg_texture_img %}
+      <img src="{{ section.settings.bg_texture_img | img_url: 'master' }}" alt="Texture" class="bg-texture-img"/>
+    {% endif %}
+  </div>
+  <div class="content-layer">
+    <div class="columns-wrapper">
+      <!-- Column 1 -->
+      <div class="col col1">
+        <div class="col1-img-wrapper">
+          {% if section.settings.col1_img %}
+            <img src="{{ section.settings.col1_img | img_url: 'master' }}" class="main-img"/>
+          {% endif %}
+          {% if section.settings.col1_overlap_img1 %}
+            <img src="{{ section.settings.col1_overlap_img1 | img_url: 'master' }}" class="col1-overlap1"/>
+          {% endif %}
+          {% if section.settings.col1_overlap_img2 %}
+            <img src="{{ section.settings.col1_overlap_img2 | img_url: 'master' }}" class="col1-overlap2"/>
+          {% endif %}
+        </div>
+        {% if section.settings.btn_toggle %}
+          <a href="{{ section.settings.btn_link }}"
+             class="custom-btn">
+            {{ section.settings.btn_text }}
+          </a>
+        {% endif %}
+      </div>
+      <!-- Column 2 -->
+      <div class="col col2">
+        <div class="col2-textbox">
+          <span class="col2-text">
+            {{ section.settings.col2_text }}
+          </span>
+        </div>
+        {% if section.settings.col2_img1 %}
+          <img src="{{ section.settings.col2_img1 | img_url: 'master' }}" class="col2-img1"/>
+        {% endif %}
+        {% if section.settings.col2_img2 %}
+          <img src="{{ section.settings.col2_img2 | img_url: 'master' }}" class="col2-img2"/>
+        {% endif %}
+      </div>
+      <!-- Column 3 -->
+      <div class="col col3">
+        {% if section.settings.col3_img %}
+          <img src="{{ section.settings.col3_img | img_url: 'master' }}" class="col3-main-img"/>
+        {% endif %}
+        <div class="col3-textbox">
+          <span class="col3-text">
+            {{ section.settings.col3_text }}
+          </span>
+        </div>
+        {% if section.settings.col3_overlap_img %}
+          <img src="{{ section.settings.col3_overlap_img | img_url: 'master' }}" class="col3-overlap"/>
+        {% endif %}
+      </div>
+      <!-- Column 4 -->
+      <div class="col col4">
+        {% if section.settings.col4_img %}
+          <img src="{{ section.settings.col4_img | img_url: 'master' }}" class="col4-img"/>
+        {% endif %}
+        {% if section.settings.col4_overlap_img %}
+          <img src="{{ section.settings.col4_overlap_img | img_url: 'master' }}" class="col4-overlap"/>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<style>
+.custom-section-wrapper {
+  position: relative;
+  width: 100%;
+  padding-bottom: 86px;
+  background: transparent;
+}
+.bg-texture-layer {
+  position: absolute;
+  width: 100%;
+  top: 78px;
+  left: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+.bg-texture-img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  opacity: 0.4;
+  
+}
+.bg-color-wrapper {
+  position: relative;
+  background: {{ section.settings.bg_color }};
+  width: 100%;
+  z-index: 1;
+  border-radius: 0; /* Optional */
+}
+.content-layer {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+}
+.columns-wrapper {
+  display: flex;
+  width: 100%;
+}
+.col {
+  position: relative;
+  min-width: 0;
+}
+.col1 { width: 28.43%; }
+.col2 { width: 21.09%; }
+.col3 { width: 21.54%; }
+.col4 { width: 28.94%; }
+
+/* Column 1 */
+.col1-img-wrapper { position: relative; }
+.main-img { width: 100%; display: block; }
+.col1-overlap1 {
+  position: absolute;
+  left: 0;
+  top: 14px;
+  width:42%;
+}
+.col1-overlap2 {
+  position: absolute;
+  right: -43%;
+  top: 47.849%;
+  z-index: 3;
+}
+.custom-btn {
+  position: absolute;
+  left: 100px;
+  bottom: 42px;
+  padding: 10px 32px;
+  border: none;
+  border-radius: 4px;
+  background: {{ section.settings.btn_color }};
+  color: {{ section.settings.btn_text_color }};
+  font-size: {{ section.settings.btn_text_size }}px;
+  font-family: inherit;
+  transition: background 0.2s;
+  cursor: pointer;
+  z-index: 3;
+}
+/* Column 2 */
+.col2-textbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: {{ section.settings.col2_textbox_bg }};
+  height: 22.043%;
+  width: 100%;
+  padding: 16px;
+}
+.col2-text {
+  color: {{ section.settings.col2_text_color }};
+  font-size: {{ section.settings.col2_text_size }}px;
+  font-family: inherit;
+}
+.col2-img1, .col2-img2 { 
+    width: 100%; 
+    display: block; 
+    }
+
+/* Column 3 */
+.col3-main-img {
+  width: 100%;
+  display: block;
+  padding-top: 117px;
+}
+.col3-textbox {
+  background: {{ section.settings.col3_textbox_bg }};
+  height: 39.696%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 93.25%;
+}
+.col3-text {
+  color: {{ section.settings.col3_text_color }};
+  font-size: {{ section.settings.col3_text_size }}px;
+  font-family: inherit;
+  width:233px;
+}
+.col3-overlap {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  top: 0;
+  width: auto;
+  z-index: 2;
+}
+/* Column 4 */
+.col4-img {
+  width: 100%; 
+  display: block; 
+}
+
+.col4-overlap {
+  position: absolute;
+  left: 0;
+  bottom: 24px;
+  z-index: 2;
+  width:35%;
+}
+
+/* Responsive: make columns remain in proportion even when zoomed/screen shrinks */
+@media (max-width: 1200px) {
+  .col1, .col2, .col3, .col4 {
+    width: 28.43%, 21.09%, 21.54%, 28.94%;
+  }
+  .columns-wrapper {
+    flex-wrap: wrap;
+  }
+}
+
+</style>
+
+{% schema %}
+{
+  "name": "Sustainability Banner",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_texture_img",
+      "label": "Background Texture Image"
+    },
+    {
+      "type": "header",
+      "content": "Column 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "col1_img",
+      "label": "Column 1 Main Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "col1_overlap_img1",
+      "label": "Column 1 Overlapping Img 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "col1_overlap_img2",
+      "label": "Column 1 Overlapping Img 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "btn_toggle",
+      "label": "Show Button"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "btn_color",
+      "label": "Button Color"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button Text",
+      "default": "Discover Collection"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "Button Text Color"
+    },
+    {
+      "type": "range",
+      "id": "btn_text_size",
+      "label": "Button Font Size",
+      "min": 12,
+      "max": 40,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Column 2"
+    },
+    {
+      "type": "color",
+      "id": "col2_textbox_bg",
+      "label": "Column 2 Text Box BG Color"
+    },
+    {
+      "type": "textarea",
+      "id": "col2_text",
+      "label": "Column 2 Text"
+    },
+    {
+      "type": "range",
+      "id": "col2_text_size",
+      "label": "Column 2 Text Font Size",
+      "min": 12,
+      "max": 40,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "col2_text_color",
+      "label": "Column 2 Text Font Color"
+    },
+    {
+      "type": "image_picker",
+      "id": "col2_img1",
+      "label": "Column 2 Img 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "col2_img2",
+      "label": "Column 2 Img 2"
+    },
+    {
+      "type": "header",
+      "content": "Column 3"
+    },
+    {
+      "type": "image_picker",
+      "id": "col3_img",
+      "label": "Column 3 Img"
+    },
+    {
+      "type": "color",
+      "id": "col3_textbox_bg",
+      "label": "Column 3 Text Box BG Color"
+    },
+    {
+      "type": "textarea",
+      "id": "col3_text",
+      "label": "Column 3 Text"
+    },
+    {
+      "type": "range",
+      "id": "col3_text_size",
+      "label": "Column 3 Text Font Size",
+      "min": 12,
+      "max": 40,
+      "step": 1,
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "col3_text_color",
+      "label": "Column 3 Text Font Color"
+    },
+    {
+      "type": "image_picker",
+      "id": "col3_overlap_img",
+      "label": "Column 3 Overlapping Img"
+    },
+    {
+      "type": "header",
+      "content": "Column 4"
+    },
+    {
+      "type": "image_picker",
+      "id": "col4_img",
+      "label": "Column 4 Img"
+    },
+    {
+      "type": "image_picker",
+      "id": "col4_overlap_img",
+      "label": "Column 4 Overlapping Img"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sustainability Banner"
+    }
+  ]
+}
+{% endschema %}

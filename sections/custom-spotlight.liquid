@@ -1,0 +1,146 @@
+<section class="custom-spotlight-section" style="background-image:url({{ section.settings.main_bg_image | img_url: 'master' }});">
+  <div class="custom-banner-wrapper" style="background: {{ section.settings.banner_bg_color }}">
+    <img src="{{ section.settings.banner_logo | image_url }}" alt="Logo" class="banner-logo" />
+    <span class="banner-text"
+      style="color: {{ section.settings.banner_text_font_color }}; font-size: {{ section.settings.banner_text_font_size }}px;">
+      {{ section.settings.banner_text }}
+    </span>
+  </div>
+  <div class="custom-section-text"
+    style="color: {{ section.settings.section_text_font_color }}; font-size: {{ section.settings.section_text_font_size }}px;">
+    {{ section.settings.section_text }}
+  </div>
+</section>
+
+<style>
+.custom-spotlight-section {
+  position: relative;
+  width: 100%;
+  min-height: 400px;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.custom-banner-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  min-width: 150px;
+  min-height: 60px;
+  padding: 12px 22px;
+  display: flex;
+  align-items: center;
+  z-index: 10;
+  border-radius: 0 0 12px 0;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.04);
+}
+
+.banner-logo {
+  width: 36px;
+  height: 36px;
+  margin-right: 10px;
+}
+
+.banner-text {
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.custom-section-text {
+  position: absolute;
+  bottom: 32px;
+  left: 32px;
+  z-index: 5;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.02em;
+  /* Responsive font-size can be handled with clamp() if needed */
+}
+
+/* Ensure sticky/absolute elements stay anchored on all screens */
+@media (max-width: 600px) {
+  .custom-section-text {
+    left: 16px;
+    bottom: 16px;
+  }
+  .custom-banner-wrapper {
+    padding: 8px 12px;
+    min-width: 110px;
+    min-height: 40px;
+  }
+  .banner-logo {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+</style>
+
+{%schema %}
+{
+  "name": "Custom Spotlight",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "main_bg_image",
+      "label": "Main background image"
+    },
+    {
+      "type": "color",
+      "id": "banner_bg_color",
+      "label": "Banner background color",
+      "default": "#ffffcc"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_logo",
+      "label": "Banner logo"
+    },
+    {
+      "type": "text",
+      "id": "banner_text",
+      "label": "Banner text",
+      "default": "GET 20% OFF TILL 23 OCT!"
+    },
+    {
+      "type": "range",
+      "id": "banner_text_font_size",
+      "label": "Banner text font size",
+      "min": 10,
+      "max": 32,
+      "default": 14,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "banner_text_font_color",
+      "label": "Banner text font color",
+      "default": "#000"
+    },
+    {
+      "type": "text",
+      "id": "section_text",
+      "label": "Section text",
+      "default": "MADE FOR THE SPOTLIGHT"
+    },
+    {
+      "type": "color",
+      "id": "section_text_font_color",
+      "label": "Section text font color",
+      "default": "#fff"
+    },
+    {
+      "type": "range",
+      "id": "section_text_font_size",
+      "label": "Section text font size",
+      "min": 10,
+      "max": 64,
+      "default": 28,
+      "step": 1,
+      "unit": "px"
+    }
+  ]
+}
+{% endschema %}

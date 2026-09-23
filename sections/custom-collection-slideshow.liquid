@@ -1,0 +1,861 @@
+<section class="shine-collections-section-{{ section.id }}">
+  <div class="shine-section-inner">
+    <div class="shine-panel-left">
+      {% for block in section.blocks %}
+        {% assign collection = collections[block.settings.collection] %}
+        {% if block.settings.collection_main_img and collection %}
+          <img class="shine-panel-left-img{% if forloop.first %} active{% endif %}" 
+               src="{{ block.settings.collection_main_img | image_url: width:800 }}" 
+               alt="{{ block.settings.collection_image_alt | default: 'Featured collection' }}" 
+               loading="lazy"
+               data-tab="{{ forloop.index0 }}"/>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <div class="shine-panel-right">
+      <div class="shine-content-wrapper">
+        <div class="shine-featured-header">
+          <div class="shine-featured-heading" style="font-size:{{ section.settings.main_heading_size }}px;color:{{ section.settings.main_heading_color }};">
+              {{ section.settings.main_heading }}           
+          </div>
+          <div class="shine-featured-description" style="font-size:{{ section.settings.desc_size }}px;color:{{ section.settings.desc_color }};">
+            {{ section.settings.desc }}
+          </div>
+          <div class="shine-col-header-row">
+            <nav class="shine-tab-navigation">
+              {% for block in section.blocks %}
+                {% assign collection = collections[block.settings.collection] %}
+                {% if collection %}
+                  {% liquid
+                    if block.settings.custom_tab_title != blank
+                      assign tab_title = block.settings.custom_tab_title
+                    else
+                      assign tab_title = collection.title
+                    endif
+                  %}
+                  <button
+                    class="shine-tab-btn{% if forloop.first %} active{% endif %}"
+                    data-tab="{{ forloop.index0 }}">
+                    {{ tab_title }}
+                  </button>
+                {% endif %}
+              {% endfor %}
+            </nav>
+            <div class="shine-carousel-controls">
+              <button class="shine-arrow-btn" id="shine-prev-btn-{{ section.id }}" disabled aria-label="Previous">
+                {% if section.settings.arrow_prev_icon %}
+                  <img src="{{ section.settings.arrow_prev_icon | image_url: width: 40 }}" alt="Previous" loading="lazy">
+                {% endif %}
+              </button>
+              <button class="shine-arrow-btn" id="shine-next-btn-{{ section.id }}" aria-label="Next">
+                {% if section.settings.arrow_next_icon %}
+                  <img src="{{ section.settings.arrow_next_icon | image_url: width: 40 }}" alt="Next" loading="lazy">
+                {% endif %}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="shine-product-cards-outer-wrap">
+        <div class="shine-product-cards-wrap">
+          {% for block in section.blocks %}
+            {% assign collection = collections[block.settings.collection] %}
+            {% if collection %}
+              <div class="shine-product-carousel{% if forloop.first %} active{% endif %}" data-content="{{ forloop.index0 }}">
+                {% for product in collection.products %}
+                  <article class="shine-product-card">
+                    <a href="{{ product.url }}" class="shine-product-link">
+                      {% if block.settings.badge_text != blank %}
+                        <div class="shine-product-badge">{{ block.settings.badge_text }}</div>
+                      {% endif %}
+                      <div class="shine-product-image-wrapper">
+                        {% if block.settings.enable_wishlist and section.settings.wishlist_icon %}
+                        <button class="shine-wishlist-btn" data-product="{{ product.id }}" onclick="event.preventDefault(); event.stopPropagation();">
+                          <img src="{{ section.settings.wishlist_icon | image_url: width:26 }}" alt="Add to wishlist" loading="lazy">
+                        </button>
+                      {% endif %}
+                        {% if product.featured_image %}
+                          <img class="shine-product-image shine-product-image-primary" 
+                               src="{{ product.featured_image | image_url: width:400 }}" 
+                               alt="{{ product.title }}">
+                          {% if product.images[1] %}
+                            <img class="shine-product-image shine-product-image-secondary" 
+                                 src="{{ product.images[1] | image_url: width:400 }}" 
+                                 alt="{{ product.title }}">
+                          {% endif %}
+                        {% endif %}
+                          <button class="shine-atc-btn" data-product="{{ product.id }}" onclick="event.preventDefault(); event.stopPropagation();">
+                        {% if section.settings.cart_icon %}
+                          <img src="{{ section.settings.cart_icon | image_url: width:20 }}" alt="" loading="lazy">
+                        {% endif %}
+                        <span>Add to Bag</span>
+                      </button>
+                      </div>
+                    </a>
+                  </article>
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const section = document.querySelector('.shine-collections-section-' + sectionId);
+  if (!section) return;
+
+  const tabBtns = section.querySelectorAll('.shine-tab-btn');
+  const tabContents = section.querySelectorAll('.shine-product-carousel');
+  const leftImages = section.querySelectorAll('.shine-panel-left-img');
+  const prevBtn = section.querySelector('#shine-prev-btn-' + sectionId);
+  const nextBtn = section.querySelector('#shine-next-btn-' + sectionId);
+  const productsPerView = 3; // Fixed to always show 3 products
+
+  let currentTab = 0;
+  let currentIndex = 0;
+
+  // Tab switching
+  tabBtns.forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+      if (currentTab === index) return;
+      
+      const oldTab = currentTab;
+      currentTab = index;
+      currentIndex = 0;
+      
+      // Remove active from old tab
+      tabBtns.forEach(b => b.classList.remove('active'));
+      tabContents[oldTab].classList.remove('active');
+      tabContents[oldTab].classList.add('exiting');
+      leftImages.forEach(img => img.classList.remove('active'));
+      
+      // Add active to new tab
+      btn.classList.add('active');
+      
+      // Delay to allow exit animation
+      setTimeout(() => {
+        tabContents[oldTab].classList.remove('exiting');
+        tabContents[index].classList.add('active');
+        
+        // Switch left panel image
+        const correspondingImage = section.querySelector(`.shine-panel-left-img[data-tab="${index}"]`);
+        if (correspondingImage) {
+          correspondingImage.classList.add('active');
+        }
+        
+        updateCarouselPosition();
+        updateButtons();
+      }, 100);
+    });
+  });
+
+  // Carousel navigation - scroll one product at a time
+  function handlePrev() {
+    if (currentIndex > 0) {
+      currentIndex--;
+      updateCarouselPosition();
+      updateButtons();
+    }
+  }
+
+  function handleNext() {
+    const activeCarousel = tabContents[currentTab];
+    const totalProducts = activeCarousel.children.length;
+    // Allow scrolling until we reach the last product
+    const maxIndex = totalProducts - 1;
+    
+    if (currentIndex < maxIndex) {
+      currentIndex++;
+      updateCarouselPosition();
+      updateButtons();
+    }
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', handlePrev);
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', handleNext);
+  }
+
+ function updateCarouselPosition() {
+  const activeCarousel = tabContents[currentTab];
+  const cards = activeCarousel.children;
+  if (cards.length === 0) return;
+
+  const cardWidth = cards[0].offsetWidth;
+  const gap = 34;
+  const offset = -(currentIndex * (cardWidth + gap));
+
+  activeCarousel.style.transform = `translateX(${offset}px)`;
+
+  // Handle visibility of all cards based on currentIndex
+  Array.from(cards).forEach((card, idx) => {
+    if (idx === 0) {
+      // First card always has negative margin
+      card.style.marginLeft = '-90px';
+      if (currentIndex === 0) {
+        card.style.opacity = '1';
+        card.style.pointerEvents = 'auto';
+      } else {
+        card.style.opacity = '0';
+        card.style.pointerEvents = 'none';
+      }
+    } else {
+      // Reset other cards
+      card.style.marginLeft = '0';
+      card.style.opacity = '1';
+      card.style.pointerEvents = 'auto';
+    }
+  });
+}
+
+  function updateButtons() {
+    const activeCarousel = tabContents[currentTab];
+    if (!activeCarousel) return;
+    
+    const totalProducts = activeCarousel.children.length;
+    // Can navigate until we reach the last product
+    const maxIndex = totalProducts - 1;
+    
+    if (prevBtn) {
+      prevBtn.disabled = (currentIndex === 0);
+      prevBtn.style.opacity = (currentIndex === 0) ? '0.4' : '1';
+      prevBtn.style.cursor = (currentIndex === 0) ? 'not-allowed' : 'pointer';
+    }
+    
+    if (nextBtn) {
+      const isAtEnd = (currentIndex >= maxIndex);
+      nextBtn.disabled = isAtEnd;
+      nextBtn.style.opacity = isAtEnd ? '0.4' : '1';
+      nextBtn.style.cursor = isAtEnd ? 'not-allowed' : 'pointer';
+    }
+  }
+
+  // Image hover effect
+  const productCards = section.querySelectorAll('.shine-product-card');
+  productCards.forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      const wrapper = card.querySelector('.shine-product-image-wrapper');
+      if (wrapper) {
+        wrapper.classList.add('hover');
+      }
+    });
+    
+    card.addEventListener('mouseleave', () => {
+      const wrapper = card.querySelector('.shine-product-image-wrapper');
+      if (wrapper) {
+        wrapper.classList.remove('hover');
+      }
+    });
+  });
+
+  // Initialize
+  updateCarouselPosition();
+  updateButtons();
+  
+  // Update on window resize
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      currentIndex = 0; // Reset to start on resize
+      updateCarouselPosition();
+      updateButtons();
+    }, 250);
+  });
+})();
+</script>
+
+
+{%- style -%}
+.shine-collections-section-{{ section.id }} {
+  width: 100%;
+  background: transparent;
+  position: relative;
+  box-sizing: border-box;
+  padding: 0;
+}
+
+.shine-collections-section-{{ section.id }} .shine-section-inner {
+  display: flex;
+  width: 100%;
+  min-height: 440px;
+  position: relative;
+  overflow: visible;
+}
+
+.shine-collections-section-{{ section.id }} .shine-panel-left {
+  width: 37.6%;
+  position: relative;
+  background: transparent;
+  overflow: hidden;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.shine-collections-section-{{ section.id }} .shine-panel-left-img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.6s ease-in-out;
+}
+
+.shine-collections-section-{{ section.id }} .shine-panel-left-img.active {
+  opacity: 1;
+}
+
+.shine-collections-section-{{ section.id }} .shine-panel-right {
+  width: 62.4%;
+  position: relative;
+  background: {{ section.settings.right_panel_bg }};
+  box-sizing: border-box;
+  overflow: visible;
+  padding: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+}
+
+.shine-collections-section-{{ section.id }} .shine-content-wrapper {
+  padding: 50px 100px 0 65px;
+}
+
+.shine-collections-section-{{ section.id }} .shine-featured-header {
+  margin-bottom: 38px;
+  display: flex;
+  flex-direction: column;
+}
+
+.shine-collections-section-{{ section.id }} .shine-featured-heading {
+  font-family: 'Givonic', sans-serif;
+  font-weight: 400;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.shine-collections-section-{{ section.id }} .shine-featured-description {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  line-height: 28px;
+  width: 466px;
+  margin-bottom: 85px;
+  display: flex;
+  flex-direction: column;
+}
+
+.shine-collections-section-{{ section.id }} .shine-col-header-row {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.shine-collections-section-{{ section.id }} .shine-tab-navigation {
+  display: flex;
+  gap: 45px;
+  flex: 1 1 auto;
+}
+
+.shine-collections-section-{{ section.id }} .shine-tab-btn {
+  background: none;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: 'Givonic', sans-serif;
+  text-transform: uppercase;
+  color: #616161;
+  cursor: pointer;
+  padding: 8px 0;
+  position: relative;
+  font-family: 'Givonic';
+  transition: color 0.3s ease;
+}
+
+.shine-collections-section-{{ section.id }} .shine-tab-btn.active {
+  color: #000;
+  font-size: 16px;
+  font-family: 'Givonic', sans-serif;
+  font-weight: 600;
+}
+
+.shine-collections-section-{{ section.id }} .shine-tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #000;
+  animation: underlineSlide 0.3s ease-out;
+}
+
+@keyframes underlineSlide {
+  from {
+    width: 0;
+    left: 50%;
+  }
+  to {
+    width: 100%;
+    left: 0;
+  }
+}
+
+.shine-collections-section-{{ section.id }} .shine-carousel-controls {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  justify-content: flex-end;
+  flex: none;
+}
+
+.shine-collections-section-{{ section.id }} .shine-arrow-btn {
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.shine-collections-section-{{ section.id }} .shine-arrow-btn:not(:disabled):hover {
+  transform: scale(1.1);
+}
+
+.shine-collections-section-{{ section.id }} .shine-arrow-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.shine-collections-section-{{ section.id }} .shine-arrow-btn img {
+  width: 40px;
+  height: 40px;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.shine-collections-section-{{ section.id }} .shine-arrow-btn:not(:disabled):hover img {
+  transform: translateX(-2px);
+}
+
+.shine-collections-section-{{ section.id }} .shine-arrow-btn:last-child:not(:disabled):hover img {
+  transform: translateX(2px);
+}
+
+.shine-collections-section-{{ section.id }} .shine-product-cards-outer-wrap {
+  width: calc(100% + 90px);
+  overflow: hidden;
+  position: relative;
+  padding: 0 100px 50px 0;
+  flex: 1;
+  margin-left: -90px;
+}
+
+.shine-collections-section-{{ section.id }} .shine-product-cards-wrap {
+  padding-left: 90px;
+  margin-left: 0;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.shine-collections-section-{{ section.id }} .shine-product-carousel {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.5s ease;
+  will-change: transform;
+}
+
+.shine-collections-section-{{ section.id }} .shine-product-carousel.active {
+  display: flex;
+  gap: 34px;
+  opacity: 1;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.shine-collections-section-{{ section.id }} .shine-product-carousel.exiting {
+  display: flex;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.shine-collections-section-{{ section.id }} .shine-product-card {
+  flex: 0 0 287.61px;
+  height: 397.66px;
+  position: relative;
+  overflow: visible;
+  background: transparent;
+  border-radius: 8px;
+  z-index: 1;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.shine-collections-section-{{ section.id }} .shine-product-link {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  color: inherit;
+  position: relative;
+}
+
+.shine-collections-section-{{ section.id }} .shine-product-card:first-child {
+  margin-left: -90px; 
+  z-index: 50;
+  position: relative;
+  overflow: visible;
+}
+
+.shine-collections-section-{{ section.id }} .shine-product-card:not(:first-child) {
+  overflow: hidden;
+}
+
+
+
+.shine-collections-section-{{ section.id }} .shine-product-badge {
+  position: absolute;
+  top: 15px;
+  left: 14px;
+  background: #8FCBE7;
+  color: #000;
+  font-size: 9.34px;
+  font-weight: 400;
+  font-family: 'Givonic', sans-serif;
+  text-transform: uppercase;
+  padding: 0 10px;
+  height: 17px;
+  border-radius: 2.8px;
+  display: flex;
+  align-items: center;
+  z-index: 20;
+  letter-spacing: 0px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.shine-collections-section-{{ section.id }} .shine-wishlist-btn {
+  position: absolute;
+  top: 8px;
+  right: 20.84px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 20;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.shine-collections-section-{{ section.id }} .shine-wishlist-btn:hover {
+  transform: scale(1.15);
+}
+
+.shine-collections-section-{{ section.id }} .shine-wishlist-btn img {
+  width: 15px;
+  height: 15px;
+  display: block;
+}
+
+.shine-collections-section-{{ section.id }} .shine-product-image-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 7px;
+}
+
+.shine-collections-section-{{ section.id }} .shine-product-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  position: absolute;
+  top: 0;
+  left: 0;  
+}
+
+.shine-collections-section-{{ section.id }} .shine-product-image-primary {
+   position: relative;
+  z-index: 10;
+}
+
+.shine-collections-section-{{ section.id }} .shine-product-image-secondary {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  opacity: 0;
+}
+
+.shine-collections-section-{{ section.id }} .shine-product-image-wrapper.hover .shine-product-image-primary {
+  opacity: 0;
+}
+
+.shine-collections-section-{{ section.id }} .shine-product-image-wrapper.hover .shine-product-image-secondary {
+  opacity: 1;
+}
+
+.shine-collections-section-{{ section.id }} .shine-product-card:hover .shine-product-image {
+  transform: scale(1.05);
+}
+
+.shine-collections-section-{{ section.id }} .shine-product-card:hover .shine-atc-btn {
+  color: #000 !important;
+  border-color: #FFDF00;
+  background: #FFDF00;
+}
+
+.shine-collections-section-{{ section.id }} .shine-product-card:hover .shine-atc-btn img {
+  transform: scale(1.1);
+}
+
+.shine-collections-section-{{ section.id }} .shine-atc-btn {
+  height: 31px;
+  padding: 10px 16px;
+  border: 0.9px solid #000;
+  background: white;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 500;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  overflow: hidden;
+  color: #000 !important;
+  transition: all 0.3s ease;
+  position: absolute;
+  left: 50%;         /* center horizontally */
+  bottom: 18px;      /* distance from the bottom of the wrapper */
+  transform: translateX(-50%);
+  z-index: 20;
+  width: 90%;        /* 90% width of the wrapper, adjust as needed */
+  margin-bottom: 0; 
+}
+
+.shine-collections-section-{{ section.id }} .shine-atc-btn img {
+  width: 13.5px;
+  height: 11.6px;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.shine-collections-section-{{ section.id }} .shine-atc-btn:hover {
+  color: #000 !important;
+  border-color: #FFDF00;
+  background: #FFDF00;
+}
+
+.shine-collections-section-{{ section.id }} .shine-atc-btn:hover img {
+  transform: scale(1.1);
+}
+
+@media (max-width: 1024px) {
+  .shine-collections-section-{{ section.id }} .shine-content-wrapper {
+    padding: 40px 20px 0 20px;
+  }
+  
+  .shine-collections-section-{{ section.id }} .shine-product-cards-outer-wrap {
+    padding: 0 20px 60px 0;
+  }
+  
+  .shine-collections-section-{{ section.id }} .shine-product-cards-wrap {
+    padding-left: 20px;
+    margin-left: -40px;
+  }
+  
+  .shine-collections-section-{{ section.id }} .shine-product-card {
+    flex: 0 0 calc((100% - 34px) / 2);
+  }
+}
+
+@media (max-width: 768px) {
+  .shine-collections-section-{{ section.id }} .shine-section-inner { 
+    flex-direction: column; 
+  }
+  
+  .shine-collections-section-{{ section.id }} .shine-panel-left,
+  .shine-collections-section-{{ section.id }} .shine-panel-right {
+    width: 100%;
+  }
+  
+  .shine-collections-section-{{ section.id }} .shine-content-wrapper {
+    padding: 30px 16px 0 16px;
+  }
+  
+  .shine-collections-section-{{ section.id }} .shine-product-cards-outer-wrap {
+    padding: 0 16px 50px 16px;
+  }
+  
+  .shine-collections-section-{{ section.id }} .shine-product-cards-wrap {
+    padding-left: 0;
+    margin-left: 0;
+  }
+  
+  .shine-collections-section-{{ section.id }} .shine-col-header-row { 
+    flex-direction: column; 
+    gap: 16px; 
+  }
+  
+  .shine-collections-section-{{ section.id }} .shine-product-card {
+    flex: 0 0 100%;
+  }
+}
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "Collection Slideshow",
+  "tag": "section",
+  "class": "shine-collections-section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "right_panel_bg",
+      "label": "Right Panel Background",
+      "default": "#FFF9CF"
+    },
+    {
+      "type": "text",
+      "id": "main_heading",
+      "label": "Main Heading",
+      "default": "Jewels Made For The Way You Shine"
+    },
+    {
+      "type": "color",
+      "id": "main_heading_color",
+      "label": "Main Heading Color",
+      "default": "#000"
+    },
+    {
+      "type": "range",
+      "id": "main_heading_size",
+      "label": "Main Heading Font Size",
+      "min": 24,
+      "max": 56,
+      "step": 1,
+      "default": 36
+    },
+    {
+      "type": "text",
+      "id": "desc",
+      "label": "Description",
+      "default": "Turn every evening into an occasion with jewellery that speaks the language of allure."
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "Description Text Color",
+      "default": "#333"
+    },
+    {
+      "type": "range",
+      "id": "desc_size",
+      "label": "Description Font Size",
+      "min": 12,
+      "max": 22,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "image_picker",
+      "id": "wishlist_icon",
+      "label": "Wishlist Icon (Global)"
+    },
+    {
+      "type": "image_picker",
+      "id": "cart_icon",
+      "label": "Cart Button SVG"
+    },
+    {
+      "type": "image_picker",
+      "id": "arrow_prev_icon",
+      "label": "Arrow Previous SVG"
+    },
+    {
+      "type": "image_picker",
+      "id": "arrow_next_icon",
+      "label": "Arrow Next SVG"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_tab",
+      "name": "Collection Tab",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "collection_main_img",
+          "label": "Main Collection Image"
+        },
+        {
+          "type": "text",
+          "id": "collection_image_alt",
+          "label": "Collection Image Alt Text"
+        },
+        {
+          "type": "text",
+          "id": "custom_tab_title",
+          "label": "Tab Title Override"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_wishlist",
+          "label": "Enable Wishlist for this Collection",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Product Badge Text",
+          "default": "Bestseller"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Slideshow"
+    }
+  ]
+}
+{% endschema %}

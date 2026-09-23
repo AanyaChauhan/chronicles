@@ -1,0 +1,443 @@
+<div class="blog-grid-section-{{ section.id }}">
+  <div class="blog-grid-container-{{ section.id }}">
+    <div class="blog-grid-header-{{ section.id }}">
+      <h2 class="blog-grid-title-{{ section.id }}">{{ section.settings.main_heading }}</h2>
+      {% if section.settings.subheading_link_text != blank %}
+        <a href="{{ section.settings.subheading_link_url }}" class="blog-grid-link-{{ section.id }}">
+          {{ section.settings.subheading_link_text }}
+        </a>
+      {% endif %}
+    </div>
+
+    <div class="blog-grid-content-{{ section.id }}">
+      {% if section.settings.blog_article_1 != blank %}
+        {% assign article = articles[section.settings.blog_article_1] %}
+        <div class="blog-card-{{ section.id }} blog-card-large-{{ section.id }}">
+          {% if article.image %}
+            <img src="{{ article.image | img_url: '1200x' }}" alt="{{ article.title }}" class="blog-card-image-{{ section.id }}">
+          {% else %}
+            {{ 'image' | placeholder_svg_tag: 'blog-card-image-' | append: section.id }}
+          {% endif %}
+          
+          <div class="blog-card-overlay-{{ section.id }}">
+            {% if section.settings.category_1 != blank %}
+              <span class="blog-category-{{ section.id }}">{{ section.settings.category_1 }}</span>
+            {% elsif article.tags.size > 0 %}
+              <span class="blog-category-{{ section.id }}">{{ article.tags.first }}</span>
+            {% endif %}
+            <h3 class="blog-title-{{ section.id }}">{{ article.title }}</h3>
+          </div>
+
+          {% if section.settings.arrow_image != blank %}
+            <a href="{{ article.url }}" class="blog-arrow-{{ section.id }}">
+              <img src="{{ section.settings.arrow_image | img_url: '80x' }}" alt="Read more">
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.blog_article_2 != blank %}
+        {% assign article = articles[section.settings.blog_article_2] %}
+        <div class="blog-card-{{ section.id }} blog-card-small-{{ section.id }}">
+          {% if article.image %}
+            <img src="{{ article.image | img_url: '1200x' }}" alt="{{ article.title }}" class="blog-card-image-{{ section.id }}">
+          {% else %}
+            {{ 'image' | placeholder_svg_tag: 'blog-card-image-' | append: section.id }}
+          {% endif %}
+          
+          <div class="blog-card-overlay-{{ section.id }}">
+            {% if section.settings.category_2 != blank %}
+              <span class="blog-category-{{ section.id }}">{{ section.settings.category_2 }}</span>
+            {% elsif article.tags.size > 0 %}
+              <span class="blog-category-{{ section.id }}">{{ article.tags.first }}</span>
+            {% endif %}
+            <h3 class="blog-title-{{ section.id }}">{{ article.title }}</h3>
+          </div>
+
+          {% if section.settings.arrow_image != blank %}
+            <a href="{{ article.url }}" class="blog-arrow-{{ section.id }}">
+              <img src="{{ section.settings.arrow_image | img_url: '80x' }}" alt="Read more">
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if section.settings.blog_article_3 != blank %}
+        {% assign article = articles[section.settings.blog_article_3] %}
+        <div class="blog-card-{{ section.id }} blog-card-small-{{ section.id }}">
+          {% if article.image %}
+            <img src="{{ article.image | img_url: '1200x' }}" alt="{{ article.title }}" class="blog-card-image-{{ section.id }}">
+          {% else %}
+            {{ 'image' | placeholder_svg_tag: 'blog-card-image-' | append: section.id }}
+          {% endif %}
+          
+          <div class="blog-card-overlay-{{ section.id }}">
+            {% if section.settings.category_3 != blank %}
+              <span class="blog-category-{{ section.id }}">{{ section.settings.category_3 }}</span>
+            {% elsif article.tags.size > 0 %}
+              <span class="blog-category-{{ section.id }}">{{ article.tags.first }}</span>
+            {% endif %}
+            <h3 class="blog-title-{{ section.id }}">{{ article.title }}</h3>
+          </div>
+
+          {% if section.settings.arrow_image != blank %}
+            <a href="{{ article.url }}" class="blog-arrow-{{ section.id }}">
+              <img src="{{ section.settings.arrow_image | img_url: '80x' }}" alt="Read more">
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
+<style>
+  .blog-grid-section-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    padding: 60px 40px;
+  }
+
+  .blog-grid-header-{{ section.id }} {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .blog-grid-title-{{ section.id }} {
+    font-size: {{ section.settings.heading_font_size }}px;
+    color: {{ section.settings.heading_color }};
+    margin: 0;
+    font-family: "Playfair Display", sans-serif;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 121%
+  }
+
+  .blog-grid-link-{{ section.id }} {
+    font-size: {{ section.settings.subheading_font_size }}px;
+    color: {{ section.settings.subheading_color }};
+    font-family: "Archivo", sans-serif;
+    text-decoration: underline;
+    text-underline-offset:3px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 300;
+    line-height:138%;
+    transition: opacity 0.3s ease;
+  }
+
+  .blog-grid-link-{{ section.id }}:hover {
+    opacity: 0.7;
+  }
+
+  .blog-grid-content-{{ section.id }} {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: {{ section.settings.grid_gap }}px;
+  }
+
+  .blog-card-{{ section.id }} {
+    position: relative;
+    overflow: hidden;
+    border-radius: {{ section.settings.border_radius }}px;
+    cursor: default;
+  }
+
+  .blog-card-large-{{ section.id }} {
+    grid-row: span 2;
+  }
+
+  .blog-card-small-{{ section.id }} {
+    grid-column: 2;
+  }
+
+  .blog-card-image-{{ section.id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    aspect-ratio: {{ section.settings.image_aspect_ratio }};
+    transition: transform 0.5s ease;
+  }
+
+  .blog-card-{{ section.id }}:hover .blog-card-image-{{ section.id }} {
+    transform: scale(1.05);
+  }
+
+  .blog-card-large-{{ section.id }} .blog-card-image-{{ section.id }} {
+    aspect-ratio: auto;
+    height: 100%;
+  }
+
+  .blog-card-overlay-{{ section.id }} {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 36px 75px 36px 40px;
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+    color: white;
+    transition: background 0.3s ease;
+  }
+
+  .blog-card-{{ section.id }}:hover .blog-card-overlay-{{ section.id }} {
+    background: linear-gradient(to top, rgba(0,0,0,0.75), transparent);
+  }
+
+  .blog-category-{{ section.id }} {
+    font-size: {{ section.settings.category_font_size }}px;
+    color: {{ section.settings.category_color }};
+    font-family: "Archivo", sans-serif;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset:4px;
+    margin-bottom: 18px;
+    display: block;
+    transition: transform 0.3s ease;
+    font-weight: 300;
+    line-height: 138%;
+  }
+
+  .blog-card-{{ section.id }}:hover .blog-category-{{ section.id }} {
+    transform: translateX(5px);
+  }
+
+  .blog-title-{{ section.id }} {
+    font-size: {{ section.settings.blog_title_font_size }}px;
+    color: {{ section.settings.blog_title_color }};
+    font-family: "Archivo", sans-serif;
+    margin: 0;
+    font-weight: 300;
+    line-height: 140%;
+    transition: transform 0.3s ease;
+  }
+
+  .blog-card-{{ section.id }}:hover .blog-title-{{ section.id }} {
+    transform: translateX(5px);
+  }
+
+  .blog-arrow-{{ section.id }} {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: auto;
+    height: auto;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  .blog-arrow-{{ section.id }} img {
+    width: 35px;
+    height: 35px;
+    display: block;
+  }
+
+  @media (max-width: 768px) {
+    .blog-grid-content-{{ section.id }} {
+      grid-template-columns: 1fr;
+    }
+
+    .blog-card-large-{{ section.id }} {
+      grid-row: span 1;
+    }
+
+    .blog-card-small-{{ section.id }} {
+      grid-column: 1;
+    }
+
+    .blog-grid-header-{{ section.id }} {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>
+
+
+
+
+{% schema %}
+{
+  "name": "Blog Grid",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#f5f0e8"
+    },
+    {
+      "type": "text",
+      "id": "main_heading",
+      "label": "Main Heading",
+      "default": "Between Craft and Culture"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading Font Size",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#2c2c2c"
+    },
+    {
+      "type": "text",
+      "id": "subheading_link_text",
+      "label": "Subheading Link Text",
+      "default": "BLOGS"
+    },
+    {
+      "type": "url",
+      "id": "subheading_link_url",
+      "label": "Subheading Link URL"
+    },
+    {
+      "type": "range",
+      "id": "subheading_font_size",
+      "label": "Subheading Font Size",
+      "min": 10,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color",
+      "default": "#666666"
+    },
+    {
+      "type": "header",
+      "content": "Grid Layout Settings"
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "label": "Grid Gap",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border Radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "text",
+      "id": "image_aspect_ratio",
+      "label": "Image Aspect Ratio (e.g., 16/9, 4/3, 1/1)",
+      "default": "16/9"
+    },
+    {
+      "type": "header",
+      "content": "Category & Title Styling"
+    },
+    {
+      "type": "range",
+      "id": "category_font_size",
+      "label": "Category Font Size",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 11
+    },
+    {
+      "type": "color",
+      "id": "category_color",
+      "label": "Category Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "blog_title_font_size",
+      "label": "Blog Title Font Size",
+      "min": 14,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "blog_title_color",
+      "label": "Blog Title Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "image_picker",
+      "id": "arrow_image",
+      "label": "Arrow Image"
+    },
+    {
+      "type": "header",
+      "content": "Blog Article 1 (Large - Left)"
+    },
+    {
+      "type": "article",
+      "id": "blog_article_1",
+      "label": "Select Article 1"
+    },
+    {
+      "type": "text",
+      "id": "category_1",
+      "label": "Custom Category Text",
+      "info": "Leave blank to use the first tag from the blog article"
+    },
+    {
+      "type": "header",
+      "content": "Blog Article 2 (Small - Top Right)"
+    },
+    {
+      "type": "article",
+      "id": "blog_article_2",
+      "label": "Select Article 2"
+    },
+    {
+      "type": "text",
+      "id": "category_2",
+      "label": "Custom Category Text",
+      "info": "Leave blank to use the first tag from the blog article"
+    },
+    {
+      "type": "header",
+      "content": "Blog Article 3 (Small - Bottom Right)"
+    },
+    {
+      "type": "article",
+      "id": "blog_article_3",
+      "label": "Select Article 3"
+    },
+    {
+      "type": "text",
+      "id": "category_3",
+      "label": "Custom Category Text",
+      "info": "Leave blank to use the first tag from the blog article"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog Grid"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,68 @@
+<!-- /templates/page.liquid-->
+<div class="grid">
+  <div class="grid__item large--five-sixths push--large--one-twelfth" style="white-space: normal;">
+    {% assign int_my = "This is my variable" %}
+    {% assign num1 = 50 %}
+    {% assign num2 = 70 %}
+    {% assign num3 = 40 %}
+
+    {{ int_my }}<br>
+    Subtraction = {{ num1 | minus: num2 }}
+
+    {% if num2 > num1%}
+      greater number is {{ num2 }}
+    {% else %}
+       greater number is {{ num1 }}
+    {% endif %}
+    <br>
+
+    {%  assign color = "red" %}
+    {% case color %}
+      {% when "red" %}
+        Color is {{ color }}
+      {% when "Green" %}
+        Color is {{ color }}
+      {% else %}
+        None of the above
+    {% endcase %}
+    <br>
+
+    {% if num1.num2 and num1.num3 %}
+      {{ Number }}
+     {% else %}
+       Number 2 is grater
+    {% endif %}
+    <br>
+
+
+    {% for i in (1..10) %}
+      {%  if forloop.first %}
+       The forloop index is first<br>
+      {% elsif forloop.last %}
+       The forloop index is last<br>
+      {% else %}
+        the index is: {{ i }}<br>
+      {% endif %}
+    {% endfor %}
+
+
+   {% for product in collections.all-products.products %}
+  {{ product.title }}<br>
+{% endfor %}
+
+    
+  </div>
+</div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% if num1>num2 and num1>num3 %}"
+  to: "{% if num1.num2 and num1.num3 %}"
+  position: 715..747
+- from: "{{ Number 1 is greater }}"
+  to: "{{ Number }}"
+  position: 754..766
+{% endcomment %}

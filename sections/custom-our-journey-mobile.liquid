@@ -1,0 +1,603 @@
+{% comment %}
+  Section: Our Journey Mobile
+  Description: Mobile-only timeline section (hidden on desktop)
+{% endcomment %}
+
+<style>
+  .our-journey-mobile {
+    display: none;
+    position: relative;
+    padding: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    overflow: hidden;
+    min-height: 100vh;
+  }
+
+  @media (max-width: 768px) {
+    .our-journey-mobile {
+      display: block;
+    }
+  }
+
+  .our-journey-mobile__header {
+    padding: 40px 20px 20px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .our-journey-mobile__heading {
+    font-family: 'Anton', sans-serif;
+    text-align: left;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+
+  .our-journey-mobile__heading em {
+    font-style: normal;
+    color: inherit;
+  }
+
+  .our-journey-mobile__heading[data-highlight-color] em {
+    color: var(--highlight-color);
+  }
+
+  .our-journey-mobile__description {
+    font-family: 'Termina', sans-serif;
+    text-align: left;
+    margin-bottom: 0;
+    line-height: 1.6;
+  }
+
+  .our-journey-mobile__content-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0 20px 40px;
+  }
+
+  .our-journey-mobile__image-wrapper {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .our-journey-mobile__center-image {
+    display: block;
+    object-fit: contain;
+    max-width: 90%;
+    max-height: 90%;
+  }
+
+  .our-journey-mobile__timelines-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    min-height: 700px;
+  }
+
+  .our-journey-mobile__timeline {
+    position: absolute;
+    max-width: 70%;
+    padding: 10px 0;
+  }
+
+  /* Individual timeline positioning - controlled via settings */
+  .our-journey-mobile__timeline:nth-child(1) {
+    /* Top position and alignment set via inline styles */
+  }
+
+  .our-journey-mobile__timeline:nth-child(2) {
+    /* Top position and alignment set via inline styles */
+  }
+
+  .our-journey-mobile__timeline:nth-child(3) {
+    /* Top position and alignment set via inline styles */
+  }
+
+  .our-journey-mobile__timeline--left {
+    text-align: left;
+    left: 0;
+  }
+
+  .our-journey-mobile__timeline--right {
+    text-align: right;
+    right: 0;
+  }
+
+  .our-journey-mobile__timeline-year {
+    font-family: 'Anton', sans-serif;
+    margin-bottom: 8px;
+    font-weight: 700;
+    line-height: 150%;
+  }
+
+  .our-journey-mobile__timeline-desc {
+    font-family: 'Termina', sans-serif;
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .our-journey-mobile__timeline-desc strong {
+    font-weight: 700;
+  }
+
+  .our-journey-mobile__container {
+    max-width: 100%;
+    margin: 0 auto;
+    position: relative;
+    height: 100%;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 480px) {
+    .our-journey-mobile__timelines-wrapper {
+      min-height: 600px;
+    }
+    .our-journey-mobile__timeline {
+      max-width: 75%;
+    }
+  }
+
+  @media (min-width: 481px) and (max-width: 768px) {
+    .our-journey-mobile__timelines-wrapper {
+      min-height: 750px;
+    }
+  }
+</style>
+
+<section class="our-journey-mobile" 
+  {% if section.settings.bg_image %}
+    style="background-image: url('{{ section.settings.bg_image | img_url: 'master' }}');"
+  {% endif %}>
+  
+  <div class="our-journey-mobile__container">
+    <!-- Header Section -->
+    <div class="our-journey-mobile__header">
+      <h2 class="our-journey-mobile__heading" 
+          style="font-size: {{ section.settings.heading_font_size }}px; color: {{ section.settings.heading_color }}; --highlight-color: {{ section.settings.heading_highlight_color }};"
+          data-highlight-color>
+        {{ section.settings.heading }}
+      </h2>
+
+      {% if section.settings.main_description != blank %}
+        <div class="our-journey-mobile__description"
+             style="font-size: {{ section.settings.description_font_size }}px; color: {{ section.settings.description_color }};">
+          {{ section.settings.main_description }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="our-journey-mobile__content-wrapper">
+      <!-- Center Image (Bike) -->
+      {% if section.settings.center_image %}
+        <div class="our-journey-mobile__image-wrapper" 
+             style="top: {{ section.settings.center_image_top }}%; left: {{ section.settings.center_image_left }}%;">
+          <img src="{{ section.settings.center_image | img_url: 'master' }}" 
+               alt="Motorcycle" 
+               class="our-journey-mobile__center-image"
+               style="width: {{ section.settings.center_image_width }}px; height: {{ section.settings.center_image_height }}px;">
+        </div>
+      {% endif %}
+
+      <!-- Timelines Wrapper -->
+      <div class="our-journey-mobile__timelines-wrapper">
+        <!-- Timeline 1 (2015) -->
+        <div class="our-journey-mobile__timeline our-journey-mobile__timeline--{{ section.settings.timeline1_alignment }}" 
+             style="top: {{ section.settings.timeline1_top }}%;">
+          <h3 class="our-journey-mobile__timeline-year" 
+              style="font-size: {{ section.settings.timeline1_year_size }}px; color: {{ section.settings.timeline1_year_color }};">
+            {{ section.settings.timeline1_year }}
+          </h3>
+          <div class="our-journey-mobile__timeline-desc" 
+               style="font-size: {{ section.settings.timeline1_desc_size }}px; color: {{ section.settings.timeline1_desc_color }};">
+            {% assign desc1_parts = section.settings.timeline1_desc | split: '**' %}
+            {% for part in desc1_parts %}
+              {% assign cycle_index = forloop.index | modulo: 2 %}
+              {% if cycle_index == 0 %}
+                <strong>{{ part }}</strong>
+              {% else %}
+                {{ part }}
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Timeline 2 (2017) -->
+        <div class="our-journey-mobile__timeline our-journey-mobile__timeline--{{ section.settings.timeline2_alignment }}" 
+             style="top: {{ section.settings.timeline2_top }}%;">
+          <h3 class="our-journey-mobile__timeline-year" 
+              style="font-size: {{ section.settings.timeline2_year_size }}px; color: {{ section.settings.timeline2_year_color }};">
+            {{ section.settings.timeline2_year }}
+          </h3>
+          <div class="our-journey-mobile__timeline-desc" 
+               style="font-size: {{ section.settings.timeline2_desc_size }}px; color: {{ section.settings.timeline2_desc_color }};">
+            {% assign desc2_parts = section.settings.timeline2_desc | split: '**' %}
+            {% for part in desc2_parts %}
+              {% assign cycle_index = forloop.index | modulo: 2 %}
+              {% if cycle_index == 0 %}
+                <strong>{{ part }}</strong>
+              {% else %}
+                {{ part }}
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Timeline 3 (Today) -->
+        <div class="our-journey-mobile__timeline our-journey-mobile__timeline--{{ section.settings.timeline3_alignment }}" 
+             style="top: {{ section.settings.timeline3_top }}%;">
+          <h3 class="our-journey-mobile__timeline-year" 
+              style="font-size: {{ section.settings.timeline3_year_size }}px; color: {{ section.settings.timeline3_year_color }};">
+            {{ section.settings.timeline3_year }}
+          </h3>
+          <div class="our-journey-mobile__timeline-desc" 
+               style="font-size: {{ section.settings.timeline3_desc_size }}px; color: {{ section.settings.timeline3_desc_color }};">
+            {% assign desc3_parts = section.settings.timeline3_desc | split: '**' %}
+            {% for part in desc3_parts %}
+              {% assign cycle_index = forloop.index | modulo: 2 %}
+              {% if cycle_index == 0 %}
+                <strong>{{ part }}</strong>
+              {% else %}
+                {{ part }}
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Our Journey Mobile",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "header",
+      "content": "Main Heading"
+    },
+    {
+      "type": "richtext",
+      "id": "heading",
+      "label": "Heading Text",
+      "info": "Use italic formatting to highlight words in the desired color",
+      "default": "<p>OUR <em>JOURNEY</em></p>"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading Font Size",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "default": 48,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "heading_highlight_color",
+      "label": "Highlight Text Color",
+      "info": "Color for italic text",
+      "default": "#6B8E23"
+    },
+    {
+      "type": "header",
+      "content": "Main Description"
+    },
+    {
+      "type": "textarea",
+      "id": "main_description",
+      "label": "Description Text",
+      "default": "At 6KIOM, we believe motorcycling isn't just a passion – it's a way of life."
+    },
+    {
+      "type": "range",
+      "id": "description_font_size",
+      "label": "Description Font Size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Center Image (Bike)"
+    },
+    {
+      "type": "image_picker",
+      "id": "center_image",
+      "label": "Center Image"
+    },
+    {
+      "type": "range",
+      "id": "center_image_width",
+      "label": "Image Width",
+      "min": 100,
+      "max": 500,
+      "step": 10,
+      "default": 280,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "center_image_height",
+      "label": "Image Height",
+      "min": 100,
+      "max": 500,
+      "step": 10,
+      "default": 200,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "center_image_top",
+      "label": "Image Vertical Position",
+      "info": "Adjust vertical position (0 = top, 50 = center, 100 = bottom)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 50,
+      "unit": "%"
+    },
+    {
+      "type": "range",
+      "id": "center_image_left",
+      "label": "Image Horizontal Position",
+      "info": "Adjust horizontal position (0 = left, 50 = center, 100 = right)",
+      "min": -50,
+      "max": 50,
+      "step": 1,
+      "default": 50,
+      "unit": "%"
+    },
+    {
+      "type": "header",
+      "content": "Timeline 1 (2015) - Position & Style"
+    },
+    {
+      "type": "range",
+      "id": "timeline1_top",
+      "label": "Vertical Position on Road",
+      "info": "Position from top of content area (0-100%)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 10,
+      "unit": "%"
+    },
+    {
+      "type": "select",
+      "id": "timeline1_alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "text",
+      "id": "timeline1_year",
+      "label": "Year",
+      "default": "2015"
+    },
+    {
+      "type": "range",
+      "id": "timeline1_year_size",
+      "label": "Year Font Size",
+      "min": 18,
+      "max": 48,
+      "step": 2,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "timeline1_year_color",
+      "label": "Year Color",
+      "default": "#000000"
+    },
+    {
+      "type": "textarea",
+      "id": "timeline1_desc",
+      "label": "Description",
+      "info": "Wrap text in **double asterisks** to make it bold (e.g., **bold text**)",
+      "default": "A humble 20x30 ft. store, quickly evolved into something much bigger."
+    },
+    {
+      "type": "range",
+      "id": "timeline1_desc_size",
+      "label": "Description Font Size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "timeline1_desc_color",
+      "label": "Description Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Timeline 2 (2017) - Position & Style"
+    },
+    {
+      "type": "range",
+      "id": "timeline2_top",
+      "label": "Vertical Position on Road",
+      "info": "Position from top of content area (0-100%)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 40,
+      "unit": "%"
+    },
+    {
+      "type": "select",
+      "id": "timeline2_alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "text",
+      "id": "timeline2_year",
+      "label": "Year",
+      "default": "2017"
+    },
+    {
+      "type": "range",
+      "id": "timeline2_year_size",
+      "label": "Year Font Size",
+      "min": 18,
+      "max": 48,
+      "step": 2,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "timeline2_year_color",
+      "label": "Year Color",
+      "default": "#000000"
+    },
+    {
+      "type": "textarea",
+      "id": "timeline2_desc",
+      "label": "Description",
+      "info": "Wrap text in **double asterisks** to make it bold",
+      "default": "We launched our **10,000 sq. ft. experience centre** – the largest of its kind in the heart of Bengaluru – a haven for riders, dreamers, and adventurers."
+    },
+    {
+      "type": "range",
+      "id": "timeline2_desc_size",
+      "label": "Description Font Size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "timeline2_desc_color",
+      "label": "Description Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Timeline 3 (Today) - Position & Style"
+    },
+    {
+      "type": "range",
+      "id": "timeline3_top",
+      "label": "Vertical Position on Road",
+      "info": "Position from top of content area (0-100%)",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "default": 75,
+      "unit": "%"
+    },
+    {
+      "type": "select",
+      "id": "timeline3_alignment",
+      "label": "Text Alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "right"
+    },
+    {
+      "type": "text",
+      "id": "timeline3_year",
+      "label": "Year",
+      "default": "Today"
+    },
+    {
+      "type": "range",
+      "id": "timeline3_year_size",
+      "label": "Year Font Size",
+      "min": 18,
+      "max": 48,
+      "step": 2,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "timeline3_year_color",
+      "label": "Year Color",
+      "default": "#6B8E23"
+    },
+    {
+      "type": "textarea",
+      "id": "timeline3_desc",
+      "label": "Description",
+      "info": "Wrap text in **double asterisks** to make it bold",
+      "default": "Under the leadership of Sambhav Nahar, 6KIOM is more than a gear store. **We're a movement.**"
+    },
+    {
+      "type": "range",
+      "id": "timeline3_desc_size",
+      "label": "Description Font Size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "timeline3_desc_color",
+      "label": "Description Color",
+      "default": "#333333"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Our Journey Mobile"
+    }
+  ]
+}
+{% endschema %}

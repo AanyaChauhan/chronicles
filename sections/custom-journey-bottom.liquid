@@ -1,0 +1,308 @@
+{% comment %}
+  Journey Bottom Section
+  Displays two panels with polygon clip-path design
+{% endcomment %}
+
+<div class="journey-bottom-section">
+  <div class="journey-bottom-container">
+    <!-- Left Panel -->
+    <div class="journey-bottom-panel journey-bottom-panel-left">
+      <h2 class="journey-bottom-heading">
+        {% assign heading_parts = section.settings.left_heading | split: '<strong>' %}
+        {% for part in heading_parts %}
+          {% if forloop.first %}
+            {{ part }}
+          {% else %}
+            {% assign sub_parts = part | split: '</strong>' %}
+            <span class="highlight-text">{{ sub_parts[0] }}</span>{{ sub_parts[1] }}
+          {% endif %}
+        {% endfor %}
+        
+        {% assign heading_parts_em = section.settings.left_heading | split: '<em>' %}
+        {% if heading_parts_em.size > 1 %}
+          {% assign heading_output = '' %}
+          {% for part in heading_parts_em %}
+            {% if forloop.first %}
+              {% assign heading_output = heading_output | append: part %}
+            {% else %}
+              {% assign sub_parts = part | split: '</em>' %}
+              {% assign heading_output = heading_output | append: '<span class="highlight-text">' | append: sub_parts[0] | append: '</span>' | append: sub_parts[1] %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      </h2>
+      
+      <div class="journey-bottom-description">
+        {{ section.settings.left_description }}
+      </div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="journey-bottom-panel journey-bottom-panel-right">
+      <h2 class="journey-bottom-heading">
+        {% assign heading_parts = section.settings.right_heading | split: '<strong>' %}
+        {% for part in heading_parts %}
+          {% if forloop.first %}
+            {{ part }}
+          {% else %}
+            {% assign sub_parts = part | split: '</strong>' %}
+            <span class="highlight-text">{{ sub_parts[0] }}</span>{{ sub_parts[1] }}
+          {% endif %}
+        {% endfor %}
+        
+        {% assign heading_parts_em = section.settings.right_heading | split: '<em>' %}
+        {% if heading_parts_em.size > 1 %}
+          {% assign heading_output = '' %}
+          {% for part in heading_parts_em %}
+            {% if forloop.first %}
+              {% assign heading_output = heading_output | append: part %}
+            {% else %}
+              {% assign sub_parts = part | split: '</em>' %}
+              {% assign heading_output = heading_output | append: '<span class="highlight-text">' | append: sub_parts[0] | append: '</span>' | append: sub_parts[1] %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      </h2>
+      
+      <div class="journey-bottom-description">
+        {{ section.settings.right_description }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .journey-bottom-section {
+    width: 100%;
+    overflow: visible;
+    margin-top: -10vw;
+  }
+
+  .journey-bottom-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .journey-bottom-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+
+  .journey-bottom-panel-left {
+    background-color: {{ section.settings.left_bg_color }};
+    clip-path: polygon(0% 0%, 82.3% 0%, 100% 50%, 82.3% 100%, 0% 100%, 0% 50%);
+    padding: 12.5vw 9vw 10.5vw 5vw;
+  }
+
+  .journey-bottom-panel-right {
+    background-color: {{ section.settings.right_bg_color }};
+    padding: 12.5vw 5vw 11vw 3.75vw;
+  }
+
+  .journey-bottom-heading {
+    font-family: 'Anton', sans-serif;
+    font-size: {{ section.settings.left_heading_size }}px;
+    color: {{ section.settings.left_heading_color }};
+    margin: 0 0 28px 0;
+    line-height: 1.2;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  .journey-bottom-panel-right .journey-bottom-heading {
+    font-size: {{ section.settings.right_heading_size }}px;
+    color: {{ section.settings.right_heading_color }};
+  }
+
+  .journey-bottom-heading .highlight-text {
+    color: {{ section.settings.left_highlight_color }};
+  }
+
+  .journey-bottom-panel-right .journey-bottom-heading .highlight-text {
+    color: {{ section.settings.right_highlight_color }};
+  }
+
+  .journey-bottom-description {
+    font-family: 'Termina', sans-serif;
+    font-size: {{ section.settings.left_desc_size }}px;
+    color: {{ section.settings.left_desc_color }};
+    line-height: 1.6;
+    margin: 0;
+    width: 585px;
+  }
+
+  .journey-bottom-panel-right .journey-bottom-description {
+    font-size: {{ section.settings.right_desc_size }}px;
+    color: {{ section.settings.right_desc_color }};
+  }
+
+  @media screen and (max-width: 768px) {
+    .journey-bottom-container {
+      flex-direction: column;
+    }
+
+    .journey-bottom-panel-left {
+      clip-path: polygon(87.86% 100%, 100% 69.64%, 100% 30.36%, 87.86% 0%, 0% 0%, 0% 29.29%, 0% 70.71%, 0% 100%);
+      padding: 10vw 8vw 15vw 5vw;
+    }
+
+    .journey-bottom-panel-right {
+      padding: 15vw 5vw 10vw 5vw;
+    }
+
+    .journey-bottom-heading {
+      font-size: {{ section.settings.left_heading_size | divided_by: 1.5 }}px;
+    }
+
+    .journey-bottom-panel-right .journey-bottom-heading {
+      font-size: {{ section.settings.right_heading_size | divided_by: 1.5 }}px;
+    }
+
+    .journey-bottom-description {
+      font-size: {{ section.settings.left_desc_size | minus: 2 }}px;
+    }
+
+    .journey-bottom-panel-right .journey-bottom-description {
+      font-size: {{ section.settings.right_desc_size | minus: 2 }}px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Journey Bottom",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Left Panel Settings"
+    },
+    {
+      "type": "richtext",
+      "id": "left_heading",
+      "label": "Left Heading",
+      "default": "<p>WHAT <strong>DRIVES US</strong></p>",
+      "info": "Make text bold or italic to highlight it"
+    },
+    {
+      "type": "range",
+      "id": "left_heading_size",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Left Heading Font Size",
+      "default": 48
+    },
+    {
+      "type": "color",
+      "id": "left_heading_color",
+      "label": "Left Heading Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "left_highlight_color",
+      "label": "Left Highlight Color",
+      "default": "#F9D349"
+    },
+    {
+      "type": "richtext",
+      "id": "left_description",
+      "label": "Left Description",
+      "default": "<p>We're powered by the 6 pillars of 6KIOM, forged over years of on-ground experience and industry insight. These guide everything we do – from selecting the world's best riding gear to crafting unforgettable rider experiences.</p>"
+    },
+    {
+      "type": "range",
+      "id": "left_desc_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Left Description Font Size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "left_desc_color",
+      "label": "Left Description Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "left_bg_color",
+      "label": "Left Panel Background Color",
+      "default": "#68953F"
+    },
+    {
+      "type": "header",
+      "content": "Right Panel Settings"
+    },
+    {
+      "type": "richtext",
+      "id": "right_heading",
+      "label": "Right Heading",
+      "default": "<p>OUR <strong>VISION</strong></p>",
+      "info": "Make text bold or italic to highlight it"
+    },
+    {
+      "type": "range",
+      "id": "right_heading_size",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Right Heading Font Size",
+      "default": 48
+    },
+    {
+      "type": "color",
+      "id": "right_heading_color",
+      "label": "Right Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "right_highlight_color",
+      "label": "Right Highlight Color",
+      "default": "#68953F"
+    },
+    {
+      "type": "richtext",
+      "id": "right_description",
+      "label": "Right Description",
+      "default": "<p>We're on a mission to take Indian motorcycling to global levels, building a community that's well-equipped, well-informed, and well-connected. From educating and training riders, to working with clubs and organizing rides, we aim to structure and uplift the motorcycling ecosystem in India using international best practices.</p>"
+    },
+    {
+      "type": "range",
+      "id": "right_desc_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Right Description Font Size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "right_desc_color",
+      "label": "Right Description Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "right_bg_color",
+      "label": "Right Panel Background Color",
+      "default": "#FFFFFF"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Journey Bottom"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,846 @@
+{% comment %}
+  Custom Contact Form Section with Dynamic Fields
+  This section creates a fully functional contact form with customizable fields using blocks
+{% endcomment %}
+
+
+<div class="cf-main-wrapper">
+  <div class="cf-grid-container {% if section.settings.reverse_layout %}cf-layout-reversed{% endif %}">
+    <div class="cf-content-left">
+      <h2 class="cf-main-heading">
+        {{ section.settings.heading }}
+      </h2>
+     
+      {% if section.settings.subheading != blank %}
+        <p class="cf-sub-heading">
+          {{ section.settings.subheading }}
+        </p>
+      {% endif %}
+    </div>
+
+
+    <div class="cf-content-right">
+      {% form 'contact', id: 'CustomContactFormMain', class: 'cf-form-element' %}
+        {% if form.posted_successfully? %}
+          <div class="cf-msg-success" id="CustomFormSuccessNotice">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M9 12L11 14L15 10M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <p>{{ section.settings.success_message }}</p>
+          </div>
+        {% endif %}
+
+
+        {% if form.errors %}
+          <div class="cf-msg-error">
+            <p>{{ form.errors.translated_fields['form'] | capitalize }} {{ form.errors.messages['form'] }}</p>
+          </div>
+        {% endif %}
+
+
+        {% assign total_blocks = section.blocks.size %}
+        {% assign last_index = total_blocks | minus: 1 %}
+       
+        {% for block in section.blocks %}
+          {% assign current_index = forloop.index0 %}
+          {% assign is_first = false %}
+          {% assign is_last = false %}
+         
+          {% if current_index == 0 %}
+            {% assign is_first = true %}
+          {% endif %}
+         
+          {% if current_index == last_index %}
+            {% assign is_last = true %}
+          {% endif %}
+         
+          {% comment %} Open grid wrapper for middle fields {% endcomment %}
+          {% if current_index == 1 %}
+            <div class="cf-middle-fields-grid">
+          {% endif %}
+         
+          {% case block.type %}
+            {% when 'text_field' %}
+              <div class="cf-field-row {% if is_first or is_last %}cf-full-width{% endif %}" {{ block.shopify_attributes }}>
+                <div class="cf-input-wrapper">
+                  <label for="CustomContactField-{{ block.id }}" class="cf-field-label">
+                    {{ block.settings.label }}
+                    {% if block.settings.required %}
+                      <span class="cf-required-mark">*</span>
+                    {% endif %}
+                  </label>
+                  <input
+                    type="text"
+                    id="CustomContactField-{{ block.id }}"
+                    name="contact[{{ block.settings.label }}]"
+                    placeholder="{{ block.settings.placeholder }}"
+                    class="cf-text-input"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                    spellcheck="false"
+                    {% if block.settings.required %}required{% endif %}
+                  >
+                </div>
+              </div>
+
+
+            {% when 'email_field' %}
+              <div class="cf-field-row {% if is_first or is_last %}cf-full-width{% endif %}" {{ block.shopify_attributes }}>
+                <div class="cf-input-wrapper">
+                  <label for="CustomContactField-{{ block.id }}" class="cf-field-label">
+                    {{ block.settings.label }}
+                    {% if block.settings.required %}
+                      <span class="cf-required-mark">*</span>
+                    {% endif %}
+                  </label>
+                  <input
+                    type="email"
+                    id="CustomContactField-{{ block.id }}"
+                    name="contact[email]"
+                    placeholder="{{ block.settings.placeholder }}"
+                    class="cf-text-input"
+                    autocomplete="off"
+                    {% if block.settings.required %}required{% endif %}
+                  >
+                </div>
+              </div>
+
+
+            {% when 'phone_field' %}
+              <div class="cf-field-row {% if is_first or is_last %}cf-full-width{% endif %}" {{ block.shopify_attributes }}>
+                <div class="cf-input-wrapper">
+                  <label for="CustomContactField-{{ block.id }}" class="cf-field-label">
+                    {{ block.settings.label }}
+                    {% if block.settings.required %}
+                      <span class="cf-required-mark">*</span>
+                    {% endif %}
+                  </label>
+                  <input
+                    type="tel"
+                    id="CustomContactField-{{ block.id }}"
+                    name="contact[{{ block.settings.label }}]"
+                    placeholder="{{ block.settings.placeholder }}"
+                    class="cf-text-input"
+                    autocomplete="off"
+                    {% if block.settings.required %}required{% endif %}
+                  >
+                </div>
+              </div>
+
+
+            {% when 'number_field' %}
+              <div class="cf-field-row {% if is_first or is_last %}cf-full-width{% endif %}" {{ block.shopify_attributes }}>
+                <div class="cf-input-wrapper">
+                  <label for="CustomContactField-{{ block.id }}" class="cf-field-label">
+                    {{ block.settings.label }}
+                    {% if block.settings.required %}
+                      <span class="cf-required-mark">*</span>
+                    {% endif %}
+                  </label>
+                  <input
+                    type="number"
+                    id="CustomContactField-{{ block.id }}"
+                    name="contact[{{ block.settings.label }}]"
+                    placeholder="{{ block.settings.placeholder }}"
+                    class="cf-text-input"
+                    autocomplete="off"
+                    {% if block.settings.required %}required{% endif %}
+                  >
+                </div>
+              </div>
+
+
+            {% when 'dropdown_field' %}
+              <div class="cf-field-row {% if is_first or is_last %}cf-full-width{% endif %}" {{ block.shopify_attributes }}>
+                <div class="cf-input-wrapper">
+                  <label for="CustomContactField-{{ block.id }}" class="cf-field-label">
+                    {{ block.settings.label }}
+                    {% if block.settings.required %}
+                      <span class="cf-required-mark">*</span>
+                    {% endif %}
+                  </label>
+                  <select
+                    id="CustomContactField-{{ block.id }}"
+                    name="contact[{{ block.settings.label }}]"
+                    class="cf-select-input"
+                    {% if block.settings.required %}required{% endif %}
+                  >
+                    <option value="">{{ block.settings.placeholder }}</option>
+                    {% assign options = block.settings.options | split: ',' %}
+                    {% for option in options %}
+                      <option value="{{ option | strip }}">{{ option | strip }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+
+
+            {% when 'textarea_field' %}
+              <div class="cf-field-row {% if is_first or is_last %}cf-full-width{% endif %}" {{ block.shopify_attributes }}>
+                <div class="cf-input-wrapper">
+                  <label for="CustomContactField-{{ block.id }}" class="cf-field-label">
+                    {{ block.settings.label }}
+                    {% if block.settings.required %}
+                      <span class="cf-required-mark">*</span>
+                    {% endif %}
+                  </label>
+                  <textarea
+                    id="CustomContactField-{{ block.id }}"
+                    name="contact[body]"
+                    placeholder="{{ block.settings.placeholder }}"
+                    class="cf-textarea-input"
+                    rows="{{ block.settings.rows }}"
+                    {% if block.settings.required %}required{% endif %}
+                  ></textarea>
+                </div>
+              </div>
+
+
+            {% when 'two_column_row' %}
+              <div class="cf-field-row cf-row-double {% if is_first or is_last %}cf-full-width{% endif %}" {{ block.shopify_attributes }}>
+                {% comment %} This is a container for two fields side by side {% endcomment %}
+              </div>
+
+
+          {% endcase %}
+         
+          {% comment %} Close grid wrapper before last field {% endcomment %}
+          {% assign before_last = last_index | minus: 1 %}
+          {% if current_index == before_last %}
+            </div>
+          {% endif %}
+        {% endfor %}
+
+
+        <div class="cf-field-row">
+          <button type="submit" class="cf-submit-btn">
+            {{ section.settings.button_text }}
+          </button>
+        </div>
+      {% endform %}
+    </div>
+  </div>
+</div>
+
+
+<script>
+  // Auto-hide success message after 5 seconds
+  document.addEventListener('DOMContentLoaded', function() {
+    const successNotice = document.getElementById('CustomFormSuccessNotice');
+    if (successNotice) {
+      setTimeout(function() {
+        successNotice.style.opacity = '0';
+        setTimeout(function() {
+          successNotice.style.display = 'none';
+        }, 300);
+      }, 5000);
+    }
+
+
+    // Auto-resize textarea on input
+    const textareas = document.querySelectorAll('.cf-textarea-input');
+    textareas.forEach(function(textarea) {
+      // Set initial height
+      textarea.style.height = 'auto';
+      textarea.style.height = textarea.scrollHeight + 'px';
+
+
+      // Add input event listener
+      textarea.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = this.scrollHeight + 'px';
+      });
+    });
+  });
+</script>
+
+
+{% schema %}
+{
+  "name": "Custom Contact Form",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Drop Us A Hello, Feedback Or Query!"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading (optional)",
+      "info": "Leave empty to hide"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "SEND"
+    },
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success Message",
+      "default": "Thank you for contacting us! We'll get back to you soon."
+    },
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "reverse_layout",
+      "label": "Reverse Layout (Form on Left)",
+      "default": false,
+      "info": "Enable to show form on left and heading on right"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f5f3f0"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button Background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#ffffff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text_field",
+      "name": "Text Field",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Field Label",
+          "default": "Full Name"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder Text",
+          "default": "Enter your full name"
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Required Field",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "email_field",
+      "name": "Email Field",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Field Label",
+          "default": "Email Address"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder Text",
+          "default": "Enter your email"
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Required Field",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "phone_field",
+      "name": "Phone Field",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Field Label",
+          "default": "Phone Number"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder Text",
+          "default": "Enter your phone number"
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Required Field",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "number_field",
+      "name": "Number Field",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Field Label",
+          "default": "Order Number",
+          "info": "For order numbers, IDs, etc."
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder Text",
+          "default": "Enter number"
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Required Field",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "dropdown_field",
+      "name": "Dropdown Field",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Field Label",
+          "default": "Country"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder Text",
+          "default": "Select an option"
+        },
+        {
+          "type": "textarea",
+          "id": "options",
+          "label": "Dropdown Options",
+          "default": "India, United States, United Kingdom, Canada, Australia",
+          "info": "Separate options with commas"
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Required Field",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "textarea_field",
+      "name": "Message Field",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Field Label",
+          "default": "Want To Know More? Drop Us A Message!"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder Text",
+          "default": "Type your message here"
+        },
+        {
+          "type": "range",
+          "id": "rows",
+          "label": "Field Height (rows)",
+          "min": 1,
+          "max": 10,
+          "step": 1,
+          "default": 6
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Required Field",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Contact Form",
+      "blocks": [
+        {
+          "type": "text_field",
+          "settings": {
+            "label": "Full Name",
+            "placeholder": "Enter your full name",
+            "required": true
+          }
+        },
+        {
+          "type": "phone_field",
+          "settings": {
+            "label": "Phone No.",
+            "placeholder": "Enter your phone number",
+            "required": false
+          }
+        },
+        {
+          "type": "email_field",
+          "settings": {
+            "label": "Email Id",
+            "placeholder": "Enter your email",
+            "required": true
+          }
+        },
+        {
+          "type": "textarea_field",
+          "settings": {
+            "label": "Want To Know More? Drop Us A Message!",
+            "placeholder": "Type your message here",
+            "required": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+
+.cf-main-wrapper {
+  background-color: {{ section.settings.background_color }};
+  padding: 100px 90px;
+  width: 100%;
+}
+
+
+.cf-grid-container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1.32fr;
+  gap: 80px;
+  align-items: start;
+}
+
+
+.cf-grid-container.cf-layout-reversed {
+  direction: rtl;
+}
+
+
+.cf-grid-container.cf-layout-reversed > * {
+  direction: ltr;
+}
+
+
+.cf-content-left {
+  padding: 40px 0;
+}
+
+
+.cf-content-right {
+  padding-top: 42px;
+  width: 100%;
+}
+
+
+.cf-main-heading {
+  font-size: 48px;
+  font-weight: 500;
+  color: {{ section.settings.heading_color }};
+  line-height: 55px;
+  font-family: 'libre franklin', sans-serif;
+  width: 450px;
+}
+
+
+.cf-sub-heading {
+  font-size: clamp(14px, 1.2vw, 18px);
+  color: #666;
+  margin-bottom: 0;
+  line-height: 1.6;
+  font-family: inherit;
+}
+
+
+.cf-form-element {
+  display: flex;
+  flex-direction: column;
+  gap: 70px;
+  width: 100%;
+}
+
+
+.cf-middle-fields-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  width: 100%;
+}
+
+
+.cf-field-row {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+}
+
+
+.cf-field-row.cf-full-width {
+  grid-column: 1 / -1;
+}
+
+
+.cf-row-double {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+
+.cf-input-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+
+.cf-field-label {
+  font-size: 16px;
+  color: #737373;
+  margin-bottom: 8px;
+  font-weight: 400;
+  line-height: 1.4;
+  font-family: 'libre franklin', sans-serif;
+}
+
+
+.cf-required-mark {
+ display: none;
+}
+
+
+.cf-text-input,
+.cf-textarea-input,
+.cf-select-input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #000;
+  background: transparent;
+  font-size: 20px;
+  font-family: 'libre franklin', sans-serif;
+  line-height: 45px;
+  font-weight: 500;
+  color: #000;
+  border-radius: 0 !important;
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  transition: none;
+}
+
+
+.cf-text-input:hover,
+.cf-textarea-input:hover,
+.cf-select-input:hover {
+  background: transparent;
+  border-bottom-color: #000;
+}
+
+
+.cf-text-input:focus,
+.cf-textarea-input:focus,
+.cf-select-input:focus {
+  outline: none;
+  background: transparent;
+  border-bottom-color: #000;
+  border-radius: 0 !important;
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+}
+
+
+/* Prevent autofill blue background */
+.cf-text-input:-webkit-autofill,
+.cf-text-input:-webkit-autofill:hover,
+.cf-text-input:-webkit-autofill:focus,
+.cf-text-input:-webkit-autofill:active,
+.cf-textarea-input:-webkit-autofill,
+.cf-textarea-input:-webkit-autofill:hover,
+.cf-textarea-input:-webkit-autofill:focus,
+.cf-textarea-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px {{ section.settings.background_color }} inset !important;
+  -webkit-text-fill-color: #000 !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+
+.cf-text-input::placeholder,
+.cf-textarea-input::placeholder {
+  color: #999;
+  font-family: inherit;
+}
+
+
+.cf-textarea-input {
+  resize: none;
+  line-height: 1.5;
+  overflow: hidden;
+  min-height: 45px;
+}
+
+
+.cf-select-input {
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0 center;
+  background-size: 20px;
+  padding-right: 30px;
+}
+
+
+.cf-submit-btn {
+  background-color: {{ section.settings.button_background }};
+  color: {{ section.settings.button_text_color }};
+  border: none;
+  border-radius: 0;
+  padding: clamp(12px, 1.2vw, 16px) clamp(32px, 3vw, 50px);
+  font-size: 16px;
+  font-family: 'libre franklin', sans-serif;
+  font-weight: 400;
+  line-height: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  align-self: flex-start;
+  margin-top: 10px;
+  font-family: inherit;
+  text-transform: uppercase;
+}
+
+
+.cf-submit-btn:hover {
+  opacity: 0.85;
+  transform: translateY(-2px);
+}
+
+
+.cf-msg-success {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+  padding: 18px 22px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  transition: opacity 0.3s ease;
+  font-family: inherit;
+}
+
+
+.cf-msg-success svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+
+.cf-msg-success p {
+  margin: 0;
+  font-size: clamp(13px, 1.1vw, 16px);
+  font-family: inherit;
+}
+
+
+.cf-msg-error {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+  padding: 18px 22px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-family: inherit;
+}
+
+
+.cf-msg-error p {
+  margin: 0;
+  font-size: clamp(13px, 1.1vw, 16px);
+  font-family: inherit;
+}
+
+
+.cf-error-text {
+  color: #d00;
+  font-size: clamp(11px, 0.9vw, 13px);
+  margin-top: 6px;
+  font-family: inherit;
+}
+
+
+@media screen and (max-width: 768px) {
+  .cf-main-wrapper {
+    padding: 50px 30px;
+  }
+
+
+  .cf-grid-container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+
+  .cf-grid-container.cf-layout-reversed {
+    direction: ltr;
+  }
+
+
+  .cf-middle-fields-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  .cf-row-double {
+    grid-template-columns: 1fr;
+  }
+ 
+  .cf-content-left {
+    padding: 0;
+  }
+}
+</style>

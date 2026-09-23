@@ -1,0 +1,291 @@
+<section class="hl-section" 
+         style="background-color: {{ section.settings.background_color }};
+                {% if section.settings.background_image %}
+                  background-image: url('{{ section.settings.background_image | img_url: 'master' }}');
+                  background-size: cover;
+                  background-position: center;
+                  background-repeat: no-repeat;
+                {% endif %}">
+  {% if section.settings.logo_image %}
+    <div class="hl-logo-absolute">
+      <img src="{{ section.settings.logo_image | img_url: 'master' }}"
+           alt="{{ section.settings.logo_alt_text }}" class="hl-img">
+    </div>
+  {% endif %}
+  <div class="hl-wrap">
+    <!-- Title and Descriptions Grid -->
+    <div class="hl-content">
+      <div class="hl-text">
+        <h2 class="hl-title">{{ section.settings.main_title }}</h2>
+        <div class="hl-desc-row">
+          <div class="hl-desc hl-left">{{ section.settings.left_description }}</div>
+          <div class="hl-desc hl-right">{{ section.settings.right_description }}</div>
+        </div>
+      </div>
+    </div>
+    <!-- Statistics Bar -->
+    <div class="hl-stats-border-wrapper">
+    <div class="hl-stats">
+      <div class="hl-stat">
+        <div class="hl-num">{{ section.settings.stat_1_number }}</div>
+        <div class="hl-label">{{ section.settings.stat_1_label }}</div>
+      </div>
+      <div class="hl-line"></div>
+      <div class="hl-stat">
+        <div class="hl-num">{{ section.settings.stat_2_number }}</div>
+        <div class="hl-label">{{ section.settings.stat_2_label }}</div>
+      </div>
+      <div class="hl-line"></div>
+      <div class="hl-stat">
+        <div class="hl-num">{{ section.settings.stat_3_number }}</div>
+        <div class="hl-label">{{ section.settings.stat_3_label }}</div>
+      </div>
+    </div>
+  </div> 
+  </div>
+</section>
+
+<style>
+.hl-section {
+  width: 100%;
+  padding-top: {{ section.settings.section_padding_top }}px;
+  padding-bottom: {{ section.settings.section_padding_bottom }}px;
+  position: relative;
+  overflow: hidden;
+  background-color: {{ section.settings.background_color }};
+}
+
+.hl-logo-absolute {
+  position: absolute;
+  top: -80px;
+  right: -5px;
+  pointer-events: none;
+  width: 340px;
+  height: 340px;
+  z-index: 0;
+}
+.hl-wrap {
+  max-width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
+
+.hl-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 45px;
+  padding: 0 100px;
+}
+.hl-title {
+  color: {{ section.settings.title_color }};
+  font-size: 40px;
+  font-family: 'Givonic', sans-serif;
+  font-weight: 400;
+  margin: 0 0 32px 0;
+  text-align: left;
+}
+
+.hl-desc-row {
+  display: flex;
+  flex-direction: row;
+  gap: 60px;
+  padding-top: 14px;
+}
+
+.hl-desc {
+  flex: 1 1 0;
+  font-family: 'Montserrat', sans-serif;
+  line-height: 28px;
+  font-weight: 400;
+  text-align: left;
+  font-size: 14px;
+  width: 490px;
+}
+.hl-stats-border-wrapper {
+  width: 100%;
+  position: relative;
+  box-sizing: border-box;
+  overflow: visible;
+}
+.hl-stats {
+  width: 100%;
+  margin-top: 60px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;       /* Center in the section */
+  align-items: stretch;
+  
+  
+}
+
+.hl-stat {
+  width: 100%;
+  height: 221px;
+  box-sizing: border-box;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0;
+  background: transparent;
+  border: 2px solid #FFDF00;
+}
+.hl-stat:nth-child(1),
+.hl-stat:nth-child(3) {
+  border-right: none;
+}
+
+.hl-line {
+  width: 1px;
+  min-width: 2px;
+  height: 221px;
+  align-self: center;
+  margin: 0;
+  opacity: 1;
+}
+
+.hl-num {
+  color: #000000;
+  font-size: 64px;
+  font-family: 'Givonic', sans-serif;
+  font-weight: 400;
+  height: auto;
+}
+
+.hl-label {
+  color: #000000;
+  font-size: 20px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  line-height: 28px;
+  margin-top: -20px;
+}
+
+</style>
+
+{% schema %}
+{
+  "name": "Heritage Legacy",
+  "tag": "section",
+  "class": "heritage-legacy-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#BFE1EF"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Texture Image"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "min": 20,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 80
+    },
+    {
+      "type": "header",
+      "content": "Decorative Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo/Decorative Image"
+    },
+    {
+      "type": "header",
+      "content": "Main Title"
+    },
+    {
+      "type": "text",
+      "id": "main_title",
+      "label": "Title Text",
+      "default": "OUR LEGACY"
+    },
+    {
+      "type": "header",
+      "content": "Description Text"
+    },
+    {
+      "type": "textarea",
+      "id": "left_description",
+      "label": "Left Column Text",
+      "default": "We are True Silver — born from the heart of ACPL Exports Private Limited, India's most trusted name in sterling silver jewellery. For over 70 years, we've been crafting silver with love, purpose, and pride."
+    },
+    {
+      "type": "textarea",
+      "id": "right_description",
+      "label": "Right Column Text",
+      "default": "Our journey began with ACPL, honoured as the Highest Exporter of Silver Jewellery by the Government of India for 20 consecutive years. That legacy of excellence and trust lives on through everything we create at True Silver."
+    },
+    {
+      "type": "header",
+      "content": "Statistics"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_number",
+      "label": "First Number",
+      "default": "70+"
+    },
+    {
+      "type": "text",
+      "id": "stat_1_label",
+      "label": "First Label",
+      "default": "Years of Craftsmanship"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_number",
+      "label": "Second Number",
+      "default": "30+"
+    },
+    {
+      "type": "text",
+      "id": "stat_2_label",
+      "label": "Second Label",
+      "default": "Countries Exported Worldwide"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_number",
+      "label": "Third Number",
+      "default": "100%"
+    },
+    {
+      "type": "text",
+      "id": "stat_3_label",
+      "label": "Third Label",
+      "default": "Recycled & Certified Silver"
+    },
+  ],
+  "presets": [
+    {
+      "name": "Heritage Legacy"
+    }
+  ]
+}
+{% endschema %}

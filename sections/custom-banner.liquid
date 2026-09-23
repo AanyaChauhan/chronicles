@@ -1,0 +1,225 @@
+<section class="banner-section">
+  <div class="custom-banner" style="background-color: {{ section.settings.bg_color }};">
+    <div class="banner-scroll-wrapper" aria-label="Infinite scrolling banner" role="list">
+      {% comment %} Create seamless infinite scroll with duplicate groups {% endcomment %}
+      {% for i in (1..3) %}
+        <div class="banner-items-group" aria-hidden="{% if i > 1 %}true{% else %}false{% endif %}">
+          {% comment %} Loop through all banner blocks {% endcomment %}
+          {% for block in section.blocks %}
+            {% if block.settings.banner_text != blank %}
+              <div class="banner-item" role="listitem">
+                <div class="banner-content">
+                  {% if block.settings.banner_icon %}
+                    <img src="{{ block.settings.banner_icon | img_url: '43x34' }}" 
+                         alt="" 
+                         aria-hidden="true"
+                         width="43" 
+                         height="34"
+                         loading="lazy" />
+                  {% endif %}
+                  <span style="color: {{ section.settings.text_color }};">{{ block.settings.banner_text }}</span>
+                </div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const banner = document.querySelector('.custom-banner');
+  const scrollWrapper = document.querySelector('.banner-scroll-wrapper');
+  
+  if (!banner || !scrollWrapper) return;
+  
+  function initializeBanner() {
+    const firstGroup = scrollWrapper.querySelector('.banner-items-group');
+    if (!firstGroup) return;
+    
+    const totalBlocks = {{ section.blocks.size | default: 1 }};
+    
+    // Calculate exact width including gaps
+    const groupRect = firstGroup.getBoundingClientRect();
+    const groupWidth = groupRect.width + 85; // 85px gap after each group
+    
+    // Update CSS custom properties
+    scrollWrapper.style.setProperty('--scroll-distance', `-${groupWidth}px`);
+    
+    // Adjust speed based on number of items for smoother animation
+    let speed = 50; // base speed
+    if (totalBlocks === 1) {
+      speed = 30; // slower for single item
+    } else if (totalBlocks === 2) {
+      speed = 40; // slightly slower for 2 items
+    }
+    
+    const duration = groupWidth / speed;
+    scrollWrapper.style.setProperty('--duration', `${duration}s`);
+    
+    // Start animation
+    scrollWrapper.classList.add('animate');
+  }
+  
+  // Wait for fonts and images to load, then initialize
+  if (document.readyState === 'loading') {
+    window.addEventListener('load', () => setTimeout(initializeBanner, 100));
+  } else {
+    setTimeout(initializeBanner, 100);
+  }
+});
+</script>
+
+<style>
+.custom-banner {
+  display: flex;
+  align-items: center;
+  height: 74px;
+  overflow: hidden;
+  position: relative;
+  padding: 14px 16px;
+  background: {{ section.settings.bg_color }};
+  white-space: nowrap;
+  border-radius: 16px 16px 0 0;
+}
+
+.banner-scroll-wrapper {
+  display: flex;
+  align-items: center;
+  --scroll-distance: -1000px;
+}
+
+.banner-scroll-wrapper.animate {
+  animation: scroll-seamless var(--duration, 20s) linear infinite;
+}
+
+@keyframes scroll-seamless {
+  from { transform: translateX(0); }
+  to { transform: translateX(var(--scroll-distance)); }
+}
+
+.banner-items-group {
+  display: flex;
+  align-items: center;
+  gap: 85px;
+  margin-right: 85px;
+  flex-shrink: 0;
+}
+
+.banner-items-group:last-child {
+  margin-right: 0;
+}
+
+.banner-item {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  min-width: fit-content;
+}
+
+.banner-content {
+  display: flex;
+  align-items: center;
+  gap: 0.5px;
+  font-size: 20px;
+  font-family: 'Montserrat', sans-serif;
+  white-space: nowrap;
+}
+
+.banner-content img {
+  width: 43px;
+  height: 34px;
+  display: block;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.banner-content span {
+  flex-shrink: 0;
+}
+
+/* Pause animation on hover for better UX */
+.custom-banner:hover .banner-scroll-wrapper {
+  animation-play-state: paused;
+}
+</style>
+
+{% schema %}
+{
+  "name": "Custom Banner",
+  "tag": "section",
+  "class": "banner-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Banner Appearance"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#bfe1ef"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "banner_item",
+      "name": "Banner Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "banner_text",
+          "label": "Banner Text",
+          "placeholder": "Enter banner text"
+        },
+        {
+          "type": "image_picker",
+          "id": "banner_icon",
+          "label": "Banner Icon",
+          "info": "Recommended size: 43x34px"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Banner",
+      "category": "Promotional",
+      "blocks": [
+        {
+          "type": "banner_item",
+          "settings": {
+            "banner_text": "925 Sterling Silver Jewellery"
+          }
+        },
+        {
+          "type": "banner_item",
+          "settings": {
+            "banner_text": "BIS Hallmark Certified"
+          }
+        },
+        {
+          "type": "banner_item",
+          "settings": {
+            "banner_text": "Sustainably Made"
+          }
+        },
+        {
+          "type": "banner_item",
+          "settings": {
+            "banner_text": "Proudly Made In India"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

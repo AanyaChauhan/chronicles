@@ -1,0 +1,123 @@
+<section 
+  class="feature-cards-section"
+  style="
+    background-color: {{ section.settings.bg_color }};
+    padding-top: {{ section.settings.padding_top | append: 'px' }};
+    padding-right: {{ section.settings.padding_right | append: 'px' }};
+    padding-bottom: {{ section.settings.padding_bottom | append: 'px' }};
+    padding-left: {{ section.settings.padding_left | append: 'px' }};
+  "
+>
+  <div class="feature-cards-grid">
+    {% for block in section.blocks %}
+      <div class="feature-card">
+        {% if block.settings.feature_image != blank %}
+          <img src="{{ block.settings.feature_image | img_url: '400x400' }}" alt="" class="feature-card-img" />
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<style>
+  .feature-cards-section {
+    /* main padding moved inline per block above, else can be moved here with CSS custom properties */
+  }
+
+  .feature-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  .feature-card {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .feature-card-img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+  }
+  @media (max-width: 900px) {
+    .feature-cards-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .feature-cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+
+{% schema %}{
+  "name": "Features Cards",
+  "settings": [
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (px)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_right",
+      "label": "Padding Right (px)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (px)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_left",
+      "label": "Padding Left (px)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#fff"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_card",
+      "name": "Feature Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "feature_image",
+          "label": "Feature Image"
+        }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Features Cards",
+      "category": "Custom"
+    }
+  ]
+}{% endschema %}

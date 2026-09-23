@@ -1,0 +1,290 @@
+<section 
+  class="sedex-cert-section"
+  style="background-image: url({{ section.settings.background_image | img_url: 'master' }});"
+>
+  {% if section.settings.sedex_logo %}
+    <img src="{{ section.settings.sedex_logo | img_url: '200x' }}" alt="Sedex Logo" class="sedex-logo" />
+  {% endif %}
+
+  <h2 class="sedex-title">
+    {{ section.settings.title_text }}
+  </h2>
+
+  <div class="sedex-member-id" >
+    {{ section.settings.member_id_text }}
+  </div>
+
+  <p class="sedex-description">
+    {{ section.settings.description_text }}
+  </p>
+
+  {% if section.settings.button_toggle %}
+    <div class="sedex-button-wrapper">
+      <a href="{{ section.settings.button_link }}" class="sedex-button">
+        <span class="sedex-button-text">{{ section.settings.button_text }}</span>
+      </a>
+    </div>
+  {% endif %}
+
+  {% if section.settings.overflow_image_toggle and section.settings.main_image %}
+    <div class="overflow-image-container">
+      <img 
+        src="{{ section.settings.main_image | img_url: '900x' }}" 
+        alt="Main Image" 
+        class="overflow-image" 
+      />
+    </div>
+  {% endif %}
+</section>
+
+
+<style>
+  .sedex-cert-section {
+    background-size: 100% 100%;
+    background-position: center;
+    width: 100%;
+    height: 541px;
+    background-repeat: no-repeat;
+    padding: 60px 100px;
+    position: relative;
+    margin-bottom: 0;
+    {% if section.settings.overflow_image_toggle and section.settings.main_image %}
+      padding-bottom: 0;
+    {% endif %}
+  }
+
+  .sedex-logo {
+    display: block;
+    margin: 0 auto 30px;
+    max-width: 150px;
+  }
+
+  .sedex-title {
+    text-align: center;
+    margin-bottom: 4px;
+    line-height: 20px;
+    font-weight: 400;
+    font-family: 'Givonic', sans-serif;
+    font-size: {{ section.settings.title_font_size }}px;
+    color: {{ section.settings.title_color }};
+  }
+
+  .sedex-member-id {
+    line-height: 20px;
+    font-weight: 600;
+    font-family: 'Givonic', sans-serif;
+    color: {{ section.settings.member_id_color }};
+    font-size: {{ section.settings.member_id_font_size }}px;
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .sedex-description {
+    line-height: 28px;
+    font-weight: 500;
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    max-width: 788px;
+    margin: 0 auto 18px;
+    font-size: {{ section.settings.description_font_size }}px;
+    color: {{ section.settings.description_color }};
+  }
+
+  .sedex-button-wrapper {
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .sedex-button {
+    display: inline-block;
+    min-width: 150px;
+    padding: 12px 40px;
+    border: 1px solid {{ section.settings.text_color }};
+    border-radius: 4.6px;
+    background: {{ section.settings.button_bg_color }};
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .sedex-button-text {
+    font-size: {{ section.settings.button_text_font_size }}px;
+    color: {{ section.settings.button_text_color }};
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    display: block;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .overflow-image-container {
+    position: relative;
+    height: 0;
+    overflow: visible;
+    text-align: center;
+  }
+
+  .overflow-image {
+    position: relative;
+    width: 90%;
+    max-width: 838px;
+    max-height: 370px;
+    height: auto;
+    z-index: 5;
+    bottom: -77px; 
+    display: block;
+    margin: 0 auto;
+  }
+
+  /* Ensure next section has proper spacing and stacking */
+  .sedex-cert-section + * {
+    position: relative;
+    z-index: 1;
+    padding-top: 227px; /* Add padding to accommodate overlapping image */
+    margin-top: 0;
+  }
+
+  /* Prevent header interference during scroll */
+  .overflow-image {
+    pointer-events: none;
+  }
+
+  /* Remove any default margins that might create white space */
+  .sedex-cert-section,
+  .sedex-cert-section + * {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Sedex Certification",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "sedex_logo",
+      "label": "Sedex Logo"
+    },
+    {
+      "type": "text",
+      "id": "title_text",
+      "label": "Title",
+      "default": "Certified Member"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "label": "Title Font Size (px)",
+      "min": 12,
+      "max": 72,
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "text",
+      "id": "member_id_text",
+      "label": "Certified Member ID",
+      "default": "ZC402490631"
+    },
+    {
+      "type": "range",
+      "id": "member_id_font_size",
+      "label": "ID Font Size (px)",
+      "min": 10,
+      "max": 36,
+      "default": 18
+    },
+    {
+      "type": "color",
+      "id": "member_id_color",
+      "label": "ID Color",
+      "default": "#000000"
+    },
+    {
+      "type": "textarea",
+      "id": "description_text",
+      "label": "Description",
+      "default": "As proud SEDEX members, we're part of one of the world's leading ethical trade platforms &mdash; ensuring responsible working conditions, transparency, and social compliance across our supply chain."
+    },
+    {
+      "type": "range",
+      "id": "description_font_size",
+      "label": "Description Font Size (px)",
+      "min": 10,
+      "max": 36,
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Color",
+      "default": "#000000"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_toggle",
+      "label": "Show Button",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Know More"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "range",
+      "id": "button_text_font_size",
+      "label": "Button Text Font Size (px)",
+      "min": 10,
+      "max": 36,
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "checkbox",
+      "id": "overflow_image_toggle",
+      "label": "Show Overflow Main Image",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sedex Certification Section",
+      "category": "Custom"
+    }
+  ]
+}
+
+{% endschema %}

@@ -1,0 +1,338 @@
+<section
+  class="discharge-section"
+  style="background: {{ section.settings.bg_color }};"
+>
+  <!-- Jewelry image moved outside container with wrapper -->
+  {% if section.settings.jewellery_image %}
+    <div class="discharge-jewellery-wrapper">
+      <img
+        class="discharge-jewellery-img"
+        src="{{ section.settings.jewellery_image | img_url: '720x720' }}"
+        alt="Jewellery"
+      >
+    </div>
+  {% endif %}
+  
+  <div class="discharge-section__container">
+    <div class="discharge-img-block">
+      <!-- Main image -->
+      {% if section.settings.main_image %}
+        <img
+          class="discharge-main-img"
+          src="{{ section.settings.main_image | img_url: '720x720' }}"
+          alt="Main image"
+        >
+      {% endif %}
+    </div>
+    
+    <div class="discharge-content-wrapper">
+      <!-- Logo -->
+      {% if section.settings.logo_image %}
+        <div class="discharge-logo-wrapper">
+          <img
+            src="{{ section.settings.logo_image | img_url: '240x' }}"
+            alt="Logo"
+          >
+        </div>
+      {% endif %}
+      
+      <!-- Heading -->
+      <h2 class="discharge-heading">{{ section.settings.heading_text }}</h2>
+      
+      <!-- Description -->
+      <div class="discharge-desc">{{ section.settings.desc_text }}</div>
+
+      <!-- Button: renders only if toggle is true -->
+      {% if section.settings.btn_toggle and section.settings.btn_url != blank %}
+        <a
+          class="discharge-btn"
+          href="{{ section.settings.btn_url }}"
+          {% if section.settings.btn_url contains 'http' %}target="_blank" rel="noopener"{% endif %}>
+          {{ section.settings.btn_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .discharge-section {
+    padding: 100px 100px;
+    position: relative;
+    overflow: visible;
+  }
+  
+  .discharge-jewellery-wrapper {
+    position: absolute;
+    top: -200px; 
+    right: 80px; 
+    max-width: 524.43px; 
+    max-height: 438.46px;
+    transform: rotate(22deg);
+    z-index: 5; 
+    pointer-events: none; /* Ensure jewelry image doesn't block clicks */
+  }
+  
+  .discharge-jewellery-img {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  
+  .discharge-section__container {
+    display: flex;
+    align-items: flex-end;
+    gap: 90px;
+    position: relative;
+  }
+  
+  .discharge-img-block {
+    position: relative;
+    flex: 1;
+    max-width: 650px;
+    max-height: 486px;
+    border-radius: 8px;
+  }
+  
+  .discharge-main-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .discharge-content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+    position: relative;
+  }
+  
+  .discharge-logo-wrapper {
+    max-width: 167px;
+    max-height: 80px;
+    margin-bottom: 56px;
+  }
+  
+  .discharge-logo-wrapper img {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  
+  .discharge-heading {
+    font-size: {{ section.settings.heading_size }}px; 
+    color: {{ section.settings.heading_color }};
+    font-family: 'Givonic', sans-serif;
+    font-weight: 400;
+    max-width: 350px;
+    margin: 0 0 52px 0;
+    position: relative;
+  }
+  
+  .discharge-desc {
+    font-size: {{ section.settings.desc_size }}px; 
+    color: {{ section.settings.desc_color }};
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    max-width: 510px;
+    line-height: 28px;
+  }
+  
+  .discharge-btn {
+    display: inline-block;
+    padding: 12px 40px;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: 4px;
+    font-weight: 500;
+    position: absolute;
+    top: 140px;
+    right: 0;
+    font-size: {{ section.settings.btn_size }}px;
+    font-family: 'Montserrat', sans-serif;
+    color: {{ section.settings.btn_color }};
+    background: {% if section.settings.btn_bg_transparent %}transparent{% else %}{{ section.settings.btn_bg_color }}{% endif %};
+    border: {% if section.settings.btn_bg_transparent %}1px solid {{ section.settings.btn_color }}{% else %}1px solid {{ section.settings.btn_bg_color }}{% endif %};
+          
+  }
+  
+  /* Basic hover effects for button */
+  .discharge-btn:hover {
+    opacity: 0.8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+  
+  .discharge-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Focus state for accessibility */
+  .discharge-btn:focus {
+    outline: 2px solid {{ section.settings.btn_color }};
+    outline-offset: 2px;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .discharge-section {
+      padding: 40px 20px;
+    }
+    
+    .discharge-section__container {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+    .discharge-content-wrapper {
+      padding-left: 0;
+      align-items: center;
+      margin-top: 20px;
+    }
+    
+    .discharge-btn {
+      position: relative;
+      top: auto;
+      right: auto;
+      margin-top: 20px;
+    }
+    
+    .discharge-desc {
+      padding-right: 0;
+      margin-bottom: 20px;
+    }
+    
+    .discharge-jewellery-wrapper {
+      position: relative;
+      top: 0;
+      right: 0;
+      max-width: 60%;
+      margin: 20px auto;
+      transform: none; /* Remove rotation on mobile */
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Zero Discharge Section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background color",
+      "default": "#f8f5e8"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main image"
+    },
+    {
+      "type": "image_picker",
+      "id": "jewellery_image",
+      "label": "Jewellery image"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_image",
+      "label": "Logo image"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading text",
+      "default": "ZERO LIQUID DISCHARGE MANUFACTURING"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading font size (px)",
+      "min": 18,
+      "max": 72,
+      "step": 1,
+      "default": 32
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#222222"
+    },
+    {
+      "type": "textarea",
+      "id": "desc_text",
+      "label": "Description text",
+      "default": "We use the Higg Facility Environmental Module (FEM) to track and improve our environmental impact — from energy and water use to waste and chemical management. This third-party verified tool helps us set clear goals and stay accountable, year after year."
+    },
+    {
+      "type": "range",
+      "id": "desc_size",
+      "label": "Description font size (px)",
+      "min": 10,
+      "max": 32,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "Description color",
+      "default": "#666666"
+    },
+    {
+      "type": "checkbox",
+      "id": "btn_toggle",
+      "label": "Show button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button text",
+      "default": "KNOW MORE"
+    },
+    {
+      "type": "range",
+      "id": "btn_size",
+      "label": "Button text size (px)",
+      "min": 10,
+      "max": 24,
+      "step": 1,
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "btn_color",
+      "label": "Button text color",
+      "default": "#222222"
+    },
+    {
+      "type": "url",
+      "id": "btn_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "btn_bg_transparent",
+      "label": "Button background transparent",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "btn_bg_color",
+      "label": "Button background color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Zero Discharge Section"
+    }
+  ]
+}
+{% endschema %}

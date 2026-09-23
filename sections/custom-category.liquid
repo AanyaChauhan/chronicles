@@ -1,0 +1,751 @@
+<!-- sections/custom-category.liquid -->
+
+<style>
+  /* Custom Category Styles */
+  .custom-category-wrapper-{{ section.id }} {
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+    background: {{ section.settings.background_color }};
+    {% if section.settings.background_image != blank %}
+      background-image: url('{{ section.settings.background_image | image_url: width: 1920 }}');
+      background-size: {{ section.settings.background_size }};
+      background-position: {{ section.settings.background_position }};
+      background-repeat: no-repeat;
+      background-attachment: {{ section.settings.background_attachment }};
+    {% endif %}
+    position: relative;
+  }
+
+  {% if section.settings.background_overlay_enable %}
+  .custom-category-wrapper-{{ section.id }}::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: {{ section.settings.background_overlay_color }};
+    opacity: {{ section.settings.background_overlay_opacity | divided_by: 100.0 }};
+    pointer-events: none;
+    z-index: 1;
+  }
+  {% endif %}
+
+  .custom-category-wrapper-{{ section.id }} .custom-cat-container {
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .custom-category-wrapper-{{ section.id }} .custom-cat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+  }
+
+  .custom-category-wrapper-{{ section.id }} .custom-cat-title {
+    text-align: left;
+    font-size: {{ section.settings.heading_size }}px;
+    font-weight: 600;
+    color: {{ section.settings.heading_color }};
+    letter-spacing: 0px;
+    text-transform: uppercase;
+    font-family: "Montserrat";
+    margin: 0;
+  }
+
+  .custom-category-wrapper-{{ section.id }} .custom-cat-nav-btns {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .custom-category-wrapper-{{ section.id }} .custom-cat-viewport-wrap {
+    position: relative;
+    overflow: hidden;
+    padding: 0 0;
+    z-index: 1;
+  }
+
+  .custom-category-wrapper-{{ section.id }} .custom-cat-viewport {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .custom-category-wrapper-{{ section.id }} .custom-cat-track {
+    display: flex;
+    transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    gap: 20px;
+    will-change: transform;
+    width: fit-content;
+    justify-content: center;
+  }
+
+  .custom-category-wrapper-{{ section.id }} .custom-cat-item {
+    flex: none;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    padding: 10px 0;
+  }
+
+  .custom-category-wrapper-{{ section.id }} .custom-cat-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease;
+  }
+
+  .custom-category-wrapper-{{ section.id }} .custom-cat-link:hover {
+    transform: translateY(-8px);
+  }
+
+  .custom-category-wrapper-{{ section.id }} .custom-cat-img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: {{ section.settings.border_radius }}px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .custom-category-wrapper-{{ section.id }} .custom-cat-link:hover .custom-cat-img-wrap {
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  }
+
+  .custom-category-wrapper-{{ section.id }} .custom-cat-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .custom-category-wrapper-{{ section.id }} .custom-cat-link:hover .custom-cat-img {
+    transform: scale(1.05);
+  }
+
+  .custom-category-wrapper-{{ section.id }} .custom-cat-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .custom-category-wrapper-{{ section.id }} .custom-cat-label {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-size: {{ section.settings.title_size }}px;
+    font-weight: 500;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0%;
+    color: {{ section.settings.title_color }};
+    transition: color 0.3s ease;
+    font-family: 'Montserrat';
+  }
+
+  .custom-category-wrapper-{{ section.id }} .custom-cat-link:hover .custom-cat-label {
+    color: {{ section.settings.title_color }};
+  }
+
+  /* Navigation Arrows */
+  .custom-category-wrapper-{{ section.id }} .custom-cat-nav-btn {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+  }
+
+  .custom-category-wrapper-{{ section.id }} .custom-cat-nav-btn:hover {
+    opacity: 0.7;
+  }
+
+  .custom-category-wrapper-{{ section.id }} .custom-cat-nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .custom-category-wrapper-{{ section.id }} .custom-cat-nav-btn img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+    display: block;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .custom-category-wrapper-{{ section.id }} {
+      padding: {{ section.settings.padding_top | divided_by: 1.5}}px 0 {{ section.settings.padding_bottom | divided_by: 5 }}px;
+      {% if section.settings.mobile_background_image != blank %}
+        background-image: url('{{ section.settings.mobile_background_image | image_url: width: 768 }}') !important;
+        background-size: {{ section.settings.mobile_background_size }};
+        background-position: {{ section.settings.mobile_background_position }};
+        background-attachment: scroll;
+      {% elsif section.settings.background_image != blank %}
+        background-attachment: scroll;
+      {% endif %}
+    }
+
+    .custom-category-wrapper-{{ section.id }} .custom-cat-container {
+      min-width: 95vw;
+      max-width: 100vw;
+      padding: 0 15px;
+    }
+    
+    .custom-category-wrapper-{{ section.id }} .custom-cat-header {
+      margin-bottom: 20px;
+    }
+
+    .custom-category-wrapper-{{ section.id }} .custom-cat-title {
+      font-size: {{ section.settings.heading_size | minus: 8 }}px;
+    }
+    
+    .custom-category-wrapper-{{ section.id }} .custom-cat-viewport-wrap {
+      padding: 0 0 70px 0;
+    }
+
+    .custom-category-wrapper-{{ section.id }} .custom-cat-nav-btns {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      gap: 10px;
+    }
+
+    /* Use Grid Layout on Mobile */
+    .custom-category-wrapper-{{ section.id }} .custom-cat-viewport {
+      overflow: visible;
+      width: 100%;
+    }
+
+    .custom-category-wrapper-{{ section.id }} .custom-cat-track {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: repeat(2, 1fr);
+      gap: 15px;
+      width: 100%;
+      transform: none !important;
+      transition: none;
+    }
+    
+    .custom-category-wrapper-{{ section.id }} .custom-cat-item {
+      flex: none;
+      width: auto !important;
+      padding: 5px 0;
+    }
+
+    /* Hide slides beyond the first 4 on mobile */
+    .custom-category-wrapper-{{ section.id }} .custom-cat-item:nth-child(n+5) {
+      display: none;
+    }
+    
+    .custom-category-wrapper-{{ section.id }} .custom-cat-label {
+      font-size: {{ section.settings.title_size | minus: 2 }}px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+
+    /* Disable hover effect on mobile */
+    .custom-category-wrapper-{{ section.id }} .custom-cat-link:hover {
+      transform: none;
+    }
+    
+    .custom-category-wrapper-{{ section.id }} .custom-cat-link:hover .custom-cat-img-wrap {
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .custom-category-wrapper-{{ section.id }} .custom-cat-viewport-wrap {
+      padding: 0 0px 70px 0px;
+    }
+    
+    .custom-category-wrapper-{{ section.id }} .custom-cat-track {
+      column-gap: 20px;
+      row-gap: 10px;
+    }
+  }
+</style>
+
+<div class="custom-category-section custom-category-wrapper-{{ section.id }}" data-section-id="{{ section.id }}">
+  <div class="custom-cat-main">
+    <div class="custom-cat-container">
+      <div class="custom-cat-header">
+        {% if section.settings.heading != blank %}
+          <h2 class="custom-cat-title">{{ section.settings.heading }}</h2>
+        {% endif %}
+        
+        {% if section.settings.show_arrows %}
+          <div class="custom-cat-nav-btns">
+            <button class="custom-cat-nav-btn custom-cat-prev-btn" type="button" aria-label="Previous categories">
+              {% if section.settings.arrow_prev_image != blank %}
+                <img src="{{ section.settings.arrow_prev_image | image_url: width: 200 }}" 
+                     alt="Previous" 
+                     loading="lazy">
+              {% endif %}
+            </button>
+            <button class="custom-cat-nav-btn custom-cat-next-btn" type="button" aria-label="Next categories">
+              {% if section.settings.arrow_next_image != blank %}
+                <img src="{{ section.settings.arrow_next_image | image_url: width: 200 }}" 
+                     alt="Next" 
+                     loading="lazy">
+              {% endif %}
+            </button>
+          </div>
+        {% endif %}
+      </div>
+      
+      <div class="custom-cat-viewport-wrap">
+        <div class="custom-cat-viewport">
+          <div class="custom-cat-track" 
+               data-slides-desktop="{{ section.settings.slides_desktop }}" 
+               data-slides-mobile="{{ section.settings.slides_mobile }}">
+          
+          {% for block in section.blocks %}
+            <div class="custom-cat-item" {{ block.shopify_attributes }}>
+              <a href="{{ block.settings.category_url | default: '#' }}" class="custom-cat-link">
+                <div class="custom-cat-img-wrap">
+                  {% if block.settings.category_image != blank %}
+                    {{ block.settings.category_image | image_url: width: 400 | image_tag: 
+                       loading: 'lazy', 
+                       alt: block.settings.category_title,
+                       class: 'custom-cat-img' }}
+                  {% else %}
+                    <div class="custom-cat-placeholder">
+                      <div style="text-align: center;">
+                        <svg width="60" height="60" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="2">
+                          <rect x="8" y="8" width="44" height="44" rx="4" ry="4" fill="#f8f9fa" stroke="#d1d5db"/>
+                          <circle cx="20" cy="20" r="3" fill="#9ca3af"/>
+                          <polyline points="52,40 40,28 15,53" stroke="#9ca3af" stroke-width="2" fill="none"/>
+                        </svg>
+                        <div style="margin-top: 8px; font-size: 12px; color: #9ca3af; font-weight: 500;">Add Image</div>
+                      </div>
+                    </div>
+                  {% endif %}
+                </div>
+                {% if block.settings.category_title != blank %}
+                  <h3 class="custom-cat-label">{{ block.settings.category_title }}</h3>
+                {% endif %}
+              </a>
+            </div>
+          {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    class CustomCategorySlider {
+      constructor(element) {
+        this.container = element;
+        this.viewport = this.container.querySelector('.custom-cat-viewport');
+        this.slider = this.container.querySelector('.custom-cat-track');
+        this.slides = this.container.querySelectorAll('.custom-cat-item');
+        this.prevButton = this.container.querySelector('.custom-cat-prev-btn');
+        this.nextButton = this.container.querySelector('.custom-cat-next-btn');
+        
+        this.currentIndex = 0;
+        this.isMobile = window.innerWidth <= 768;
+        this.slidesToShow = this.getSlidesToShow();
+        this.totalSlides = this.slides.length;
+        this.maxIndex = Math.max(0, this.totalSlides - this.slidesToShow);
+        
+        this.lastZoomLevel = this.getZoomLevel();
+        this.lastViewportWidth = window.innerWidth;
+        this.resizeObserver = null;
+        
+        this.init();
+      }
+
+      init() {
+        if (this.totalSlides === 0) return;
+        
+        if (!this.isMobile) {
+          this.updateSlideWidths();
+          this.startZoomDetection();
+        }
+        
+        this.bindEvents();
+        this.updateButtons();
+        this.updateSliderPosition();
+      }
+
+      getZoomLevel() {
+        return window.devicePixelRatio || 1;
+      }
+
+      startZoomDetection() {
+        if (this.isMobile) return;
+        
+        this.zoomCheckInterval = setInterval(() => {
+          const currentZoom = this.getZoomLevel();
+          const currentWidth = window.innerWidth;
+          
+          if (Math.abs(currentZoom - this.lastZoomLevel) > 0.01 || 
+              Math.abs(currentWidth - this.lastViewportWidth) > 10) {
+            this.lastZoomLevel = currentZoom;
+            this.lastViewportWidth = currentWidth;
+            this.handleZoomChange();
+          }
+        }, 250);
+
+        if (window.visualViewport) {
+          window.visualViewport.addEventListener('resize', () => {
+            this.handleZoomChange();
+          });
+        }
+
+        if (window.ResizeObserver && this.viewport) {
+          this.resizeObserver = new ResizeObserver(() => {
+            this.handleZoomChange();
+          });
+          this.resizeObserver.observe(this.viewport);
+        }
+
+        const mediaQuery = window.matchMedia('(resolution: 1dppx)');
+        if (mediaQuery.addEventListener) {
+          mediaQuery.addEventListener('change', () => {
+            this.handleZoomChange();
+          });
+        } else if (mediaQuery.addListener) {
+          mediaQuery.addListener(() => {
+            this.handleZoomChange();
+          });
+        }
+      }
+
+      handleZoomChange() {
+        requestAnimationFrame(() => {
+          this.handleResize();
+        });
+      }
+
+      getSlidesToShow() {
+        const desktopSlides = parseInt(this.slider.dataset.slidesDesktop) || 5;
+        const mobileSlides = parseInt(this.slider.dataset.slidesMobile) || 4;
+        
+        return window.innerWidth <= 768 ? mobileSlides : desktopSlides;
+      }
+
+      updateSlideWidths() {
+        if (this.isMobile || !this.viewport || this.slides.length === 0) return;
+        
+        this.viewport.style.width = '';
+        
+        const viewportRect = this.viewport.getBoundingClientRect();
+        const viewportWidth = Math.floor(viewportRect.width);
+        
+        const gap = 20;
+        const availableWidth = viewportWidth - (this.slidesToShow - 1) * gap;
+        const slideWidth = Math.floor(availableWidth / this.slidesToShow);
+        
+        this.slides.forEach(slide => {
+          slide.style.width = `${slideWidth}px`;
+          slide.style.flexShrink = '0';
+          slide.style.flexGrow = '0';
+        });
+        
+        this.viewport.style.width = `${viewportWidth}px`;
+        this.viewport.style.overflow = 'hidden';
+      }
+
+      bindEvents() {
+        this.prevButton?.addEventListener('click', () => this.prevSlide());
+        this.nextButton?.addEventListener('click', () => this.nextSlide());
+        
+        const resizeHandler = this.debounce(() => {
+          this.handleResize();
+        }, 100);
+        
+        window.addEventListener('resize', resizeHandler);
+
+        if (!this.isMobile) {
+          let startX = 0;
+          let startY = 0;
+          let isDragging = false;
+
+          this.slider.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            isDragging = true;
+          }, { passive: true });
+
+          this.slider.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            
+            const moveX = e.touches[0].clientX - startX;
+            const moveY = e.touches[0].clientY - startY;
+            
+            if (Math.abs(moveX) > Math.abs(moveY)) {
+              e.preventDefault();
+            }
+          }, { passive: false });
+
+          this.slider.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            
+            const endX = e.changedTouches[0].clientX;
+            const endY = e.changedTouches[0].clientY;
+            const diffX = startX - endX;
+            const diffY = startY - endY;
+            
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+              if (diffX > 0) {
+                this.nextSlide();
+              } else {
+                this.prevSlide();
+              }
+            }
+            
+            isDragging = false;
+          }, { passive: true });
+        }
+      }
+
+      handleResize() {
+        const wasMobile = this.isMobile;
+        this.isMobile = window.innerWidth <= 768;
+        
+        if (wasMobile !== this.isMobile) {
+          location.reload();
+          return;
+        }
+        
+        if (!this.isMobile) {
+          const newSlidesToShow = this.getSlidesToShow();
+          this.slidesToShow = newSlidesToShow;
+          this.maxIndex = Math.max(0, this.totalSlides - this.slidesToShow);
+          this.currentIndex = Math.min(this.currentIndex, this.maxIndex);
+          
+          this.updateSlideWidths();
+          this.updateSliderPosition();
+        }
+        
+        this.updateButtons();
+      }
+
+      prevSlide() {
+        if (this.isMobile) {
+          if (this.currentIndex > 0) {
+            this.currentIndex--;
+            this.showMobilePage();
+          }
+        } else {
+          if (this.currentIndex > 0) {
+            this.currentIndex--;
+            this.updateSliderPosition();
+            this.updateButtons();
+          }
+        }
+      }
+
+      nextSlide() {
+        if (this.isMobile) {
+          const maxPages = Math.ceil(this.totalSlides / 4) - 1;
+          if (this.currentIndex < maxPages) {
+            this.currentIndex++;
+            this.showMobilePage();
+          }
+        } else {
+          if (this.currentIndex < this.maxIndex) {
+            this.currentIndex++;
+            this.updateSliderPosition();
+            this.updateButtons();
+          }
+        }
+      }
+
+      showMobilePage() {
+        const startIndex = this.currentIndex * 4;
+        
+        this.slides.forEach((slide, index) => {
+          if (index >= startIndex && index < startIndex + 4) {
+            slide.style.display = 'block';
+          } else {
+            slide.style.display = 'none';
+          }
+        });
+        
+        this.updateButtons();
+      }
+
+      updateSliderPosition() {
+        if (this.isMobile || this.totalSlides === 0 || !this.slides[0]) return;
+        
+        const slideRect = this.slides[0].getBoundingClientRect();
+        const slideWidth = Math.floor(slideRect.width);
+        const gap = 20;
+        const translateX = -(this.currentIndex * (slideWidth + gap));
+        
+        this.slider.style.transform = `translateX(${translateX}px)`;
+      }
+
+      updateButtons() {
+        if (this.isMobile) {
+          const maxPages = Math.ceil(this.totalSlides / 4) - 1;
+          
+          if (this.prevButton) {
+            this.prevButton.disabled = this.currentIndex === 0;
+          }
+          
+          if (this.nextButton) {
+            this.nextButton.disabled = this.currentIndex >= maxPages;
+          }
+        } else {
+          if (this.prevButton) {
+            this.prevButton.disabled = this.currentIndex === 0;
+          }
+          
+          if (this.nextButton) {
+            this.nextButton.disabled = this.currentIndex >= this.maxIndex || this.totalSlides <= this.slidesToShow;
+          }
+        }
+      }
+
+      debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+          const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+          };
+          clearTimeout(timeout);
+          timeout = setTimeout(later, wait);
+        };
+      }
+
+      destroy() {
+        if (this.zoomCheckInterval) {
+          clearInterval(this.zoomCheckInterval);
+        }
+        if (this.resizeObserver) {
+          this.resizeObserver.disconnect();
+        }
+      }
+    }
+
+    let sliderInstance = null;
+
+    function initSlider() {
+      if (sliderInstance && sliderInstance.destroy) {
+        sliderInstance.destroy();
+      }
+      
+      const slider = document.querySelector('[data-section-id="{{ section.id }}"] .custom-cat-main');
+      if (slider) {
+        sliderInstance = new CustomCategorySlider(slider);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initSlider);
+    } else {
+      initSlider();
+    }
+
+    document.addEventListener('shopify:section:load', (event) => {
+      if (event.detail.sectionId === '{{ section.id }}') {
+        setTimeout(initSlider, 100);
+      }
+    });
+
+    document.addEventListener('shopify:section:reorder', initSlider);
+    document.addEventListener('shopify:section:select', (event) => {
+      if (event.detail.sectionId === '{{ section.id }}') {
+        setTimeout(initSlider, 100);
+      }
+    });
+
+    window.addEventListener('beforeunload', () => {
+      if (sliderInstance && sliderInstance.destroy) {
+        sliderInstance.destroy();
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Custom Category",
+  "tag": "section",
+  "class": "custom-category-section",
+  "settings": [
+    {"type": "header", "content": "General Settings"},
+    {"type": "text", "id": "heading", "label": "Section Heading", "default": "SHOP BY CATEGORY"},
+    {"type": "range", "id": "slides_desktop", "label": "Categories to show on desktop", "min": 2, "max": 6, "step": 1, "default": 5},
+    {"type": "range", "id": "slides_mobile", "label": "Categories per page on mobile", "min": 4, "max": 4, "step": 1, "default": 4, "info": "Mobile view always shows 4 categories in a 2x2 grid"},
+    {"type": "checkbox", "id": "show_arrows", "label": "Show navigation arrows", "default": true},
+    {"type": "header", "content": "Spacing"},
+    {"type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 120, "step": 5, "unit": "px", "default": 60},
+    {"type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 120, "step": 5, "unit": "px", "default": 60},
+    {"type": "header", "content": "Desktop Background"},
+    {"type": "color", "id": "background_color", "label": "Background color", "default": "#f5f3f0", "info": "Background color will show if no background image is uploaded"},
+    {"type": "image_picker", "id": "background_image", "label": "Desktop background image", "info": "Upload a background image for desktop view"},
+    {"type": "select", "id": "background_size", "label": "Desktop background size", "default": "cover", "options": [{"value": "cover", "label": "Cover (fills entire area)"}, {"value": "contain", "label": "Contain (fits entire image)"}, {"value": "auto", "label": "Auto (original size)"}]},
+    {"type": "select", "id": "background_position", "label": "Desktop background position", "default": "center center", "options": [{"value": "left top", "label": "Left Top"}, {"value": "center top", "label": "Center Top"}, {"value": "right top", "label": "Right Top"}, {"value": "left center", "label": "Left Center"}, {"value": "center center", "label": "Center Center"}, {"value": "right center", "label": "Right Center"}, {"value": "left bottom", "label": "Left Bottom"}, {"value": "center bottom", "label": "Center Bottom"}, {"value": "right bottom", "label": "Right Bottom"}]},
+    {"type": "select", "id": "background_attachment", "label": "Desktop background attachment", "default": "scroll", "options": [{"value": "scroll", "label": "Scroll (moves with page)"}, {"value": "fixed", "label": "Fixed (parallax effect)"}], "info": "Fixed attachment creates a parallax effect but may impact mobile performance"},
+    {"type": "header", "content": "Mobile Background"},
+    {"type": "image_picker", "id": "mobile_background_image", "label": "Mobile background image", "info": "Upload a separate background image for mobile view. If not provided, desktop image will be used."},
+    {"type": "select", "id": "mobile_background_size", "label": "Mobile background size", "default": "cover", "options": [{"value": "cover", "label": "Cover (fills entire area)"}, {"value": "contain", "label": "Contain (fits entire image)"}, {"value": "auto", "label": "Auto (original size)"}]},
+    {"type": "select", "id": "mobile_background_position", "label": "Mobile background position", "default": "center center", "options": [{"value": "left top", "label": "Left Top"}, {"value": "center top", "label": "Center Top"}, {"value": "right top", "label": "Right Top"}, {"value": "left center", "label": "Left Center"}, {"value": "center center", "label": "Center Center"}, {"value": "right center", "label": "Right Center"}, {"value": "left bottom", "label": "Left Bottom"}, {"value": "center bottom", "label": "Center Bottom"}, {"value": "right bottom", "label": "Right Bottom"}]},
+    {"type": "header", "content": "Background Overlay"},
+    {"type": "checkbox", "id": "background_overlay_enable", "label": "Enable background overlay", "default": false, "info": "Add a color overlay on top of the background image"},
+    {"type": "color", "id": "background_overlay_color", "label": "Overlay color", "default": "#000000"},
+    {"type": "range", "id": "background_overlay_opacity", "label": "Overlay opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "default": 30},
+    {"type": "header", "content": "Colors"},
+    {"type": "color", "id": "heading_color", "label": "Heading color", "default": "#2c2c2c"},
+    {"type": "color", "id": "title_color", "label": "Category title color", "default": "#2c2c2c"},
+    {"type": "color", "id": "title_hover_color", "label": "Category title hover color", "default": "#8b5a3c"},
+    {"type": "header", "content": "Typography"},
+    {"type": "range", "id": "heading_size", "label": "Heading font size", "min": 16, "max": 48, "step": 2, "unit": "px", "default": 32},
+    {"type": "range", "id": "title_size", "label": "Category title font size", "min": 10, "max": 24, "step": 1, "unit": "px", "default": 14},
+    {"type": "header", "content": "Styling"},
+    {"type": "range", "id": "border_radius", "label": "Image border radius", "min": 0, "max": 30, "step": 2, "unit": "px", "default": 16},
+    {"type": "header", "content": "Navigation Arrows"},
+    {"type": "image_picker", "id": "arrow_prev_image", "label": "Previous arrow image", "info": "Upload SVG or image for previous arrow button"},
+    {"type": "image_picker", "id": "arrow_next_image", "label": "Next arrow image", "info": "Upload SVG or image for next arrow button"}
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {"type": "text", "id": "category_title", "label": "Category Title", "default": "Category"},
+        {"type": "image_picker", "id": "category_image", "label": "Category Image"},
+        {"type": "url", "id": "category_url", "label": "Category URL"}
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Category",
+      "blocks": [
+        {"type": "category", "settings": {"category_title": "RINGS"}},
+        {"type": "category", "settings": {"category_title": "EARRINGS"}},
+        {"type": "category", "settings": {"category_title": "NECKLACES"}},
+        {"type": "category", "settings": {"category_title": "BRACELETS"}},
+        {"type": "category", "settings": {"category_title": "ANKLETS"}}
+      ]
+    }
+  ]
+}
+{% endschema %}

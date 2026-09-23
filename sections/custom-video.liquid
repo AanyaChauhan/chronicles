@@ -1,0 +1,325 @@
+<section>
+  <div class="custom-video-section" style="background-color: {{ section.settings.background_color }};">
+    <div class="video-section-header">
+      <span class="video-section-top-heading">
+        {{ section.settings.first_heading }}
+      </span>
+      <h2 class="video-section-main-heading">
+        {{ section.settings.second_heading }}
+      </h2>
+    </div>
+    
+    <div class="video-section-content">
+      <div class="video-carousel-track">
+        {% comment %} Original media items {% endcomment %}
+        {% for block in section.blocks %}
+          <div class="video-carousel-item" {{ block.shopify_attributes }}>
+            {% if block.settings.media_type == 'video' and block.settings.video != blank %}
+              <video class="video-section-video" muted autoplay loop playsinline preload="metadata">
+                {% for source in block.settings.video.sources %}
+                  <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                {% endfor %}
+                Your browser does not support the video tag.
+              </video>
+            {% elsif block.settings.media_type == 'image' and block.settings.image != blank %}
+              <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.image.alt | escape }}" class="video-section-video">
+            {% else %}
+              <div class="video-placeholder">
+                Add Media
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+
+        {% comment %} Duplicate for seamless loop {% endcomment %}
+        {% for block in section.blocks %}
+          <div class="video-carousel-item">
+            {% if block.settings.media_type == 'video' and block.settings.video != blank %}
+              <video class="video-section-video" muted autoplay loop playsinline preload="metadata">
+                {% for source in block.settings.video.sources %}
+                  <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                {% endfor %}
+                Your browser does not support the video tag.
+              </video>
+            {% elsif block.settings.media_type == 'image' and block.settings.image != blank %}
+              <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{ block.settings.image.alt | escape }}" class="video-section-video">
+            {% else %}
+              <div class="video-placeholder">
+                Add Media
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.custom-video-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 60px 0;
+  overflow: hidden;
+}
+
+.video-section-header {
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.video-section-top-heading {
+  font-size: 16px;
+  font-weight: 500;
+  font-family: 'Givonic', sans-serif;
+  display: block;
+}
+
+.video-section-main-heading {
+  font-size: 40px;
+  font-weight: 700;
+  font-family: 'Givonic', sans-serif;
+  margin-top: 14px;
+}
+
+.video-section-content {
+  width: 100%;
+  overflow: hidden;
+  margin-top: 50px;
+  position: relative;
+}
+
+.video-carousel-track {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  width: max-content;
+  animation: slideVideoCarousel-{{ section.id }} {{ section.settings.animation_duration }}s linear infinite;
+  will-change: transform;
+}
+
+.video-carousel-item {
+  flex: 0 0 300px;
+  width: 300px;
+  height: auto;
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.video-section-video {
+  width: 100%;
+  aspect-ratio: 9/16;
+  border-radius: 16px;
+  object-fit: cover;
+  background: #eee;
+  outline: none;
+  transition: transform 0.3s ease;
+}
+
+.video-placeholder {
+  width: 100%;
+  aspect-ratio: 9/16;
+  border-radius: 16px;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #999;
+  font-family: 'Givonic', sans-serif;
+}
+
+.video-carousel-item:hover .video-section-video {
+  transform: scale(1.05);
+}
+
+.video-carousel-track:hover {
+  animation-play-state: paused;
+}
+
+{% comment %} Animation keyframes {% endcomment %}
+{% assign total_items = section.blocks.size %}
+{% if total_items > 0 %}
+  {% assign item_width = 300 %}
+  {% assign gap_width = 32 %}
+  {% assign total_width = total_items | times: item_width %}
+  {% assign total_gap = total_items | times: gap_width %}
+  {% assign translate_distance = total_width | plus: total_gap %}
+
+  @keyframes slideVideoCarousel-{{ section.id }} {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-{{ translate_distance }}px);
+    }
+  }
+{% endif %}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .custom-video-section {
+    padding: 40px 0;
+  }
+  
+  .video-carousel-item {
+    flex: 0 0 250px;
+    width: 250px;
+  }
+  
+  .video-section-main-heading {
+    font-size: 32px;
+  }
+
+  {% if total_items > 0 %}
+    {% assign mobile_item_width = 250 %}
+    {% assign mobile_total_width = total_items | times: mobile_item_width %}
+    {% assign mobile_total_gap = total_items | times: gap_width %}
+    {% assign mobile_translate_distance = mobile_total_width | plus: mobile_total_gap %}
+
+    @keyframes slideVideoCarousel-{{ section.id }} {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-{{ mobile_translate_distance }}px);
+      }
+    }
+  {% endif %}
+}
+
+@media (max-width: 480px) {
+  .custom-video-section {
+    padding: 30px 0;
+  }
+  
+  .video-carousel-track {
+    gap: 20px;
+  }
+  
+  .video-carousel-item {
+    flex: 0 0 200px;
+    width: 200px;
+  }
+  
+  .video-section-main-heading {
+    font-size: 28px;
+  }
+
+  {% if total_items > 0 %}
+    {% assign small_item_width = 200 %}
+    {% assign small_gap_width = 20 %}
+    {% assign small_total_width = total_items | times: small_item_width %}
+    {% assign small_total_gap = total_items | times: small_gap_width %}
+    {% assign small_translate_distance = small_total_width | plus: small_total_gap %}
+
+    @keyframes slideVideoCarousel-{{ section.id }} {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-{{ small_translate_distance }}px);
+      }
+    }
+  {% endif %}
+}
+</style>
+
+{% schema %}
+{
+  "name": "Custom Media Carousel",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#faf9ef"
+    },
+    {
+      "type": "text",
+      "id": "first_heading",
+      "label": "First Heading",
+      "default": "WATCH AND BUY"
+    },
+    {
+      "type": "text",
+      "id": "second_heading",
+      "label": "Second Heading",
+      "default": "WORN & ADORED"
+    },
+    {
+      "type": "header",
+      "content": "Carousel Settings"
+    },
+    {
+      "type": "range",
+      "id": "animation_duration",
+      "label": "Animation Duration",
+      "info": "Time for one complete cycle in seconds",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "unit": "s",
+      "default": 30
+    }
+  ],
+  "blocks": [
+    {
+      "type": "media_item",
+      "name": "Media Item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "media_type",
+          "label": "Media Type",
+          "default": "video",
+          "options": [
+            {
+              "value": "video",
+              "label": "Video"
+            },
+            {
+              "value": "image",
+              "label": "Image"
+            }
+          ]
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Media Carousel",
+      "category": "Custom",
+      "blocks": [
+        {
+          "type": "media_item"
+        },
+        {
+          "type": "media_item"
+        },
+        {
+          "type": "media_item"
+        },
+        {
+          "type": "media_item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

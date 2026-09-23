@@ -1,0 +1,441 @@
+{% doc %}
+  @prompt
+    create a three grid blog post display. allow for individual selection also allow for category selection
+
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-blog-grid-{{ ai_gen_id }} {
+    padding: {{ block.settings.section_padding }}px 0;
+  }
+
+  .ai-blog-grid__container-{{ ai_gen_id }} {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .ai-blog-grid__header-{{ ai_gen_id }} {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .ai-blog-grid__title-{{ ai_gen_id }} {
+    color: {{ block.settings.title_color }};
+    margin: 0 0 16px;
+    font-size: {{ block.settings.title_size }}px;
+  }
+
+  .ai-blog-grid__subtitle-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    margin: 0;
+    font-size: {{ block.settings.subtitle_size }}px;
+  }
+
+  .ai-blog-grid__posts-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: {{ block.settings.grid_gap }}px;
+  }
+
+  .ai-blog-post-card-{{ ai_gen_id }} {
+    background-color: {{ block.settings.card_background }};
+    border-radius: {{ block.settings.card_border_radius }}px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;border: 1px solid {{ block.settings.card_border_color }};
+  }
+
+  .ai-blog-post-card-{{ ai_gen_id }}:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  }
+
+  .ai-blog-post-card__image-wrapper-{{ ai_gen_id }} {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+  }
+
+  .ai-blog-post-card__image-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .ai-blog-post-card-{{ ai_gen_id }}:hover .ai-blog-post-card__image-{{ ai_gen_id }} {
+    transform: scale(1.05);
+  }
+
+  .ai-blog-post-card__image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-blog-post-card__image-placeholder-{{ ai_gen_id }} svg {
+    width: 60px;
+    height: 60px;
+    opacity: 0.5;
+  }
+
+  .ai-blog-post-card__content-{{ ai_gen_id }} {
+    padding: 24px;
+  }
+
+  .ai-blog-post-card__date-{{ ai_gen_id }} {
+    color: {{ block.settings.meta_color }};
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .ai-blog-post-card__title-{{ ai_gen_id }} {
+    color: {{ block.settings.title_color }};
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0 0 12px;
+    line-height: 1.4;
+  }
+
+  .ai-blog-post-card__title-link-{{ ai_gen_id }} {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .ai-blog-post-card__title-link-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.link_hover_color }};
+  }
+
+  .ai-blog-post-card__excerpt-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    font-size: 14px;
+    line-height: 1.6;
+    margin: 0 0 16px;
+  }
+
+  .ai-blog-post-card__meta-{{ ai_gen_id }} {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: {{ block.settings.meta_color }};
+    font-size: 12px;
+  }
+
+  .ai-blog-post-card__author-{{ ai_gen_id }} {
+    font-weight: 500;
+  }
+
+  .ai-blog-post-card__read-more-{{ ai_gen_id }} {
+    color: {{ block.settings.link_color }};
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .ai-blog-post-card__read-more-{{ ai_gen_id }}:hover {
+    color: {{ block.settings.link_hover_color }};
+  }
+
+  .ai-blog-grid__empty-{{ ai_gen_id }} {
+    text-align: center;
+    padding: 60px 20px;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-blog-grid__empty-title-{{ ai_gen_id }} {
+    font-size: 24px;
+    margin: 0 0 16px;
+  }
+
+  .ai-blog-grid__empty-text-{{ ai_gen_id }} {
+    font-size: 16px;
+    opacity: 0.7;
+  }
+
+  @media screen and (max-width: 990px) {
+    .ai-blog-grid__posts-{{ ai_gen_id }} {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-blog-grid__posts-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+    }
+
+    .ai-blog-post-card__content-{{ ai_gen_id }} {
+      padding: 20px;
+    }
+
+    .ai-blog-grid__title-{{ ai_gen_id }} {
+      font-size: {{ block.settings.title_size | times: 0.8 }}px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-blog-grid-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-blog-grid__container-{{ ai_gen_id }}">
+    {% if block.settings.title != blank or block.settings.subtitle != blank %}
+      <div class="ai-blog-grid__header-{{ ai_gen_id }}">
+        {% if block.settings.title != blank %}
+          <h2 class="ai-blog-grid__title-{{ ai_gen_id }}">{{ block.settings.title }}</h2>
+        {% endif %}
+        {% if block.settings.subtitle != blank %}
+          <p class="ai-blog-grid__subtitle-{{ ai_gen_id }}">{{ block.settings.subtitle }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% liquid
+      assign posts_to_show = blank
+      assign posts_count = 0
+
+      if block.settings.selection_type == 'individual'
+        assign posts_to_show = block.settings.individual_posts
+        assign posts_count = posts_to_show.size
+      elsif block.settings.selection_type == 'category' and block.settings.blog != blank
+        assign posts_to_show = block.settings.blog.articles
+        assign posts_count = posts_to_show.size
+      endif
+    %}
+
+    {% if posts_count > 0 %}
+      <div class="ai-blog-grid__posts-{{ ai_gen_id }}">
+        {% for article in posts_to_show limit: 3 %}
+          <article class="ai-blog-post-card-{{ ai_gen_id }}">
+            <div class="ai-blog-post-card__image-wrapper-{{ ai_gen_id }}">
+              {% if article.image %}
+                <img
+                  src="{{ article.image | image_url: width: 600 }}"
+                  alt="{{ article.image.alt | escape }}"
+                  class="ai-blog-post-card__image-{{ ai_gen_id }}"
+                  loading="lazy"
+                  width="600"
+                  height="338"
+                >
+              {% else %}
+                <div class="ai-blog-post-card__image-placeholder-{{ ai_gen_id }}">
+                  {{ 'image' | placeholder_svg_tag }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="ai-blog-post-card__content-{{ ai_gen_id }}">
+              <div class="ai-blog-post-card__date-{{ ai_gen_id }}">
+                {{ article.published_at | date: '%B %d, %Y' }}
+              </div>
+
+              <h3 class="ai-blog-post-card__title-{{ ai_gen_id }}">
+                <a href="{{ article.url }}" class="ai-blog-post-card__title-link-{{ ai_gen_id }}">
+                  {{ article.title }}
+                </a>
+              </h3>
+
+              {% if article.excerpt != blank %}
+                <div class="ai-blog-post-card__excerpt-{{ ai_gen_id }}">
+                  {{ article.excerpt | strip_html | truncate: 120 }}
+                </div>
+              {% endif %}
+
+              <div class="ai-blog-post-card__meta-{{ ai_gen_id }}">
+                <span class="ai-blog-post-card__author-{{ ai_gen_id }}">
+                  By {{ article.author | default: 'Admin' }}
+                </span>
+                <a href="{{ article.url }}" class="ai-blog-post-card__read-more-{{ ai_gen_id }}">
+                  Read more
+                </a>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="ai-blog-grid__empty-{{ ai_gen_id }}">
+        <h3 class="ai-blog-grid__empty-title-{{ ai_gen_id }}">No blog posts found</h3>
+        <p class="ai-blog-grid__empty-text-{{ ai_gen_id }}">
+          {% if block.settings.selection_type == 'individual' %}
+            Please select individual blog posts to display.
+          {% else %}
+            Please select a blog category or ensure the selected blog has published articles.
+          {% endif %}
+        </p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog grid display",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section title",
+      "default": "Latest from our blog"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section subtitle",
+      "default": "Discover insights, tips, and stories"
+    },
+    {
+      "type": "select",
+      "id": "selection_type",
+      "label": "Post selection",
+      "options": [
+        {
+          "value": "individual",
+          "label": "Individual posts"
+        },
+        {
+          "value": "category",
+          "label": "Blog category"
+        }
+      ],
+      "default": "category"
+    },
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "article",
+      "id": "post_1",
+      "label": "First post"
+    },
+    {
+      "type": "article",
+      "id": "post_2",
+      "label": "Second post"
+    },
+    {
+      "type": "article",
+      "id": "post_3",
+      "label": "Third post"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Section padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "grid_gap",
+      "min": 16,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Grid gap",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "label": "Card border radius",
+      "default": 12
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#666666"
+    },
+    {
+      "type": "color",
+      "id": "meta_color",
+      "label": "Meta text color",
+      "default": "#999999"
+    },
+    {
+      "type": "color",
+      "id": "link_color",
+      "label": "Link color",
+      "default": "#000f9f"
+    },
+    {
+      "type": "color",
+      "id": "link_hover_color",
+      "label": "Link hover color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card border color",
+      "default": "#e6e6e6"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "range",
+      "id": "title_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Title size",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "subtitle_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Subtitle size",
+      "default": 16
+    }
+  ],
+  "presets": [
+    {
+      "name": "Blog grid display"
+    }
+  ]
+}
+{% endschema %}

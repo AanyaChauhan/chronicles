@@ -1,0 +1,213 @@
+<div 
+  class="biker-pilgrimage-section" 
+  style="background-image:url({{ section.settings.bg_image | img_url: 'master' }});"
+>
+  <div class="biker-pilgrimage-grid">
+    <div class="biker-pilgrimage-col1">
+      <h2 
+        class="biker-pilgrimage-title" 
+        style="font-size:{{ section.settings.title_font_size }}px; color:{{ section.settings.title_color }};"
+      >
+        {{ section.settings.title_text }}
+      </h2>
+      <p 
+        class="biker-pilgrimage-para1" 
+        style="font-size:{{ section.settings.para_font_size }}px; color:{{ section.settings.para_color }};"
+      >
+        {{ section.settings.para1_text }}
+      </p>
+      <p 
+        class="biker-pilgrimage-para2" 
+        style="font-size:{{ section.settings.para_font_size }}px; color:{{ section.settings.para_color }};"
+      >
+        {{ section.settings.para2_text }}
+      </p>
+    </div>
+    <div class="biker-pilgrimage-col2">
+      <p 
+        class="biker-pilgrimage-para3" 
+        style="font-size:{{ section.settings.para_font_size }}px; color:{{ section.settings.para_color }};"
+      >
+        {{ section.settings.para3_text }}
+      </p>
+    </div>
+  </div>
+</div>
+
+<style>
+.biker-pilgrimage-section {
+  background-size: cover;
+  background-position: top center;
+  padding: 65px 75px 250px 75px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.biker-pilgrimage-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 23px;
+  align-items: start;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.biker-pilgrimage-col1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.biker-pilgrimage-title {
+  margin: 0 0 24px 0;
+  font-weight: 600;
+  font-family: 'Anton', sans-serif;
+  line-height: 120%;
+}
+
+.biker-pilgrimage-para1 {
+  margin: 0 0 40px 0;
+  font-family: 'Termina', sans-serif;
+  font-weight: 500;
+  line-height: 150%;
+}
+.biker-pilgrimage-para2 {
+  margin: 0;
+  font-family: 'Termina', sans-serif;
+  font-weight: 500;
+  line-height: 150%;
+}
+
+.biker-pilgrimage-para3 {
+  font-family: 'Termina', sans-serif;
+  font-weight: 500;
+  line-height: 150%;
+  margin: 0;
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  /* Ensures vertical alignment with bottom of col1 */
+}
+
+.biker-pilgrimage-col2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 100%;
+}
+
+/* Responsive styling */
+@media (max-width: 768px) {
+  .biker-pilgrimage-section {
+    padding: 60px 16px 120px 16px;
+    background-position-x: 29.5%;
+    {% if section.settings.bg_image_mobile %}
+      background-image: url({{ section.settings.bg_image_mobile | img_url: 'master' }}) !important;
+    {% endif %}
+  }
+  .biker-pilgrimage-title {
+  font-size: 30px !important;
+  margin-bottom: 20px;
+  }
+  .biker-pilgrimage-grid {
+    grid-template-columns: 1fr;
+    gap: 0px;
+  }
+  .biker-pilgrimage-col2 {
+    min-height: auto;
+    margin-top: 24px;
+  }
+  .biker-pilgrimage-para1,
+.biker-pilgrimage-para2, .biker-pilgrimage-para3 {
+  font-size: 16px !important;
+  
+  }
+
+  .biker-pilgrimage-para1{
+    margin-bottom: 30px;
+  }
+  .biker-pilgrimage-col1 {
+    margin-bottom: 3px;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Biker Pilgrimage",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background Image (Desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "bg_image_mobile",
+      "label": "Background Image (Mobile)"
+    },
+    {
+      "type": "text",
+      "id": "title_text",
+      "label": "Title Text",
+      "default": "The bikers' pilgrimage"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "min": 18,
+      "max": 70,
+      "step": 2,
+      "unit": "px",
+      "label": "Title Font Size",
+      "default": 28
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#262626"
+    },
+    {
+      "type": "text",
+      "id": "para1_text",
+      "label": "Paragraph 1 Text",
+      "default": "There's nothing on earth quite like the Isle of Man TT race..."
+    },
+    {
+      "type": "text",
+      "id": "para2_text",
+      "label": "Paragraph 2 Text",
+      "default": "A combination of precision driving, quick reflexes, and sheer bravery..."
+    },
+    {
+      "type": "text",
+      "id": "para3_text",
+      "label": "Paragraph 3 Text",
+      "default": "Once a year, motorcycle enthusiasts from around the globe flock to the Isle of Man..."
+    },
+    {
+      "type": "range",
+      "id": "para_font_size",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Paragraph Font Size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "para_color",
+      "label": "Paragraph Color",
+      "default": "#363636"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Biker Pilgrimage",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

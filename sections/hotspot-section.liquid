@@ -1,0 +1,1625 @@
+{{ 'component-card-horizontal.css' | asset_url | stylesheet_tag }}
+{{ 'section-product-markers.css' | asset_url | stylesheet_tag }}
+{{ 'swiper-bundle.min.css' | asset_url | stylesheet_tag }}
+
+<script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product-markers.js' | asset_url }}" defer="defer"></script>
+
+<style>
+/* Import animations from original file */
+@keyframes markerFadeIn {
+  0% {
+    opacity: 0;
+    scale: 0.9;
+  }
+  100% {
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes markerFadeOut {
+  0% {
+    opacity: 1;
+    scale: 1;
+  }
+  100% {
+    opacity: 0;
+    scale: 0.9;
+  }
+}
+
+@keyframes markerScaleFade {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.33);
+  }
+  100% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.33);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0;
+  }
+}
+
+/* Main wrapper */
+.hotspot-split__wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Swiper Navigation */
+.swiper-navigation {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  gap: 2rem;
+}
+
+@media screen and (min-width: 990px) {
+  .swiper-navigation {
+    display: none;
+  }
+}
+
+.swiper-button-prev-custom,
+.swiper-button-next-custom {
+  pointer-events: all;
+  width: 5rem;
+  height: 5rem;
+  background: white;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.swiper-button-prev-custom:active,
+.swiper-button-next-custom:active {
+  background: #E2001A !important;
+}
+
+.swiper-button-prev-custom:active svg path,
+.swiper-button-next-custom:active svg path {
+  stroke: white !important;
+}
+
+.swiper-button-prev-custom.swiper-button-disabled,
+.swiper-button-next-custom.swiper-button-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.swiper-button-prev-custom svg,
+.swiper-button-next-custom svg {
+  width: 2.4rem;
+  height: 2.4rem;
+}
+
+.swiper-button-prev-custom svg path,
+.swiper-button-next-custom svg path {
+  stroke: black;
+  transition: stroke 0.3s ease;
+}
+
+/* Slide Content */
+.hotspot-split__slide-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  width: 100%;
+  min-height: 80rem;
+}
+
+@media screen and (max-width: 989px) {
+  .hotspot-split__slide-content {
+    grid-template-columns: 1fr;
+    gap: 0;
+    min-height: auto;
+  }
+}
+
+.hotspot-split__left,
+.hotspot-split__right {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 70rem;
+}
+
+@media screen and (max-width: 989px) {
+  .hotspot-split__left,
+  .hotspot-split__right {
+    min-height: 51rem;
+  }
+}
+
+/* Badge Styles */
+.hotspot-split__badge {
+  position: absolute;
+  top: 5rem;
+  left:4rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 1rem 2rem;
+  border-radius: 5rem;
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+  font-family: 'Roboto', sans-serif !important;
+}
+
+.hotspot-split__badge--left {
+  left: 4rem;
+  top: 5rem;
+  background: transparent;
+  color: #000;
+  border: 1px solid black;
+}
+
+.hotspot-split__badge--right {
+  left: 50%;
+  margin-left: 4rem;
+  background: transparent;
+  color: white;
+  border: 1px solid white;
+}
+
+.hotspot-split__badge--right .badge-dot {
+  background: white;
+}
+
+@media screen and (max-width: 989px) {
+  .hotspot-split__badge {
+    display: none !important;
+  }
+  
+}
+
+
+.badge-dot {
+  width: 1.2rem;
+  height: 1.2rem;
+  background: #000;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Image Container */
+.hotspot-split__image-container {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  background: #f9f9f9;
+  display: block;
+}
+
+.hotspot-split__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.hotspot-split__placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+}
+
+.hotspot-split__placeholder svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  max-width: 40rem;
+  max-height: 40rem;
+  opacity: 0.3;
+}
+
+/* Hotspot Styles */
+.product-markers__item {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: linear all 0.16s;
+  cursor: pointer;
+  transform: translate(-50%, -50%);
+}
+
+@media screen and (min-width: 576px) {
+  .product-markers__item {
+    width: 5rem;
+    height: 5rem;
+  }
+}
+
+.product-markers__item::before {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  display: block;
+  width: 1.4rem;
+  height: 1.4rem;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background-color: white !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@media screen and (min-width: 576px) {
+  .product-markers__item::before {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+}
+
+.product-markers__item::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: block;
+  width: 4rem;
+  height: 4rem;
+  box-sizing: border-box;
+  border-radius: 50%;
+  opacity: 50%;
+  background-color: white !important;
+  transition: background-color 0.3s ease;
+}
+
+@media screen and (min-width: 576px) {
+  .product-markers__item::after {
+    width: 5rem;
+    height: 5rem;
+  }
+}
+
+.product-markers__item--pulse::after {
+  transform: translate(-50%, -50%) scale(0.33);
+  animation: pulse 1.25s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+}
+
+/* Mobile: Hide pulse animation and show active state for mobile-active hotspots */
+@media screen and (max-width: 989px) {
+  .product-markers__item.mobile-active::after {
+    animation: none !important;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  
+  .product-markers__item.mobile-active .product-markers__item-inner {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: all !important;
+    z-index: 16 !important;
+  }
+  
+  .product-markers__item.mobile-active .product-markers__item-inner .card-horizontal-wrapper {
+    animation: markerFadeIn 0.35s ease forwards;
+  }
+}
+
+@media screen and (hover: hover) and (pointer: fine) {
+  .product-markers__item:not(.active):hover::after {
+    animation: markerScaleFade 0.35s cubic-bezier(0.215, 0.61, 0.355, 1) forwards;
+  }
+  .product-markers__item:not(.active):hover .product-markers__item-inner {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: all !important;
+    z-index: 13 !important;
+  }
+  .product-markers__item:not(.active):hover .product-markers__item-inner .card-horizontal-wrapper {
+    animation: markerFadeIn 0.35s ease forwards;
+  }
+}
+
+.product-markers__item.active {
+  z-index: 15 !important;
+}
+
+.product-markers__item.active::after {
+  animation: none;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.product-markers__item.active .product-markers__item-inner {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: all !important;
+  z-index: 16 !important;
+}
+
+.product-markers__item.active .product-markers__item-inner .card-horizontal-wrapper {
+  animation: markerFadeIn 0.35s ease forwards;
+}
+
+.product-markers__item-inner {
+  position: absolute;
+  z-index: 14;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  width: 31.7rem;
+  transition: opacity 0.3s ease, visibility 0.3s;
+}
+
+@media screen and (min-width: 750px) {
+  .product-markers__item-inner .card-horizontal-wrapper {
+    animation: markerFadeOut 0.35s ease forwards;
+  }
+  
+  .product-markers__item-inner--to-top {
+    padding-bottom: 2.8rem !important;
+    margin-bottom: -2.2rem !important;
+    left: 50%;
+    bottom: 100%;
+    transform: translate(-50%, 0);
+  }
+  
+  .product-markers__item-inner--to-right {
+    padding-left: 2.8rem !important;
+    margin-left: -2.2rem !important;
+    width: 34.5rem;
+    left: 100%;
+    top: 50%;
+    transform: translate(0, -50%);
+  }
+  
+  .product-markers__item-inner--to-bottom {
+    padding-top: 2.8rem !important;
+    margin-top: -2.2rem !important;
+    left: 50%;
+    top: 100%;
+    transform: translate(-50%, 0);
+  }
+  
+  .product-markers__item-inner--to-left {
+    padding-right: 2.8rem !important;
+    margin-right: -2.2rem !important;
+    width: 34.5rem;
+    right: 100%;
+    top: 50%;
+    transform: translate(0, -50%);
+  }
+}
+
+.product-markers__item-inner .price--on-sale .price__sale {
+  justify-content: flex-start;
+}
+
+/* Color Variant Swatches - FIXED */
+.card-horizontal-wrapper .product-card__swatch-list {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+
+.card-horizontal-wrapper .product-card__swatch,
+.card-horizontal-wrapper .product-card__swatch-item {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  box-sizing: border-box;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.card-horizontal-wrapper .color-swatch {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: 1px solid #000000;
+  display: block;
+}
+
+/* First variant selected by default - outer ring */
+.card-horizontal-wrapper .product-card__swatch:first-child,
+.card-horizontal-wrapper .product-card__swatch-item:first-child {
+  border: 2px solid #000000;
+  padding: 2px;
+}
+
+/* Show border on hover for all variants */
+.card-horizontal-wrapper .product-card__swatch:hover,
+.card-horizontal-wrapper .product-card__swatch-item:hover {
+  border: 2px solid #000000;
+  padding: 2px;
+}
+
+/* When a swatch is clicked/selected, add active class via JS */
+.card-horizontal-wrapper .product-card__swatch.active,
+.card-horizontal-wrapper .product-card__swatch-item.active {
+  border: 2px solid #000000;
+  padding: 2px;
+}
+
+/* Swiper Overrides */
+.hotspot-swiper {
+  border-radius: 8px;
+  min-height: 60rem;
+}
+
+.hotspot-swiper .swiper-slide {
+  height: auto;
+  min-height: 60rem;
+}
+
+@media screen and (max-width: 989px) {
+  .hotspot-swiper,
+  .hotspot-swiper .swiper-slide {
+    min-height: auto;
+    border-radius: 12px;
+  }
+  
+  .hotspot-swiper-mobile {
+    display: block !important;
+    border-radius: 12px;
+    overflow: hidden;
+    padding-bottom: 0;
+    position: relative;
+  }
+  
+  .hotspot-swiper-mobile .swiper-slide {
+    height: 50rem;
+    overflow:hidden;
+  }
+  
+  .hotspot-split__left,
+  .hotspot-split__right {
+    width: 100%;
+    height: 41rem;
+  }
+}
+
+/* Desktop view hide on mobile */
+@media screen and (max-width: 989px) {
+  .hotspot-desktop-view {
+    display: none !important;
+  }
+  
+  .hotspot-mobile-view {
+    display: block !important;
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .hotspot-mobile-view {
+    display: none !important;
+  }
+  
+  .hotspot-desktop-view {
+    display: block !important;
+  }
+}
+
+/* Animation on scroll */
+html:not(.no-js) .hotspot-split.animate-on-scroll .hotspot-split__image-container {
+  transition: opacity 1s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+html:not(.no-js) .hotspot-split.animate-on-scroll .hotspot-split__image,
+html:not(.no-js) .hotspot-split.animate-on-scroll .hotspot-split__placeholder {
+  transform: scale(1.1);
+  transition: transform 1.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+html:not(.no-js) .hotspot-split.animate-on-scroll.animated .hotspot-split__image-container {
+  opacity: 1;
+}
+
+html:not(.no-js) .hotspot-split.animate-on-scroll.animated .hotspot-split__image,
+html:not(.no-js) .hotspot-split.animate-on-scroll.animated .hotspot-split__placeholder {
+  transform: scale(1);
+}
+
+.hotspot-split__container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 8rem;
+}
+
+@media screen and (max-width: 989px) {
+  .hotspot-split__container {
+    padding: 0 20px;
+  }
+}
+</style>
+
+{%- style -%}
+  {% render 'section-padding' %}
+  {% render 'section-margin' %}
+{%- endstyle -%}
+
+<div class="product-markers product-markers-section hotspot-split color-{{ section.settings.main_color_scheme }} background section-{{ section.id }}-padding{% if section.settings.animate_on_scroll %} animate-on-scroll{% endif %}">
+  <div class="hotspot-split__container">
+    {% render 'heading-group', section: section, class: 'product-markers', text_align: section.settings.text_align %}
+
+    <div class="hotspot-split__wrapper">
+      <!-- Badges - Only show on desktop -->
+      {%- if section.settings.show_badge -%}
+        <div class="hotspot-split__badge hotspot-split__badge--left">
+          <span class="badge-dot"></span>
+          {{ section.settings.badge_text_left }}
+        </div>
+        <div class="hotspot-split__badge hotspot-split__badge--right">
+          <span class="badge-dot"></span>
+          {{ section.settings.badge_text_right }}
+        </div>
+      {%- endif -%}
+
+      <!-- Desktop View -->
+      <div class="hotspot-desktop-view">
+        <!-- Swiper Container for Desktop -->
+        <div class="swiper hotspot-swiper" data-slide-count="{{ section.blocks.size }}">
+          <div class="swiper-wrapper">
+            {%- for block in section.blocks -%}
+              <div class="swiper-slide" {{ block.shopify_attributes }}>
+                <div class="hotspot-split__slide-content">
+                  <!-- Left Column -->
+                  <div class="hotspot-split__left">
+                    <div class="hotspot-split__image-container">
+                      {%- if block.settings.image != blank -%}
+                        {{
+                          block.settings.image
+                          | image_url: width: 1200
+                          | image_tag:
+                            loading: 'lazy',
+                            class: 'hotspot-split__image'
+                        }}
+                      {%- else -%}
+                        <div class="hotspot-split__placeholder">
+                          {{ 'collection-apparel-3' | placeholder_svg_tag: 'placeholder-svg' }}
+                        </div>
+                      {%- endif -%}
+
+                      <!-- Left Hotspots -->
+                      {%- if block.settings.show_hotspot_1 and block.settings.hotspot_product_1 != blank -%}
+                        <div
+                          class="product-markers__item{% if section.settings.enable_marker_animation %} product-markers__item--pulse{% endif %}"
+                          style="top: {{ block.settings.hotspot_y_1 }}%; left: {{ block.settings.hotspot_x_1 }}%;"
+                          tabindex="0"
+                        >
+                          <div class="product-markers__item-inner product-markers__item-inner--{{ block.settings.tooltip_position_1 }}">
+                            {% render 'product-card-horizontal',
+                              product_card_product: block.settings.hotspot_product_1,
+                              media_ratio: section.settings.product_image_ratio,
+                              media_fit: section.settings.image_fit,
+                              show_vendor: section.settings.show_vendor,
+                              color_scheme: section.settings.color_scheme_card,
+                              section_id: section.id
+                            %}
+                          </div>
+                        </div>
+                      {%- endif -%}
+
+                      {%- if block.settings.show_hotspot_2 and block.settings.hotspot_product_2 != blank -%}
+                        <div
+                          class="product-markers__item{% if section.settings.enable_marker_animation %} product-markers__item--pulse{% endif %}"
+                          style="top: {{ block.settings.hotspot_y_2 }}%; left: {{ block.settings.hotspot_x_2 }}%;"
+                          tabindex="0"
+                        >
+                          <div class="product-markers__item-inner product-markers__item-inner--{{ block.settings.tooltip_position_2 }}">
+                            {% render 'product-card-horizontal',
+                              product_card_product: block.settings.hotspot_product_2,
+                              media_ratio: section.settings.product_image_ratio,
+                              media_fit: section.settings.image_fit,
+                              show_vendor: section.settings.show_vendor,
+                              color_scheme: section.settings.color_scheme_card,
+                              section_id: section.id
+                            %}
+                          </div>
+                        </div>
+                      {%- endif -%}
+
+                      {%- if block.settings.show_hotspot_3 and block.settings.hotspot_product_3 != blank -%}
+                        <div
+                          class="product-markers__item{% if section.settings.enable_marker_animation %} product-markers__item--pulse{% endif %}"
+                          style="top: {{ block.settings.hotspot_y_3 }}%; left: {{ block.settings.hotspot_x_3 }}%;"
+                          tabindex="0"
+                        >
+                          <div class="product-markers__item-inner product-markers__item-inner--{{ block.settings.tooltip_position_3 }}">
+                            {% render 'product-card-horizontal',
+                              product_card_product: block.settings.hotspot_product_3,
+                              media_ratio: section.settings.product_image_ratio,
+                              media_fit: section.settings.image_fit,
+                              show_vendor: section.settings.show_vendor,
+                              color_scheme: section.settings.color_scheme_card,
+                              section_id: section.id
+                            %}
+                          </div>
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  </div>
+
+                  <!-- Right Column -->
+                  <div class="hotspot-split__right">
+                    <div class="hotspot-split__image-container">
+                      {%- if block.settings.image_right != blank -%}
+                        {{
+                          block.settings.image_right
+                          | image_url: width: 1200
+                          | image_tag:
+                            loading: 'lazy',
+                            class: 'hotspot-split__image'
+                        }}
+                      {%- else -%}
+                        <div class="hotspot-split__placeholder">
+                          {{ 'collection-apparel-3' | placeholder_svg_tag: 'placeholder-svg' }}
+                        </div>
+                      {%- endif -%}
+
+                      <!-- Right Hotspots -->
+                      {%- if block.settings.show_hotspot_right_1 and block.settings.hotspot_product_right_1 != blank -%}
+                        <div
+                          class="product-markers__item{% if section.settings.enable_marker_animation %} product-markers__item--pulse{% endif %}"
+                          style="top: {{ block.settings.hotspot_y_right_1 }}%; left: {{ block.settings.hotspot_x_right_1 }}%;"
+                          tabindex="0"
+                        >
+                          <div class="product-markers__item-inner product-markers__item-inner--{{ block.settings.tooltip_position_right_1 }}">
+                            {% render 'product-card-horizontal',
+                              product_card_product: block.settings.hotspot_product_right_1,
+                              media_ratio: section.settings.product_image_ratio,
+                              media_fit: section.settings.image_fit,
+                              show_vendor: section.settings.show_vendor,
+                              color_scheme: section.settings.color_scheme_card,
+                              section_id: section.id
+                            %}
+                          </div>
+                        </div>
+                      {%- endif -%}
+
+                      {%- if block.settings.show_hotspot_right_2 and block.settings.hotspot_product_right_2 != blank -%}
+                        <div
+                          class="product-markers__item{% if section.settings.enable_marker_animation %} product-markers__item--pulse{% endif %}"
+                          style="top: {{ block.settings.hotspot_y_right_2 }}%; left: {{ block.settings.hotspot_x_right_2 }}%;"
+                          tabindex="0"
+                        >
+                          <div class="product-markers__item-inner product-markers__item-inner--{{ block.settings.tooltip_position_right_2 }}">
+                            {% render 'product-card-horizontal',
+                              product_card_product: block.settings.hotspot_product_right_2,
+                              media_ratio: section.settings.product_image_ratio,
+                              media_fit: section.settings.image_fit,
+                              show_vendor: section.settings.show_vendor,
+                              color_scheme: section.settings.color_scheme_card,
+                              section_id: section.id
+                            %}
+                          </div>
+                        </div>
+                      {%- endif -%}
+
+                      {%- if block.settings.show_hotspot_right_3 and block.settings.hotspot_product_right_3 != blank -%}
+                        <div
+                          class="product-markers__item{% if section.settings.enable_marker_animation %} product-markers__item--pulse{% endif %}"
+                          style="top: {{ block.settings.hotspot_y_right_3 }}%; left: {{ block.settings.hotspot_x_right_3 }}%;"
+                          tabindex="0"
+                        >
+                          <div class="product-markers__item-inner product-markers__item-inner--{{ block.settings.tooltip_position_right_3 }}">
+                            {% render 'product-card-horizontal',
+                              product_card_product: block.settings.hotspot_product_right_3,
+                              media_ratio: section.settings.product_image_ratio,
+                              media_fit: section.settings.image_fit,
+                              show_vendor: section.settings.show_vendor,
+                              color_scheme: section.settings.color_scheme_card,
+                              section_id: section.id
+                            %}
+                          </div>
+                        </div>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile View -->
+      <div class="hotspot-mobile-view">
+        <div class="swiper hotspot-swiper-mobile">
+          <div class="swiper-wrapper">
+            {%- for block in section.blocks -%}
+              <!-- Left Image Slide -->
+              <div class="swiper-slide">
+                <div class="hotspot-split__left">
+                  <div class="hotspot-split__image-container">
+                    {%- if block.settings.image != blank -%}
+                      {{
+                        block.settings.image
+                        | image_url: width: 800
+                        | image_tag:
+                          loading: 'lazy',
+                          class: 'hotspot-split__image'
+                      }}
+                    {%- else -%}
+                      <div class="hotspot-split__placeholder">
+                        {{ 'collection-apparel-3' | placeholder_svg_tag: 'placeholder-svg' }}
+                      </div>
+                    {%- endif -%}
+
+                    <!-- Mobile Left Hotspots -->
+                    {%- if block.settings.show_hotspot_1 and block.settings.hotspot_product_1 != blank -%}
+                      <div
+                        class="product-markers__item{% if block.settings.mobile_active_1 %} mobile-active{% endif %}"
+                        style="top: {{ block.settings.hotspot_y_1 }}%; left: {{ block.settings.hotspot_x_1 }}%;"
+                        tabindex="0"
+                      >
+                        <div class="product-markers__item-inner product-markers__item-inner--to-top">
+                          {% render 'product-card-horizontal',
+                            product_card_product: block.settings.hotspot_product_1,
+                            media_ratio: section.settings.product_image_ratio,
+                            media_fit: section.settings.image_fit,
+                            show_vendor: section.settings.show_vendor,
+                            color_scheme: section.settings.color_scheme_card,
+                            section_id: section.id
+                          %}
+                        </div>
+                      </div>
+                    {%- endif -%}
+
+                    {%- if block.settings.show_hotspot_2 and block.settings.hotspot_product_2 != blank -%}
+                      <div
+                        class="product-markers__item{% if block.settings.mobile_active_2 %} mobile-active{% endif %}"
+                        style="top: {{ block.settings.hotspot_y_2 }}%; left: {{ block.settings.hotspot_x_2 }}%;"
+                        tabindex="0"
+                      >
+                        <div class="product-markers__item-inner product-markers__item-inner--to-top">
+                          {% render 'product-card-horizontal',
+                            product_card_product: block.settings.hotspot_product_2,
+                            media_ratio: section.settings.product_image_ratio,
+                            media_fit: section.settings.image_fit,
+                            show_vendor: section.settings.show_vendor,
+                            color_scheme: section.settings.color_scheme_card,
+                            section_id: section.id
+                          %}
+                        </div>
+                      </div>
+                    {%- endif -%}
+
+                    {%- if block.settings.show_hotspot_3 and block.settings.hotspot_product_3 != blank -%}
+                      <div
+                        class="product-markers__item{% if block.settings.mobile_active_3 %} mobile-active{% endif %}"
+                        style="top: {{ block.settings.hotspot_y_3 }}%; left: {{ block.settings.hotspot_x_3 }}%;"
+                        tabindex="0"
+                      >
+                        <div class="product-markers__item-inner product-markers__item-inner--to-top">
+                          {% render 'product-card-horizontal',
+                            product_card_product: block.settings.hotspot_product_3,
+                            media_ratio: section.settings.product_image_ratio,
+                            media_fit: section.settings.image_fit,
+                            show_vendor: section.settings.show_vendor,
+                            color_scheme: section.settings.color_scheme_card,
+                            section_id: section.id
+                          %}
+                        </div>
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Right Image Slide -->
+              <div class="swiper-slide">
+                <div class="hotspot-split__right">
+                  <div class="hotspot-split__image-container">
+                    {%- if block.settings.image_right != blank -%}
+                      {{
+                        block.settings.image_right
+                        | image_url: width: 800
+                        | image_tag:
+                          loading: 'lazy',
+                          class: 'hotspot-split__image'
+                      }}
+                    {%- else -%}
+                      <div class="hotspot-split__placeholder">
+                        {{ 'collection-apparel-3' | placeholder_svg_tag: 'placeholder-svg' }}
+                      </div>
+                    {%- endif -%}
+
+                    <!-- Mobile Right Hotspots -->
+                    {%- if block.settings.show_hotspot_right_1 and block.settings.hotspot_product_right_1 != blank -%}
+                      <div
+                        class="product-markers__item{% if block.settings.mobile_active_right_1 %} mobile-active{% endif %}"
+                        style="top: {{ block.settings.hotspot_y_right_1 }}%; left: {{ block.settings.hotspot_x_right_1 }}%;"
+                        tabindex="0"
+                      >
+                        <div class="product-markers__item-inner product-markers__item-inner--to-top">
+                          {% render 'product-card-horizontal',
+                            product_card_product: block.settings.hotspot_product_right_1,
+                            media_ratio: section.settings.product_image_ratio,
+                            media_fit: section.settings.image_fit,
+                            show_vendor: section.settings.show_vendor,
+                            color_scheme: section.settings.color_scheme_card,
+                            section_id: section.id
+                          %}
+                        </div>
+                      </div>
+                    {%- endif -%}
+
+                    {%- if block.settings.show_hotspot_right_2 and block.settings.hotspot_product_right_2 != blank -%}
+                      <div
+                        class="product-markers__item{% if block.settings.mobile_active_right_2 %} mobile-active{% endif %}"
+                        style="top: {{ block.settings.hotspot_y_right_2 }}%; left: {{ block.settings.hotspot_x_right_2 }}%;"
+                        tabindex="0"
+                      >
+                        <div class="product-markers__item-inner product-markers__item-inner--to-top">
+                          {% render 'product-card-horizontal',
+                            product_card_product: block.settings.hotspot_product_right_2,
+                            media_ratio: section.settings.product_image_ratio,
+                            media_fit: section.settings.image_fit,
+                            show_vendor: section.settings.show_vendor,
+                            color_scheme: section.settings.color_scheme_card,
+                            section_id: section.id
+                          %}
+                        </div>
+                      </div>
+                    {%- endif -%}
+
+                    {%- if block.settings.show_hotspot_right_3 and block.settings.hotspot_product_right_3 != blank -%}
+                      <div
+                        class="product-markers__item{% if block.settings.mobile_active_right_3 %} mobile-active{% endif %}"
+                        style="top: {{ block.settings.hotspot_y_right_3 }}%; left: {{ block.settings.hotspot_x_right_3 }}%;"
+                        tabindex="0"
+                      >
+                        <div class="product-markers__item-inner product-markers__item-inner--to-top">
+                          {% render 'product-card-horizontal',
+                            product_card_product: block.settings.hotspot_product_right_3,
+                            media_ratio: section.settings.product_image_ratio,
+                            media_fit: section.settings.image_fit,
+                            show_vendor: section.settings.show_vendor,
+                            color_scheme: section.settings.color_scheme_card,
+                            section_id: section.id
+                          %}
+                        </div>
+                      </div>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+
+          <!-- Mobile Navigation - Inside Carousel -->
+          <div class="swiper-navigation">
+            <button class="swiper-button-prev-custom" aria-label="Previous slide">
+              <svg width="24" height="17" viewBox="-1 -1 26 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path
+    d="M23 8.5H0.7M8.5 1L0.7 8.5L8.5 16"
+    stroke="black"
+    stroke-width="1.4"
+    stroke-linecap="butt"
+    stroke-linejoin="miter"
+    stroke-miterlimit="10"
+  />
+</svg>
+
+            </button>
+            <button class="swiper-button-next-custom" aria-label="Next slide">
+              <svg width="24" height="17" viewBox="-1 -1 26 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path
+    d="M0.7 8.5H23M15.5 1L23 8.5L15.5 16"
+    stroke="black"
+    stroke-width="1.4"
+    stroke-linecap="butt"
+    stroke-linejoin="miter"
+    stroke-miterlimit="10"
+  />
+</svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  const initHotspotSplit = () => {
+    const section = document.querySelector('.hotspot-split-section');
+    if (!section) return;
+
+    const isMobile = window.innerWidth <= 989;
+    
+    if (typeof Swiper === 'undefined') {
+      console.error('Swiper library not loaded');
+      return;
+    }
+
+    if (isMobile) {
+      // Initialize mobile Swiper
+      const mobileSwiper = new Swiper('.hotspot-swiper-mobile', {
+        slidesPerView: 1,
+        spaceBetween: 0,
+        speed: 600,
+        loop: true,
+        navigation: {
+          nextEl: '.hotspot-mobile-view .swiper-button-next-custom',
+          prevEl: '.hotspot-mobile-view .swiper-button-prev-custom',
+          disabledClass: 'swiper-button-disabled-custom',
+        },
+        on: {
+          slideChange: function() {
+            const allMarkers = section.querySelectorAll('.product-markers__item.active');
+            allMarkers.forEach(marker => marker.classList.remove('active'));
+          }
+        }
+      });
+    } else {
+      // Initialize desktop Swiper
+      const desktopSwiper = new Swiper('.hotspot-swiper', {
+        slidesPerView: 1,
+        spaceBetween: 0,
+        speed: 600,
+        loop: true,
+        on: {
+          slideChange: function() {
+            const allMarkers = section.querySelectorAll('.product-markers__item.active');
+            allMarkers.forEach(marker => marker.classList.remove('active'));
+          }
+        }
+      });
+    }
+    
+    // Color swatch functionality
+    initColorSwatches();
+  };
+  
+  const initColorSwatches = () => {
+    const swatchContainers = document.querySelectorAll('.card-horizontal-wrapper');
+    
+    swatchContainers.forEach(container => {
+      const swatches = container.querySelectorAll('.product-card__swatch, .product-card__swatch-item');
+      
+      if (swatches.length === 0) return;
+      
+      // Remove all active classes first
+      swatches.forEach(swatch => swatch.classList.remove('active'));
+      
+      // Add active class to first swatch only
+      if (swatches[0]) {
+        swatches[0].classList.add('active');
+      }
+      
+      // Add click handlers
+      swatches.forEach((swatch, index) => {
+        swatch.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Remove active from all swatches in this container
+          swatches.forEach(s => s.classList.remove('active'));
+          
+          // Add active to clicked swatch
+          this.classList.add('active');
+        });
+      });
+    });
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHotspotSplit);
+  } else {
+    initHotspotSplit();
+  }
+
+  let resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(initHotspotSplit, 250);
+  });
+
+  if (typeof Shopify !== 'undefined' && Shopify.designMode) {
+    document.addEventListener('shopify:section:load', function (event) {
+      if (event.target.classList.contains('hotspot-split-section')) {
+        setTimeout(initHotspotSplit, 100);
+      }
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Hotspot Split",
+  "tag": "section",
+  "class": "hotspot-split-section",
+  "disabled_on": {
+    "templates": ["password"],
+    "groups": ["*"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "main_color_scheme",
+      "default": "background-1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "checkbox",
+      "id": "animate_on_scroll",
+      "label": "Animate on scroll",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop The Look"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {"value": "h3", "label": "Small"},
+        {"value": "h2", "label": "Medium"},
+        {"value": "h1", "label": "Large"}
+      ],
+      "default": "h2",
+      "label": "Heading size"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "label": "Heading tag",
+      "default": "h2",
+      "options": [
+        {"value": "h1", "label": "H1"},
+        {"value": "h2", "label": "H2"},
+        {"value": "h3", "label": "H3"},
+        {"value": "h4", "label": "H4"}
+      ]
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "text_alignment",
+      "id": "text_align",
+      "label": "Text alignment",
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Badge Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show badges",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_text_left",
+      "label": "Left badge text",
+      "default": "Newly Added"
+    },
+    {
+      "type": "text",
+      "id": "badge_text_right",
+      "label": "Right badge text",
+      "default": "Newly Added"
+    },
+    {
+      "type": "header",
+      "content": "Hotspot Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_marker_animation",
+      "default": true,
+      "label": "Enable marker animation"
+    },
+    {
+      "type": "header",
+      "content": "Product Card Settings"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme_card",
+      "default": "background-1",
+      "label": "Product card color scheme"
+    },
+    {
+      "type": "select",
+      "id": "product_image_ratio",
+      "options": [
+        {"value": "landscape", "label": "Landscape"},
+        {"value": "portrait", "label": "Portrait"},
+        {"value": "square", "label": "Square"}
+      ],
+      "default": "square",
+      "label": "Product image ratio"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image fit",
+      "options": [
+        {"value": "contain", "label": "Contain"},
+        {"value": "cover", "label": "Cover"}
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "default": false,
+      "label": "Show vendor"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "select",
+      "id": "padding_top",
+      "options": [
+        {"value": "no-indent", "label": "None"},
+        {"value": "xs", "label": "Extra Small"},
+        {"value": "s", "label": "Small"},
+        {"value": "m", "label": "Medium"},
+        {"value": "l", "label": "Large"},
+        {"value": "xl", "label": "Extra Large"}
+      ],
+      "default": "l",
+      "label": "Padding top"
+    },
+    {
+      "type": "select",
+      "id": "padding_bottom",
+      "options": [
+        {"value": "no-indent", "label": "None"},
+        {"value": "xs", "label": "Extra Small"},
+        {"value": "s", "label": "Small"},
+        {"value": "m", "label": "Medium"},
+        {"value": "l", "label": "Large"},
+        {"value": "xl", "label": "Extra Large"}
+      ],
+      "default": "l",
+      "label": "Padding bottom"
+    },
+    {
+      "type": "header",
+      "content": "Section Margin"
+    },
+    {
+      "type": "select",
+      "id": "margin_top",
+      "options": [
+        {"value": "no-indent", "label": "None"},
+        {"value": "xs", "label": "Extra Small"},
+        {"value": "s", "label": "Small"},
+        {"value": "m", "label": "Medium"},
+        {"value": "l", "label": "Large"},
+        {"value": "xl", "label": "Extra Large"}
+      ],
+      "default": "no-indent",
+      "label": "Margin top"
+    },
+    {
+      "type": "select",
+      "id": "margin_bottom",
+      "options": [
+        {"value": "no-indent", "label": "None"},
+        {"value": "xs", "label": "Extra Small"},
+        {"value": "s", "label": "Small"},
+        {"value": "m", "label": "Medium"},
+        {"value": "l", "label": "Large"},
+        {"value": "xl", "label": "Extra Large"}
+      ],
+      "default": "no-indent",
+      "label": "Margin bottom"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Left Column"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Left image"
+        },
+        {
+          "type": "header",
+          "content": "Left Hotspot 1"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_hotspot_1",
+          "label": "Show hotspot 1",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_active_1",
+          "label": "Active on mobile (no pulse)",
+          "default": false,
+          "info": "Show this hotspot as always active on mobile without pulse animation"
+        },
+        {
+          "type": "product",
+          "id": "hotspot_product_1",
+          "label": "Hotspot 1 product"
+        },
+        {
+          "type": "range",
+          "id": "hotspot_x_1",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": "Hotspot 1 X position",
+          "unit": "%",
+          "default": 30
+        },
+        {
+          "type": "range",
+          "id": "hotspot_y_1",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": "Hotspot 1 Y position",
+          "unit": "%",
+          "default": 30
+        },
+        {
+          "type": "select",
+          "id": "tooltip_position_1",
+          "options": [
+            {"value": "to-top", "label": "Top"},
+            {"value": "to-right", "label": "Right"},
+            {"value": "to-bottom", "label": "Bottom"},
+            {"value": "to-left", "label": "Left"}
+          ],
+          "default": "to-top",
+          "label": "Tooltip position"
+        },
+        {
+          "type": "header",
+          "content": "Left Hotspot 2"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_hotspot_2",
+          "label": "Show hotspot 2",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_active_2",
+          "label": "Active on mobile (no pulse)",
+          "default": false,
+          "info": "Show this hotspot as always active on mobile without pulse animation"
+        },
+        {
+          "type": "product",
+          "id": "hotspot_product_2",
+          "label": "Hotspot 2 product"
+        },
+        {
+          "type": "range",
+          "id": "hotspot_x_2",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": "Hotspot 2 X position",
+          "unit": "%",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "hotspot_y_2",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": "Hotspot 2 Y position",
+          "unit": "%",
+          "default": 50
+        },
+        {
+          "type": "select",
+          "id": "tooltip_position_2",
+          "options": [
+            {"value": "to-top", "label": "Top"},
+            {"value": "to-right", "label": "Right"},
+            {"value": "to-bottom", "label": "Bottom"},
+            {"value": "to-left", "label": "Left"}
+          ],
+          "default": "to-bottom",
+          "label": "Tooltip position"
+        },
+        {
+          "type": "header",
+          "content": "Left Hotspot 3"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_hotspot_3",
+          "label": "Show hotspot 3",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_active_3",
+          "label": "Active on mobile (no pulse)",
+          "default": false,
+          "info": "Show this hotspot as always active on mobile without pulse animation"
+        },
+        {
+          "type": "product",
+          "id": "hotspot_product_3",
+          "label": "Hotspot 3 product"
+        },
+        {
+          "type": "range",
+          "id": "hotspot_x_3",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": "Hotspot 3 X position",
+          "unit": "%",
+          "default": 70
+        },
+        {
+          "type": "range",
+          "id": "hotspot_y_3",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": "Hotspot 3 Y position",
+          "unit": "%",
+          "default": 70
+        },
+        {
+          "type": "select",
+          "id": "tooltip_position_3",
+          "options": [
+            {"value": "to-top", "label": "Top"},
+            {"value": "to-right", "label": "Right"},
+            {"value": "to-bottom", "label": "Bottom"},
+            {"value": "to-left", "label": "Left"}
+          ],
+          "default": "to-bottom",
+          "label": "Tooltip position"
+        },
+        {
+          "type": "header",
+          "content": "Right Column"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_right",
+          "label": "Right image"
+        },
+        {
+          "type": "header",
+          "content": "Right Hotspot 1"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_hotspot_right_1",
+          "label": "Show hotspot 1",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_active_right_1",
+          "label": "Active on mobile (no pulse)",
+          "default": false,
+          "info": "Show this hotspot as always active on mobile without pulse animation"
+        },
+        {
+          "type": "product",
+          "id": "hotspot_product_right_1",
+          "label": "Hotspot 1 product"
+        },
+        {
+          "type": "range",
+          "id": "hotspot_x_right_1",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": "Hotspot 1 X position",
+          "unit": "%",
+          "default": 30
+        },
+        {
+          "type": "range",
+          "id": "hotspot_y_right_1",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": "Hotspot 1 Y position",
+          "unit": "%",
+          "default": 30
+        },
+        {
+          "type": "select",
+          "id": "tooltip_position_right_1",
+          "options": [
+            {"value": "to-top", "label": "Top"},
+            {"value": "to-right", "label": "Right"},
+            {"value": "to-bottom", "label": "Bottom"},
+            {"value": "to-left", "label": "Left"}
+          ],
+          "default": "to-top",
+          "label": "Tooltip position"
+        },
+        {
+          "type": "header",
+          "content": "Right Hotspot 2"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_hotspot_right_2",
+          "label": "Show hotspot 2",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_active_right_2",
+          "label": "Active on mobile (no pulse)",
+          "default": false,
+          "info": "Show this hotspot as always active on mobile without pulse animation"
+        },
+        {
+          "type": "product",
+          "id": "hotspot_product_right_2",
+          "label": "Hotspot 2 product"
+        },
+        {
+          "type": "range",
+          "id": "hotspot_x_right_2",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": "Hotspot 2 X position",
+          "unit": "%",
+          "default": 50
+        },
+        {
+          "type": "range",
+          "id": "hotspot_y_right_2",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": "Hotspot 2 Y position",
+          "unit": "%",
+          "default": 50
+        },
+        {
+          "type": "select",
+          "id": "tooltip_position_right_2",
+          "options": [
+            {"value": "to-top", "label": "Top"},
+            {"value": "to-right", "label": "Right"},
+            {"value": "to-bottom", "label": "Bottom"},
+            {"value": "to-left", "label": "Left"}
+          ],
+          "default": "to-bottom",
+          "label": "Tooltip position"
+        },
+        {
+          "type": "header",
+          "content": "Right Hotspot 3"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_hotspot_right_3",
+          "label": "Show hotspot 3",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "mobile_active_right_3",
+          "label": "Active on mobile (no pulse)",
+          "default": false,
+          "info": "Show this hotspot as always active on mobile without pulse animation"
+        },
+        {
+          "type": "product",
+          "id": "hotspot_product_right_3",
+          "label": "Hotspot 3 product"
+        },
+        {
+          "type": "range",
+          "id": "hotspot_x_right_3",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": "Hotspot 3 X position",
+          "unit": "%",
+          "default": 70
+        },
+        {
+          "type": "range",
+          "id": "hotspot_y_right_3",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": "Hotspot 3 Y position",
+          "unit": "%",
+          "default": 70
+        },
+        {
+          "type": "select",
+          "id": "tooltip_position_right_3",
+          "options": [
+            {"value": "to-top", "label": "Top"},
+            {"value": "to-right", "label": "Right"},
+            {"value": "to-bottom", "label": "Bottom"},
+            {"value": "to-left", "label": "Left"}
+          ],
+          "default": "to-bottom",
+          "label": "Tooltip position"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hotspot Split",
+      "blocks": [
+        {"type": "slide"}
+      ]
+    }
+  ]
+}
+{% endschema %}

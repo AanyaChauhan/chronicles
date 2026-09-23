@@ -1,0 +1,176 @@
+<section class="spotlight-section"
+   style="background-image: url({{ section.settings.bg_image | img_url: 'master' }});">
+  
+  <div class="spotlight-content-wrapper">
+    <div class="spotlight-banner">
+      <div class="spotlight-banner-content">
+        {% if section.settings.banner_logo %}
+          <img src="{{ section.settings.banner_logo | img_url: '100x100' }}" alt="Banner Logo" class="spotlight-banner-logo" />
+        {% endif %}
+        <span class="spotlight-banner-text"
+             style="
+              font-size: {{ section.settings.banner_font_size }}px; 
+              color: {{ section.settings.banner_font_color }};">
+          {{ section.settings.banner_text }}
+        </span>
+      </div>
+    </div>
+    
+    <div class="spotlight-main-section-text">
+      <span style="
+              font-size: {{ section.settings.main_text_font_size }}px; 
+              color: {{ section.settings.main_text_font_color }};">
+               {{ section.settings.main_text }}</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .spotlight-section {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    padding: 0 100px 50px 100px;
+    width: 100%;
+    aspect-ratio: 5 / 2; /* Adjust this ratio to match your image dimensions */
+  }
+
+  .spotlight-content-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
+
+  .spotlight-banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: {{ section.settings.banner_bg }};
+    z-index: 2;
+    padding: 15px;
+  }
+
+  .spotlight-banner-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .spotlight-banner-logo {
+    height: 52.4px;
+    width: 52.4px;
+    margin-bottom: 65px;
+    object-fit: contain;
+  }
+
+  .spotlight-banner-text {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 500;
+    line-height: 26.8px;
+    width: 144.6px;
+  }
+
+  .spotlight-main-section-text {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    font-family: 'Givonic', sans-serif;
+    font-weight: 400;
+    line-height: 49px;
+    z-index: 2;
+    width: 293px;
+  }
+
+  .main-section-text span {
+    display: block;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 767px) {
+    .spotlight-section {
+      padding: 0 16px 16px 16px;
+      aspect-ratio: 4 / 5; /* Adjust for mobile if needed */
+    }
+    
+    .spotlight-banner {
+      padding: 16px 20px;
+    }
+    
+    .spotlight-banner-logo {
+      max-height: 30px;
+      max-width: 30px;
+    }
+    
+    .spotlight-main-section-text {
+      font-size: 1.1rem;
+      max-width: 100%;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Spotlight Banner Section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg_image",
+      "label": "Background image"
+    },
+    {
+      "type": "color",
+      "id": "banner_bg",
+      "label": "Top banner background color"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_logo",
+      "label": "Top banner logo"
+    },
+    {
+      "type": "text",
+      "id": "banner_text",
+      "label": "Top banner text"
+    },
+    {
+      "type": "range",
+      "id": "banner_font_size",
+      "label": "Banner text font size",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "banner_font_color",
+      "label": "Banner text color"
+    },
+    {
+      "type": "text",
+      "id": "main_text",
+      "label": "Main section text"
+    },
+    {
+      "type": "range",
+      "id": "main_text_font_size",
+      "label": "Main text font size",
+      "min": 10,
+      "max": 40,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "main_text_font_color",
+      "label": "Main text color"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Spotlight Banner"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,256 @@
+<section class="hero-banner">
+  <div class="hero-banner__wrapper">
+    <div class="hero-banner__content">
+      <div class="hero-banner__text">
+        <div class="main-text" style="color: {{ section.settings.main_color }}; font-size: {{ section.settings.main_size }}px;">
+          {{ section.settings.main_text }}
+        </div>
+        <h1 class="heading-text" style="color: {{ section.settings.heading_color }}; font-size: {{ section.settings.heading_size }}px;">
+          {{ section.settings.heading_text }}
+        </h1>
+      </div>
+      {% if section.settings.show_btn %}
+      <a 
+        href="{{ section.settings.btn_link | default: '#' }}"
+        class="hero-banner__button"
+        style="
+          background-color: {{ section.settings.btn_bg }};
+          color: {{ section.settings.btn_color }};
+          font-size: {{ section.settings.btn_size }}px;"
+      >
+        <span>{{ section.settings.btn_text }}</span>
+        {% if section.settings.btn_arrow %}
+        <img src="{{ section.settings.btn_arrow | img_url: 'master' }}" alt="arrow" class="button-arrow" />
+        {% endif %}
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero-banner {
+    background-image: url('{{ section.settings.bg_img | img_url: 'master' }}');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    min-height: 384px;
+  }
+
+  .hero-banner__wrapper {
+    width: 100%;
+    margin: 0 auto;
+    padding: 90px 75px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    height: 100%;
+  }
+
+  .hero-banner__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    width: 100%;
+    gap: 40px;
+  }
+
+  .hero-banner__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+  }
+
+  .heading-text {
+    font-family: 'Ethnocentric', sans-serif;
+    font-weight: 400;
+    line-height: 120%;
+    width: 603px;
+  }
+
+  .main-text {
+    font-family: 'Termina', sans-serif;
+    font-weight: 500;
+    line-height: 120%;
+    margin-bottom: 24px;
+  }
+
+  .hero-banner__button {
+    position: relative;
+    border: none;
+    border-radius: 0;
+    font-family: 'termina', sans-serif;
+    font-weight: 500;
+    line-height:150%;
+    text-transform: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.19);
+    transition: all 0.3s ease;
+    display: inline-block;
+    cursor: pointer;
+    width: 174px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-decoration: none;
+    flex-shrink: 0;
+    gap: 8px;
+    /* Hexagon shape */
+    clip-path: polygon(
+      13px 0%, 
+      calc(100% - 13px) 0%, 
+      100% 50%, 
+      calc(100% - 13px) 100%, 
+      13px 100%, 
+      0% 50%
+    );
+  }
+
+  .hero-banner__button:hover {
+    box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+    transform: translateY(-2px);
+  }
+
+  .button-arrow {
+    width: 16px;
+    height: 10px;
+    object-fit: contain;
+  }
+
+  /* Responsive adjustments */
+  @media screen and (max-width: 768px) {
+    .hero-banner {
+    background-position: center;
+    height: 290px;
+    }
+    .hero-banner__wrapper {
+    padding: 35px 16px;
+    }
+    .hero-banner__content {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0px;
+    }
+    .main-text {
+    font-size: 14px;
+  }
+  .heading-text {
+  font-size: 28px !important;
+  margin-bottom: 45px !important;
+  width: 352px;
+  }
+  .hero-banner__button {
+    font-size: 16px !important;
+  }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Custom Hero Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bg_img",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading Text",
+      "default": "WHY WAIT TO GET THE BEST FOR YOUR RIDES?"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Font Color",
+      "default": "#fff"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Font Size",
+      "min": 10,
+      "max": 72,
+      "default": 48,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "text",
+      "id": "main_text",
+      "label": "Main Text",
+      "default": "Best-in-class Gears"
+    },
+    {
+      "type": "color",
+      "id": "main_color",
+      "label": "Main Text Color",
+      "default": "#ffd700"
+    },
+    {
+      "type": "range",
+      "id": "main_size",
+      "label": "Main Text Font Size",
+      "min": 12,
+      "max": 70,
+      "default": 20,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_btn",
+      "label": "Show Button",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "btn_bg",
+      "label": "Button Background Color",
+      "default": "#ffd700"
+    },
+    {
+      "type": "color",
+      "id": "btn_color",
+      "label": "Button Text Color",
+      "default": "#222"
+    },
+    {
+      "type": "range",
+      "id": "btn_size",
+      "label": "Button Text Size",
+      "min": 12,
+      "max": 28,
+      "default": 18,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "url",
+      "id": "btn_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "text",
+      "id": "btn_text",
+      "label": "Button Text",
+      "default": "Shop now"
+    },
+    {
+      "type": "image_picker",
+      "id": "btn_arrow",
+      "label": "Button Arrow Icon"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Hero Banner"
+    }
+  ]
+}
+{% endschema %}

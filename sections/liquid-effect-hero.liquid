@@ -1,0 +1,596 @@
+{% comment %}
+  Liquid Effect Hero Section - Dolce & Gabbana Style
+{% endcomment %}
+
+<div class="liquid-effect-section" data-section-id="{{ section.id }}">
+  <canvas id="liquidCanvas-{{ section.id }}"></canvas>
+  <div class="liquid-content">
+    <h1 class="liquid-heading">{{ section.settings.heading }}</h1>
+    <p class="liquid-subheading">{{ section.settings.subheading }}</p>
+    {% if section.settings.button_text != blank %}
+      <a href="{{ section.settings.button_link }}" class="liquid-button">
+        {{ section.settings.button_text }}
+      </a>
+    {% endif %}
+  </div>
+</div>
+
+<style>
+  .liquid-effect-section {
+    position: relative;
+    width: 100%;
+    height: {{ section.settings.section_height }}vh;
+    overflow: hidden;
+    background: linear-gradient(135deg, #3d7a8a 0%, #4a8a9a 100%);
+  }
+  
+  #liquidCanvas-{{ section.id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    mix-blend-mode: screen;
+    opacity: 0.35;
+  }
+  
+  .liquid-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .liquid-heading {
+    font-size: {{ section.settings.heading_size }}px;
+    font-weight: 300;
+    color: {{ section.settings.text_color }};
+    margin: 0 0 20px 0;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  
+  .liquid-subheading {
+    font-size: {{ section.settings.subheading_size }}px;
+    color: {{ section.settings.text_color }};
+    margin: 0 0 30px 0;
+    max-width: 600px;
+    opacity: 0.85;
+    font-weight: 300;
+    letter-spacing: 0.05em;
+  }
+
+  /* === Double-lined button style === */
+  .btn-double-lined {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+  }
+
+  .btn-double-lined__single {
+    position: relative;
+    transition: opacity .3s, text-shadow .3s cubic-bezier(.445,.05,.55,.95);
+  }
+
+  .btn-double-lined__single:hover {
+    text-shadow: 0 0 5px #CCB076;
+  }
+
+  .btn-double-lined__line-wrapper {
+    position: relative;
+    width: 2.75rem;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .line-top,
+  .line-bottom {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background-color: {{ section.settings.text_color }};
+    transform: translateZ(0);
+    transition: transform .3s cubic-bezier(.445,.05,.55,.95);
+  }
+
+  .line-top {
+    top: -4px;
+  }
+
+  .line-bottom {
+    bottom: -4px;
+  }
+
+  .btn-double-lined.hovered .line-top,
+  .btn-double-lined.hovered .line-bottom {
+    transform: translateZ(0) scaleX(.7);
+  }
+
+  /* Use this on your existing button */
+  .liquid-button {
+    position: relative;
+    padding: 15px 40px;
+    background: transparent;
+    color: {{ section.settings.text_color }};
+    text-decoration: none;
+    border: 1px solid {{ section.settings.text_color }};
+    border-radius: 0;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .liquid-button:hover {
+    background: {{ section.settings.text_color }};
+    color: #3d7a8a;
+  }
+
+  /* === Vertical / horizontal golden rail + glow language (for sliders / accents) === */
+
+  .thumb {
+    position: relative;
+    top: -1.1875rem;
+    left: -1.1875rem;
+    width: 2.375rem;
+    height: 2.375rem;
+    border-radius: 100%;
+    touch-action: none;
+  }
+
+  @media (min-width: 48rem) {
+    .thumb {
+      top: -1.25rem;
+      left: -1.25rem;
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+  }
+
+  .thumb__bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+  }
+
+  .btn-thumb {
+    overflow: hidden;
+    border-radius: 100%;
+    backdrop-filter: none !important;
+  }
+
+  .btn-thumb::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid #dcc081;
+    border-radius: 100%;
+    pointer-events: none;
+  }
+
+  @media (min-width: 80rem) {
+    .btn-thumb::before {
+      border-width: 2px;
+    }
+  }
+
+  .rail {
+    position: absolute;
+    top: 0;
+    left: calc(50% - .5px);
+    overflow: hidden;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(
+      0deg,
+      rgba(214,180,108,0),
+      #d6b46c 29%,
+      #f5da9f 39%,
+      #f6d692 50.5%,
+      #d6b46c 59.5%,
+      rgba(214,180,108,0)
+    );
+    transform: translateY(calc((var(--prog, 0.5) * 2 - 1) * -10%));
+  }
+
+  .rail-glow {
+    filter: blur(3px);
+  }
+
+  .rail__item {
+    width: .5rem;
+    height: 1px;
+    margin-left: 3.75rem;
+    background: #dcc081;
+  }
+
+  .glow-small {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    width: 1.875rem;
+    height: 1.875rem;
+    border-radius: 100%;
+    background-color: #dcc081;
+    filter: blur(4px);
+    opacity: .8;
+    transform: translate(-50%);
+  }
+
+  @media (min-width: 48rem) {
+    .glow-small {
+      width: 1.625rem;
+      height: 2.1875rem;
+      filter: blur(5px);
+    }
+  }
+
+  .slider__wrapper {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .slider__wrapper.horizontal {
+    display: grid;
+    grid-template-columns: .125fr 1fr .125fr;
+  }
+
+  .slider__wrapper.horizontal .thumb {
+    top: -1.375rem;
+    left: -1.375rem;
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  .slider__wrapper.horizontal .rail {
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      rgba(214,180,108,0),
+      #d6b46c 29%,
+      #f5da9f 39%,
+      #f6d692 50.5%,
+      #d6b46c 59.5%,
+      rgba(214,180,108,0)
+    );
+    transform: translateX(calc((var(--prog, 0.5) * 2 - 1) * -10%));
+  }
+
+  .slider__wrapper.horizontal .rail__item {
+    width: 1px;
+    height: .375rem;
+    margin-bottom: 4.375rem;
+    margin-left: 0;
+  }
+
+  /* Text glow on animated text */
+  .range-txt {
+    filter: blur(calc((1 - var(--prog, 1)) * 3px));
+    opacity: var(--prog, 1);
+    text-shadow: 0 0 calc(10px * var(--glow, 0)) #CCB076;
+    transform: scale(var(--scale, 1));
+  }
+
+</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const canvas = document.getElementById('liquidCanvas-' + sectionId);
+  
+  if (!canvas || typeof THREE === 'undefined') return;
+  
+  const scene = new THREE.Scene();
+  const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  const renderer = new THREE.WebGLRenderer({ 
+    canvas: canvas,
+    alpha: true,
+    antialias: true
+  });
+  
+  let mouse = new THREE.Vector2(0.5, 0.5);
+  let targetMouse = new THREE.Vector2(0.5, 0.5);
+  let prevMouse = new THREE.Vector2(0.5, 0.5);
+  let mouseVelocity = 0;
+  
+  function init() {
+    renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    const material = new THREE.ShaderMaterial({
+      uniforms: {
+        u_time: { value: 0 },
+        u_mouse: { value: new THREE.Vector2(0.5, 0.5) },
+        u_velocity: { value: 0.0 },
+        u_resolution: { value: new THREE.Vector2(canvas.offsetWidth, canvas.offsetHeight) }
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform float u_time;
+        uniform vec2 u_mouse;
+        uniform float u_velocity;
+        uniform vec2 u_resolution;
+        varying vec2 vUv;
+        
+        // Simplex noise
+        vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+        vec2 mod289(vec2 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
+        vec3 permute(vec3 x) { return mod289(((x*34.0)+1.0)*x); }
+        
+        float snoise(vec2 v) {
+          const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);
+          vec2 i  = floor(v + dot(v, C.yy));
+          vec2 x0 = v - i + dot(i, C.xx);
+          vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+          vec4 x12 = x0.xyxy + C.xxzz;
+          x12.xy -= i1;
+          i = mod289(i);
+          vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0)) + i.x + vec3(0.0, i1.x, 1.0));
+          vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+          m = m*m;
+          m = m*m;
+          vec3 x = 2.0 * fract(p * C.www) - 1.0;
+          vec3 h = abs(x) - 0.5;
+          vec3 ox = floor(x + 0.5);
+          vec3 a0 = x - ox;
+          m *= 1.79284291400159 - 0.85373472095314 * (a0*a0 + h*h);
+          vec3 g;
+          g.x  = a0.x  * x0.x  + h.x  * x0.y;
+          g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+          return 130.0 * dot(m, g);
+        }
+        
+        void main() {
+          vec2 uv = vUv;
+          vec2 m = u_mouse;
+          
+          // Distance from cursor
+          float dist = distance(uv, m);
+          
+          // Localized distortion radius
+          float radius = 0.22;
+          float influence = smoothstep(radius, 0.0, dist);
+          
+          // Stronger wave distortion
+          float wave = sin(dist * 25.0 - u_time * 3.0) * influence * 0.045;
+          
+          // Stronger velocity-based distortion
+          float velocityInfluence = u_velocity * influence * 0.12;
+          
+          // Directional flow towards cursor
+          vec2 direction = normalize(m - uv);
+          vec2 flow = direction * influence * (0.035 + velocityInfluence);
+          
+          // Noise-based organic movement
+          float noise = snoise(uv * 7.0 + u_time * 0.35) * influence * 0.025;
+          
+          // Combine all distortions
+          uv += flow;
+          uv.x += wave + noise;
+          uv.y += wave - noise * 0.5;
+          
+          // Soft gradient blobs
+          float blob1 = smoothstep(0.3, 0.0, length(uv - vec2(0.3, 0.7)));
+          float blob2 = smoothstep(0.25, 0.0, length(uv - vec2(0.7, 0.3)));
+          float blob3 = smoothstep(0.35, 0.0, length(uv - vec2(0.5, 0.5)));
+          
+          // Animate blobs
+          blob1 *= 0.5 + sin(u_time * 0.5) * 0.2;
+          blob2 *= 0.5 + cos(u_time * 0.4 + 1.5) * 0.2;
+          blob3 *= 0.4 + sin(u_time * 0.3 + 3.0) * 0.15;
+          
+          // Combine blobs
+          float blobs = blob1 + blob2 + blob3;
+          
+          // Multi-layered glow around cursor (strong)
+          float glow1 = exp(-dist * 5.0) * (1.0 + u_velocity * 1.8);
+          float glow2 = exp(-dist * 10.0) * (0.7 + u_velocity * 1.2) * (0.5 + 0.5 * sin(u_time * 4.0));
+          float glow3 = exp(-dist * 18.0) * (0.4 + u_velocity * 0.8);
+          float highlight = glow1 + glow2 + glow3;
+          
+          // Golden amber color, boosted by glow
+          vec3 color = vec3(1.0, 0.75, 0.4) * (blobs * 1.2 + highlight * 1.6);
+          
+          // Subtle shimmer
+          float shimmer = snoise(uv * 20.0 + u_time) * 0.05;
+          color += shimmer;
+          
+          // Alpha tied to blobs and highlight
+          float alpha = clamp(blobs * 0.7 + highlight * 1.1, 0.0, 1.0);
+          
+          gl_FragColor = vec4(color, alpha);
+        }
+      `,
+      transparent: true
+    });
+    
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+    
+    return { material };
+  }
+  
+  const { material } = init();
+  let time = 0;
+  
+  function animate() {
+    requestAnimationFrame(animate);
+    
+    // Calculate velocity
+    const dx = targetMouse.x - prevMouse.x;
+    const dy = targetMouse.y - prevMouse.y;
+    mouseVelocity = Math.sqrt(dx * dx + dy * dy);
+    prevMouse.copy(targetMouse);
+    
+    // Smooth mouse interpolation with GSAP
+    if (typeof gsap !== 'undefined') {
+      gsap.to(mouse, {
+        x: targetMouse.x,
+        y: targetMouse.y,
+        duration: 1.4,
+        ease: "power2.out"
+      });
+    } else {
+      mouse.x += (targetMouse.x - mouse.x) * 0.03;
+      mouse.y += (targetMouse.y - mouse.y) * 0.03;
+    }
+    
+    time += 0.012;
+    material.uniforms.u_time.value = time;
+    material.uniforms.u_mouse.value = mouse;
+    material.uniforms.u_velocity.value = mouseVelocity * 16.0; // 8 → 16 for stronger reaction
+    
+    renderer.render(scene, camera);
+  }
+  
+  const section = canvas.closest('.liquid-effect-section');
+  
+  section.addEventListener('mousemove', (e) => {
+    const rect = section.getBoundingClientRect();
+    targetMouse.x = (e.clientX - rect.left) / rect.width;
+    targetMouse.y = 1 - ((e.clientY - rect.top) / rect.height);
+  });
+  
+  section.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    const rect = section.getBoundingClientRect();
+    const touch = e.touches[0];
+    targetMouse.x = (touch.clientX - rect.left) / rect.width;
+    targetMouse.y = 1 - ((touch.clientY - rect.top) / rect.height);
+  }, { passive: false });
+  
+  window.addEventListener('resize', () => {
+    const width = canvas.offsetWidth;
+    const height = canvas.offsetHeight;
+    renderer.setSize(width, height);
+    material.uniforms.u_resolution.value.set(width, height);
+  });
+  
+  // GSAP entrance animations
+  if (typeof gsap !== 'undefined') {
+    gsap.from('.liquid-heading', {
+      y: 60,
+      opacity: 0,
+      duration: 1.5,
+      ease: "power3.out",
+      delay: 0.3
+    });
+    
+    gsap.from('.liquid-subheading', {
+      y: 40,
+      opacity: 0,
+      duration: 1.5,
+      delay: 0.6,
+      ease: "power3.out"
+    });
+    
+    gsap.from('.liquid-button', {
+      opacity: 0,
+      duration: 1.2,
+      delay: 0.9,
+      ease: "power2.out"
+    });
+  }
+  
+  animate();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Liquid Effect Hero",
+  "settings": [
+    {
+      "type": "range",
+      "id": "section_height",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "label": "Section Height",
+      "default": 100
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "THE SENSUALITY OF AMBER"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 120,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size",
+      "default": 48
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "I would like my fragrance to capture"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "min": 12,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Subheading Size",
+      "default": 16
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "NEXT"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#d4af78"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Liquid Effect Hero"
+    }
+  ]
+}
+{% endschema %}

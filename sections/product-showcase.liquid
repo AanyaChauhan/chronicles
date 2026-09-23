@@ -1,0 +1,223 @@
+<div class="product-showcase-section" style="background-color: {{ section.settings.background_color }}">
+  <div class="product-showcase-content">
+
+    <!-- Left Side: Heading, Description & View All Button -->
+    <div class="showcase-left">
+      <h2 class="showcase-heading">{{ section.settings.heading }}</h2>
+
+      {% if section.settings.show_description %}
+        <div class="showcase-description">
+          {{ section.settings.description }}
+        </div>
+      {% endif %}
+
+      {% if section.settings.show_view_all and section.settings.view_all_link != blank %}
+        <a href="{{ section.settings.view_all_link }}" class="showcase-viewall-btn">
+          {{ section.settings.view_all_label }}
+        </a>
+      {% endif %}
+    </div>
+
+    <!-- Right Side: Product Cards / Related Products -->
+    <div class="showcase-right">
+      {% if section.settings.show_upsell %}
+
+        {%- comment -%} First, try metafield upsells {%- endcomment -%}
+        {% assign upsell_products = product.metafields.custom.related_products.value %}
+
+        {% if upsell_products != blank %}
+          {% assign upsell_products = upsell_products | where: "available", true | slice: 0, section.settings.max_products %}
+        {% else %}
+          {%- comment -%} Fallback: use Theme Editor-picked collection {%- endcomment -%}
+          {% assign fallback_collection = collections[section.settings.fallback_collection] %}
+          {% if fallback_collection %}
+            {% assign upsell_products = fallback_collection.products | where: "available", true | slice: 0, section.settings.max_products %}
+          {% endif %}
+        {% endif %}
+
+        {% if upsell_products and upsell_products.size > 0 %}
+          <div class="product-cards">
+            {% for related_product in upsell_products %}
+              <div class="product-card">
+
+                <!-- Image with fallback -->
+                <a href="{{ related_product.url }}">
+                  <img
+                    src="{{ related_product.featured_image | img_url: '300x' | default: 'https://cdn.shopify.com/s/files/1/0000/0001/t/1/assets/no-image.png' }}"
+                    alt="{{ related_product.title | escape }}"
+                    loading="lazy"
+                  >
+                </a>
+
+                <h3 class="product-title">{{ related_product.title }}</h3>
+
+                <div class="product-card-bottom">
+
+                  <!-- Price wrapper -->
+                  {% if section.settings.show_price %}
+                    <div class="product-price-wrapper">
+                      {% if related_product.compare_at_price > related_product.price %}
+                        <!-- Current Price -->
+                        <span class="current-price">
+                          {{ related_product.price | money }}
+                        </span>
+                        <!-- Original Price -->
+                        <span class="original-price">
+                          {{ related_product.compare_at_price | money }}
+                        </span>
+                        <!-- Discount -->
+                        <span class="discount">
+                          {{
+                            related_product.compare_at_price
+                            | minus: related_product.price
+                            | times: 100.0
+                            | divided_by: related_product.compare_at_price
+                            | round
+                          }}% off
+                        </span>
+                      {% else %}
+                        <span class="current-price">{{ related_product.price | money }}</span>
+                      {% endif %}
+                    </div>
+                  {% endif %}
+
+                  {% form 'product', related_product %}
+
+                    <!-- Variant selector -->
+                    {% if related_product.has_only_default_variant == false %}
+                      <label for="variant-select-{{ related_product.id }}" class="visually-hidden">
+                        Select variant for {{ related_product.title }}
+                      </label>
+                      <select name="id" id="variant-select-{{ related_product.id }}">
+                        {% for variant in related_product.variants %}
+                          <option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>
+                            {{ variant.title }} - {{ variant.price | money }}
+                            {% unless variant.available %}(Sold Out){% endunless %}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    {% else %}
+                      <input type="hidden" name="id" value="{{ related_product.selected_or_first_available_variant.id }}">
+                    {% endif %}
+
+        
+
+                    <!-- Gift Note Field -->
+                    <div class="gift-note-field">
+                      <label class="gift-note-label" for="gift_note_{{ related_product.id }}">Gift Note (optional)</label>
+                      <input 
+                        type="text" 
+                        id="gift_note_{{ related_product.id }}" 
+                        name="properties[Gift Note]" 
+                        placeholder="Add your personal message"
+                        maxlength="150"
+                      >
+                    </div>
+
+                    <button type="submit" class="product-btn"
+                      {% unless related_product.available %}disabled{% endunless %}
+                      aria-label="Add {{ related_product.title }} to cart">
+                      {% if related_product.available %}Add to Cart{% else %}Sold Out{% endif %}
+                    </button>
+
+                  {% endform %}
+
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="no-products-message">No related products available at the moment.</p>
+        {% endif %}
+
+      {% endif %}
+    </div> <!-- /showcase-right -->
+
+  </div> <!-- /product-showcase-content -->
+</div> <!-- /product-showcase-section -->
+
+
+
+
+
+
+{% schema %}
+{
+  "name": "Product Showcase",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Perfectly Paired Combo"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Explore curated fragrance sets designed to complement every mood and occasion.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show description",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_price",
+      "label": "Show product prices",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show View All button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View All button label",
+      "default": "View All"
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View All link",
+      "default": "/collections/all"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_upsell",
+      "label": "Show Upsell Products",
+      "default": true
+    },
+    {
+      "type": "collection",
+      "id": "fallback_collection",
+      "label": "Fallback Collection"
+    },
+    {
+      "type": "range",
+      "id": "max_products",
+      "label": "Max Products to Display",
+      "min": 1,
+      "max": 6,
+      "step": 1,
+      "default": 3
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Showcase"
+    }
+  ]
+}
+{% endschema %}

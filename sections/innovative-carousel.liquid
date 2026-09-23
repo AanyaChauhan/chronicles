@@ -1,0 +1,617 @@
+{% comment %}
+  Innovative Fabrics Carousel Section with Swiper.js
+  40% Content / 60% Image split with smooth carousel transitions
+  Now supports both images and videos
+{% endcomment %}
+
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+
+<style>
+  .innovative-carousel-section-{{ section.id }} {
+    background-color: {{ section.settings.background_color }};
+    position: relative;
+    overflow: hidden;
+    max-width: 1440px;
+    padding:0 8rem !important;
+    margin: 0 auto;
+    padding-top: 80px !important;
+  }
+
+  .innovative-carousel-container-{{ section.id }} {
+    padding: 0px;
+    background: #80808014;
+    border-radius: 8px;
+  }
+
+  .innovative-carousel-wrapper-{{ section.id }} {
+    display: flex;
+    gap: 40px;
+    position: relative;
+  }
+
+  .innovative-carousel-content-{{ section.id }} {
+    width: 40%;
+    padding: 60px 40px;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .innovative-carousel-text-content-{{ section.id }} h2 {
+    font-size: 40px;
+    line-height: 1.2;
+    margin-bottom: 24px;
+    color: {{ section.settings.heading_color }};
+    font-weight: 400;
+  }
+
+  .innovative-carousel-text-content-{{ section.id }} .brand-name {
+    font-weight: 700;
+  }
+
+  .innovative-carousel-text-content-{{ section.id }} p {
+    font-size: {{ section.settings.description_font_size }}px;
+    line-height: 1.6;
+    color: {{ section.settings.description_color }};
+    margin-bottom: 0;
+  }
+
+  .innovative-carousel-image-wrapper-{{ section.id }} {
+    width: 60%;
+    position: relative;
+  }
+
+  .innovative-carousel-swiper-{{ section.id }} {
+    width: 100%;
+    height: 600px;
+  }
+
+  .innovative-carousel-swiper-{{ section.id }} .swiper-slide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .innovative-carousel-swiper-{{ section.id }} .swiper-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top !important;
+    border-radius: {{ section.settings.image_border_radius }}px;
+  }
+
+  .innovative-carousel-swiper-{{ section.id }} .swiper-slide video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top !important;
+    border-radius: {{ section.settings.image_border_radius }}px;
+  }
+
+  /* Custom Pagination Dots */
+  .innovative-carousel-pagination-{{ section.id }} {
+    display: flex;
+    gap: 6px;
+    position: static !important;
+    margin-top: 0;
+  }
+
+  .innovative-carousel-pagination-{{ section.id }} .swiper-pagination-bullet {
+    width: 20px;
+    height: 8px;
+    background: transparent;
+    opacity: 1;
+    border-radius: 8px;
+    border: 1.5px solid {{ section.settings.heading_color }};
+    margin: 0 !important;
+    transition: background-color 0.3s ease;
+    background:black;
+  }
+
+  .innovative-carousel-pagination-{{ section.id }} .swiper-pagination-bullet-active {
+    background-color: transparent !important;
+    width:26px;
+  }
+
+  /* Controls Wrapper */
+  .innovative-carousel-controls-{{ section.id }} {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+.innovative-carousel-text-content-{{ section.id }} p{
+    font-family: "Roboto", sans-serif !important;
+    width: 350px;
+    font-size: 25px;
+    line-height: 3rem;
+}
+.innovative-carousel-text-content-{{ section.id }} h2{
+font-family: 'Augusta-Regular', sans-serif !important;
+font-size:40px;
+font-weight:300 !important;
+}
+  /* Autoplay Toggle Button */
+  .autoplay-toggle-{{ section.id }} {
+    width: 40px;
+    height: 40px;
+    border: 2px solid {{ section.settings.heading_color }};
+    background: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+    display:none;
+  }
+
+  .autoplay-toggle-{{ section.id }}:hover {
+    background-color: {{ section.settings.heading_color }};
+  }
+
+  .autoplay-toggle-{{ section.id }}:hover svg {
+    fill: {{ section.settings.background_color }};
+  }
+
+  .autoplay-toggle-{{ section.id }} svg {
+    width: 16px;
+    height: 16px;
+    fill: {{ section.settings.heading_color }};
+    transition: fill 0.3s ease;
+  }
+
+  .autoplay-toggle-{{ section.id }}.paused .play-icon {
+    display: block;
+  }
+
+  .autoplay-toggle-{{ section.id }}.paused .pause-icon {
+    display: none;
+  }
+
+  .autoplay-toggle-{{ section.id }}.playing .play-icon {
+    display: none;
+  }
+
+  .autoplay-toggle-{{ section.id }}.playing .pause-icon {
+    display: block;
+  }
+
+  /* Responsive Design */
+  @media screen and (max-width: 990px) {
+    .innovative-carousel-wrapper-{{ section.id }} {
+      flex-direction: column-reverse;
+      gap: 30px;
+    }
+
+    .innovative-carousel-content-{{ section.id }},
+    .innovative-carousel-image-wrapper-{{ section.id }} {
+      width: 100%;
+      padding-right: 0;
+    }
+
+    .innovative-carousel-swiper-{{ section.id }} {
+      height: 400px;
+    }
+
+    .innovative-carousel-text-content-{{ section.id }} h2 {
+      font-size: {{ section.settings.heading_font_size | times: 0.8 }}px;
+    }
+
+    .innovative-carousel-text-content-{{ section.id }} p {
+      font-size: {{ section.settings.description_font_size | times: 0.9 }}px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .innovative-carousel-swiper-{{ section.id }} {
+      height: 300px;
+    }
+
+    .innovative-carousel-text-content-{{ section.id }} h2 {
+      font-size: {{ section.settings.heading_font_size | times: 0.65 }}px;
+    }
+
+    .innovative-carousel-text-content-{{ section.id }} p {
+      font-size: {{ section.settings.description_font_size | times: 0.85 }}px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .innovative-carousel-content-{{ section.id }}{
+      padding: 30px 20px !important;
+      height: 250px !important;
+    }
+     .innovative-carousel-wrapper-{{ section.id }} {
+      flex-direction: column-reverse;
+      gap: 0px;
+    }
+    .innovative-carousel-section-{{ section.id }} {
+      padding:40px 20px !important; 
+    }
+  .innovative-carousel-content-{{ section.id }}{
+  padding:45px 20px;
+  height:300px;
+  }
+  .innovative-carousel-text-content-{{ section.id }} p{
+  width:320px;
+  line-height:2rem;
+  font-size:14px;
+  margin-bottom: 10px;
+}
+.innovative-carousel-text-content-{{ section.id }} h2{
+margin-bottom: 15px;
+font-size: 25px;
+width: 230px;
+}
+
+  }
+</style>
+
+<div class="innovative-carousel-section-{{ section.id }}">
+  <div class="innovative-carousel-container-{{ section.id }}">
+    <div class="innovative-carousel-wrapper-{{ section.id }}">
+      
+      <!-- Content Area (40%) -->
+      <div class="innovative-carousel-content-{{ section.id }}">
+        <div class="innovative-carousel-text-content-{{ section.id }}" id="carousel-content-{{ section.id }}">
+          <!-- Content will be dynamically updated via JavaScript -->
+        </div>
+        
+        <!-- Controls (Autoplay Toggle + Pagination) -->
+        <div class="innovative-carousel-controls-{{ section.id }}">
+          {% if section.settings.enable_autoplay %}
+            <button class="autoplay-toggle-{{ section.id }} playing" id="autoplay-toggle-{{ section.id }}" aria-label="Toggle autoplay">
+              <svg class="play-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              <svg class="pause-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+              </svg>
+            </button>
+          {% endif %}
+          
+          <!-- Pagination Dots -->
+          <div class="innovative-carousel-pagination-{{ section.id }}" id="carousel-pagination-{{ section.id }}"></div>
+        </div>
+      </div>
+
+      <!-- Image/Video Area (60%) -->
+      <div class="innovative-carousel-image-wrapper-{{ section.id }}">
+        <div class="swiper innovative-carousel-swiper-{{ section.id }}" id="carousel-swiper-{{ section.id }}">
+          <div class="swiper-wrapper">
+            {% for block in section.blocks %}
+              <div class="swiper-slide" 
+                   data-heading="{{ block.settings.heading }}"
+                   data-description="{{ block.settings.description }}"
+                   data-media-type="{% if block.settings.video != blank %}video{% else %}image{% endif %}">
+                {% if block.settings.video != blank %}
+                  {% if block.settings.video.sources %}
+                    <video 
+                      muted
+                      loop
+                      playsinline
+                      preload="metadata">
+                      {% for source in block.settings.video.sources %}
+                        <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                      {% endfor %}
+                    </video>
+                  {% else %}
+                    <video 
+                      src="{{ block.settings.video | file_url }}"
+                      muted
+                      loop
+                      playsinline
+                      preload="metadata">
+                    </video>
+                  {% endif %}
+                {% elsif block.settings.image != blank %}
+                  <img 
+                    src="{{ block.settings.image | image_url: width: 1200 }}"
+                    srcset="{{ block.settings.image | image_url: width: 600 }} 600w,
+                            {{ block.settings.image | image_url: width: 900 }} 900w,
+                            {{ block.settings.image | image_url: width: 1200 }} 1200w"
+                    sizes="(max-width: 749px) 100vw, (max-width: 990px) 100vw, 60vw"
+                    alt="{{ block.settings.image.alt | escape }}"
+                    loading="lazy"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}">
+                {% else %}
+                  {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+  (function() {
+    const sectionId = '{{ section.id }}';
+    const contentContainer = document.getElementById(`carousel-content-${sectionId}`);
+    const autoplayEnabled = {{ section.settings.enable_autoplay }};
+    const autoplayDelay = {{ section.settings.autoplay_delay }} * 1000;
+    const transitionSpeed = {{ section.settings.transition_speed }};
+    
+    // Initialize Swiper
+    const swiper = new Swiper(`#carousel-swiper-${sectionId}`, {
+      effect: '{{ section.settings.transition_effect }}',
+      speed: transitionSpeed,
+      loop: true,
+      autoplay: autoplayEnabled ? {
+        delay: autoplayDelay,
+        disableOnInteraction: false,
+      } : false,
+      pagination: {
+        el: `#carousel-pagination-${sectionId}`,
+        clickable: true,
+      },
+      on: {
+        init: function() {
+          updateContent(this);
+          playVideoIfActive(this);
+        },
+        slideChange: function() {
+          updateContent(this);
+          handleVideoPlayback(this);
+        }
+      }
+    });
+
+    // Update content based on current slide
+    function updateContent(swiperInstance) {
+      const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
+      const heading = activeSlide.getAttribute('data-heading');
+      const description = activeSlide.getAttribute('data-description');
+      
+      contentContainer.innerHTML = `
+        <h2>${heading}</h2>
+        <p>${description}</p>
+      `;
+    }
+
+    // Handle video playback on slide change
+    function handleVideoPlayback(swiperInstance) {
+      // Pause all videos
+      const allVideos = swiperInstance.el.querySelectorAll('video');
+      allVideos.forEach(video => {
+        video.pause();
+        video.currentTime = 0;
+      });
+
+      // Play active slide video
+      playVideoIfActive(swiperInstance);
+    }
+
+    // Play video if the active slide contains a video
+    function playVideoIfActive(swiperInstance) {
+      const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
+      const mediaType = activeSlide.getAttribute('data-media-type');
+      
+      if (mediaType === 'video') {
+        const video = activeSlide.querySelector('video');
+        if (video) {
+          video.currentTime = 0;
+          video.play().catch(err => {
+            console.log('Video autoplay failed:', err);
+          });
+        }
+      }
+    }
+
+    // Autoplay toggle functionality
+    if (autoplayEnabled) {
+      const autoplayToggle = document.getElementById(`autoplay-toggle-${sectionId}`);
+      
+      autoplayToggle.addEventListener('click', function() {
+        if (swiper.autoplay.running) {
+          swiper.autoplay.stop();
+          this.classList.remove('playing');
+          this.classList.add('paused');
+        } else {
+          swiper.autoplay.start();
+          this.classList.remove('paused');
+          this.classList.add('playing');
+        }
+      });
+    }
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') {
+        swiper.slidePrev();
+      }
+      if (e.key === 'ArrowRight') {
+        swiper.slideNext();
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Innovative Carousel",
+  "tag": "section",
+  "class": "innovative-carousel-section",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Font Size",
+      "default": 48
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "description_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description Font Size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "description_color",
+      "label": "Description Color",
+      "default": "#333333"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 50,
+      "step": 2,
+      "unit": "px",
+      "label": "Image Border Radius",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Carousel Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_autoplay",
+      "label": "Enable Autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "autoplay_delay",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "Autoplay Delay",
+      "default": 5,
+      "info": "Time between slide transitions (in seconds)"
+    },
+    {
+      "type": "range",
+      "id": "transition_speed",
+      "min": 300,
+      "max": 1500,
+      "step": 100,
+      "unit": "ms",
+      "label": "Transition Speed",
+      "default": 600,
+      "info": "Speed of slide transition animation"
+    },
+    {
+      "type": "select",
+      "id": "transition_effect",
+      "label": "Transition Effect",
+      "options": [
+        {
+          "value": "slide",
+          "label": "Slide"
+        },
+        {
+          "value": "fade",
+          "label": "Fade"
+        },
+        {
+          "value": "cube",
+          "label": "Cube"
+        },
+        {
+          "value": "coverflow",
+          "label": "Coverflow"
+        },
+        {
+          "value": "flip",
+          "label": "Flip"
+        }
+      ],
+      "default": "fade"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Carousel Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Leave empty if using video"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video",
+          "info": "Upload a video file. If both image and video are provided, video will be used."
+        },
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Innovative Fabrics <strong>And Technology</strong>"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "<strong>STRAUSS</strong> Is Known For Consistently Developing And Integrating Innovative Fabrics And Technologies Into Their Workwear. <strong>STRAUSS' Dryplexx Fabrics</strong> Are Designed To Be Perfectly Breathable, Waterproof, And Windproof, Making Them Perfect For Navigating Tough Weather Conditions. Everything <strong>STRAUSS</strong> Develops Has A Purpose, And It's To Make Your Working World Just A Little Bit Easier And More Comfortable."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Innovative Carousel",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Innovative Fabrics <strong>And Technology</strong>",
+            "description": "<strong>STRAUSS</strong> Is Known For Consistently Developing And Integrating Innovative Fabrics And Technologies Into Their Workwear. <strong>STRAUSS' Dryplexx Fabrics</strong> Are Designed To Be Perfectly Breathable, Waterproof, And Windproof, Making Them Perfect For Navigating Tough Weather Conditions. Everything <strong>STRAUSS</strong> Develops Has A Purpose, And It's To Make Your Working World Just A Little Bit Easier And More Comfortable."
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Advanced Performance <strong>Materials</strong>",
+            "description": "Experience the next generation of workwear technology with our advanced performance materials designed for maximum comfort and durability in challenging conditions."
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Sustainable <strong>Innovation</strong>",
+            "description": "Our commitment to sustainability drives us to create eco-friendly fabrics that don't compromise on performance or quality."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

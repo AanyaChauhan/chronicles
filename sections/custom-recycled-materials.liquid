@@ -1,0 +1,385 @@
+<section class="certified-section">
+  <div class="certified--section-wrapper">
+    <div class="certified-wrapper">
+      <div class="recycle-section-logo-wrapper">
+        {% if section.settings.main_logo %}
+          <img src="{{ section.settings.main_logo | img_url: '240x240' }}" alt="Main Logo" />
+        {% endif %}
+      </div>
+      
+      {% if section.settings.main_image %}
+        <img src="{{ section.settings.main_image | img_url: '600x600' }}" alt="Main Image" class="certified-image" />
+      {% endif %}
+
+    <div class="content-wrapper">
+      <div class="recycle-logos">
+        {% if section.settings.recycle_logo_1 %}
+        <img src="{{ section.settings.recycle_logo_1 | img_url: '120x120' }}" alt="Recycle Logo 1" />
+        {% endif %}
+        {% if section.settings.recycle_logo_2 %}
+        <img src="{{ section.settings.recycle_logo_2 | img_url: '120x120' }}" alt="Recycle Logo 2" />
+        {% endif %}
+      </div>
+
+      <div class="title-button-container">
+        <h2 class="title-text">{{ section.settings.title_text }}</h2>
+        {% if section.settings.show_button %}
+          <a href="{{ section.settings.button_url | default: '#' }}" class="button-know-more">
+            {{ section.settings.button_text }}
+          </a>
+        {% endif %}
+      </div>
+
+      <div class="desc-container">
+        <p class="desc-text">{{ section.settings.desc_text }}</p>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+
+<style>
+.certified-section {
+  padding: 160px 100px 60px 100px;
+  background-color: {{ section.settings.bg_color }};
+}
+.certified--section-wrapper{
+  width:100%;
+  border: 2px solid {{ section.settings.border_color }};
+  border-radius: {{ section.settings.border_radius }}px;
+  padding: 37px;
+}
+
+.certified-wrapper {
+  width: 1200px;
+  margin: 0 auto;
+  gap: 62px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+}
+
+.certified-image {
+  object-fit: cover;
+  flex-shrink: 0;
+  position: relative;
+  flex: 1;
+  max-width: 436px;
+  max-height: 514px;
+  border-radius: 8px;
+}
+
+.recycle-section-logo-wrapper {
+  position: absolute;
+  top: 150px;
+  right: -205px;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.recycle-section-logo-wrapper img {
+  width: 346px;
+  height: 424px;
+  display: block;
+}
+
+.content-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  position: relative;
+}
+
+.recycle-logos {
+  display: flex;
+  gap: 43px;
+  margin-bottom: 16px;
+}
+
+.recycle-logos img {
+  max-width: 114.48px;
+  max-height: 114.48px;
+}
+
+.title-button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  gap: 115px;
+  margin-bottom: 30px;
+  margin-top: 34px;
+}
+
+.desc-container {
+  width: 100%;
+}
+
+.title-text {
+  font-size: {{ section.settings.title_font_size }}px;
+  color: {{ section.settings.title_font_color }};
+  font-family: 'Givonic', sans-serif;
+  font-weight: 400;
+  margin: 0;
+  flex: 1;
+}
+
+.desc-text {
+  font-size: {{ section.settings.desc_font_size }}px;
+  color: {{ section.settings.desc_font_color }};
+  font-family: 'Givonic', sans-serif;
+  margin: 0;
+  line-height: 28px;
+  font-weight: 400;
+  width: 730px;
+}
+
+.button-know-more {
+  width: 150px;
+  height: 30px;
+  background-color: {{ section.settings.button_bg }};
+  color: {{ section.settings.button_font_color }};
+  font-size: {{ section.settings.button_font_size }}px;
+  border: 1px solid {{ section.settings.button_border_color }};
+  border-radius: 4.65px;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-weight: 500;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.button-know-more:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  border-color: {{ section.settings.button_border_color }};
+  opacity: 0.8;
+}
+
+
+
+@media (max-width: 1366px) and (min-width: 1360px) {
+  .desc-text {
+  display:none !important;}
+
+}
+
+
+
+@media (max-width: 768px) {
+  .certified-section {
+    padding: 40px 20px;
+  }
+  
+  .certified--section-wrapper {
+    padding: 20px;
+  }
+  
+  .certified-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+    margin: 20px auto;
+    gap: 20px;
+  }
+  
+  .certified-image {
+    width: 100%;
+    max-width: 300px;
+    align-self: center;
+  }
+  
+  .content-wrapper {
+    width: 100%;
+  }
+  
+  .title-button-container {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  
+  .recycle-section-logo-wrapper {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: 100px;
+    align-self: flex-end;
+    order: -1;
+    margin-bottom: 10px;
+  }
+  
+  .recycle-logos {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .certified--section-wrapper {
+    padding: 15px;
+  }
+  
+  .certified-wrapper {
+    margin: 10px auto;
+  }
+  
+  .title-text {
+    font-size: {{ section.settings.title_font_size | minus: 4 }}px;
+  }
+  
+  .desc-text {
+    font-size: {{ section.settings.desc_font_size | minus: 2 }}px;
+  }
+  
+  .recycle-section-logo-wrapper {
+    width: 80px;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Recycled Materials",
+  "settings": [
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#fdfbe6"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#f3e9c7"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border Radius (px)",
+      "min": 0,
+      "max": 48,
+      "default": 8,
+      "step": 2
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_logo",
+      "label": "Main Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "recycle_logo_1",
+      "label": "Recycle Logo 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "recycle_logo_2",
+      "label": "Recycle Logo 2"
+    },
+    {
+      "type": "text",
+      "id": "title_text",
+      "label": "Title Text",
+      "default": "CERTIFIED RECYCLED MATERIALS"
+    },
+    {
+      "type": "range",
+      "id": "title_font_size",
+      "label": "Title Font Size (px)",
+      "min": 16,
+      "max": 48,
+      "default": 24
+    },
+    {
+      "type": "color",
+      "id": "title_font_color",
+      "label": "Title Font Color",
+      "default": "#252525"
+    },
+    {
+      "type": "textarea",
+      "id": "desc_text",
+      "label": "Description Text",
+      "default": "We're proud to be RCS (Recycled Claim Standard) certified, which means our recycled silver meets strict international standards for traceability and integrity. Every piece made with recycled silver reduces our need for new resources and helps close the loop on waste — while still shining just as bright."
+    },
+    {
+      "type": "range",
+      "id": "desc_font_size",
+      "label": "Description Font Size (px)",
+      "min": 12,
+      "max": 32,
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "desc_font_color",
+      "label": "Description Font Color",
+      "default": "#252525"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show Button",
+      "default": true
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "KNOW MORE"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Button Font Size (px)",
+      "min": 10,
+      "max": 24,
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "button_bg",
+      "label": "Button Background Color",
+      "default": "transparent"
+    },
+    {
+      "type": "color",
+      "id": "button_font_color",
+      "label": "Button Font Color",
+      "default": "#252525"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "#252525"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recycled Materials",
+      "category": "Custom"
+    }
+  ]
+}
+{% endschema %}

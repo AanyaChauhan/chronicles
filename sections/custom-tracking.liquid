@@ -1,0 +1,384 @@
+<div class="track-order-section">
+  <div class="track-order-wrapper">
+
+    <div class="track-order-header">
+      <p class="track-order-eyebrow">Order Status</p>
+      <h1 class="track-order-title">Track your <em>shipment</em></h1>
+      <p class="track-order-subtitle">Enter your tracking number — we'll find the right carrier automatically.</p>
+    </div>
+
+    <div class="track-order-card">
+      <label class="track-field-label" for="tracking-input">Tracking Number</label>
+      <div class="track-input-row">
+        <input
+          type="text"
+          id="tracking-input"
+          class="track-input"
+          placeholder="e.g. 1Z999AA10123456784"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button class="track-btn" id="track-btn">Track &rarr;</button>
+      </div>
+
+      <div class="track-detected" id="detected-carrier">
+        <span class="track-carrier-badge">
+          <span class="track-dot"></span>
+          <span id="carrier-name">UPS</span>
+        </span>
+        <span class="track-detected-text">Carrier detected — click Track to open.</span>
+      </div>
+
+      <p class="track-error" id="track-error"></p>
+
+      <hr class="track-divider" />
+
+      <div class="track-carriers-grid">
+        <div class="track-carrier-pill">FedEx</div>
+        <div class="track-carrier-pill">UPS</div>
+        <div class="track-carrier-pill">USPS</div>
+        <div class="track-carrier-pill">DHL</div>
+        <div class="track-carrier-pill">BlueDart</div>
+      </div>
+
+      <hr class="track-divider" />
+
+      <p class="track-help-text">
+        Can't find your number? Check your order confirmation email
+        or <a href="/pages/contact" class="track-help-link">contact our support team</a>.
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  .track-order-section {
+    background: #F5F2EB;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem 1rem;
+    position: relative;
+  }
+
+  .track-order-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(#DDD8CF 1px, transparent 1px),
+      linear-gradient(90deg, #DDD8CF 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .track-order-wrapper {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 560px;
+  }
+
+  .track-order-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .track-order-eyebrow {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: #C8502A;
+    margin-bottom: 0.75rem;
+  }
+
+  .track-order-title {
+    font-size: clamp(2rem, 6vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.1;
+    color: #1A1714;
+    margin: 0 0 0.75rem;
+  }
+
+  .track-order-title em {
+    font-style: italic;
+    font-weight: 300;
+    color: #C8502A;
+  }
+
+  .track-order-subtitle {
+    font-size: 0.8rem;
+    color: #8C8479;
+  }
+
+  .track-order-card {
+    background: #fff;
+    border: 1.5px solid #DDD8CF;
+    border-radius: 2px;
+    padding: 2rem;
+    box-shadow: 6px 6px 0 #DDD8CF;
+  }
+
+  .track-field-label {
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #8C8479;
+    margin-bottom: 0.5rem;
+  }
+
+  .track-input-row {
+    display: flex;
+  }
+
+  .track-input {
+    flex: 1;
+    padding: 0.85rem 1rem;
+    font-size: 0.9rem;
+    border: 1.5px solid #DDD8CF;
+    border-right: none;
+    border-radius: 2px 0 0 2px;
+    background: #F5F2EB;
+    color: #1A1714;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: monospace;
+  }
+
+  .track-input:focus {
+    border-color: #C8502A;
+  }
+
+  .track-input::placeholder {
+    color: #DDD8CF;
+  }
+
+  .track-btn {
+    padding: 0.85rem 1.4rem;
+    background: #C8502A;
+    color: #fff;
+    border: 1.5px solid #C8502A;
+    border-radius: 0 2px 2px 0;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+
+  .track-btn:hover {
+    background: #A83E1F;
+  }
+
+  .track-detected {
+    margin-top: 1.25rem;
+    padding: 0.85rem 1rem;
+    border: 1.5px dashed #DDD8CF;
+    border-radius: 2px;
+    display: none;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.78rem;
+  }
+
+  .track-detected.show {
+    display: flex;
+  }
+
+  .track-carrier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: #1A1714;
+    color: #fff;
+    padding: 0.25rem 0.65rem;
+    border-radius: 2px;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .track-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #C8502A;
+    display: inline-block;
+  }
+
+  .track-detected-text {
+    color: #8C8479;
+    font-size: 0.75rem;
+  }
+
+  .track-error {
+    margin-top: 0.85rem;
+    font-size: 0.75rem;
+    color: #C8502A;
+    display: none;
+    min-height: 0;
+  }
+
+  .track-error.show {
+    display: block;
+  }
+
+  .track-divider {
+    border: none;
+    border-top: 1px solid #DDD8CF;
+    margin: 1.5rem 0;
+  }
+
+  .track-carriers-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0.5rem;
+  }
+
+  .track-carrier-pill {
+    text-align: center;
+    padding: 0.5rem 0.25rem;
+    border: 1px solid #DDD8CF;
+    border-radius: 2px;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #8C8479;
+    background: #F5F2EB;
+  }
+
+  .track-help-text {
+    font-size: 0.68rem;
+    color: #8C8479;
+    line-height: 1.7;
+    text-align: center;
+    margin: 0;
+  }
+
+  .track-help-link {
+    color: #C8502A;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 480px) {
+    .track-carriers-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .track-input-row {
+      flex-direction: column;
+    }
+    .track-input {
+      border-right: 1.5px solid #DDD8CF;
+      border-bottom: none;
+      border-radius: 2px 2px 0 0;
+    }
+    .track-btn {
+      border-radius: 0 0 2px 2px;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    var CARRIERS = [
+      {
+        name: 'FedEx',
+        patterns: [/^\d{12}$/, /^\d{15}$/, /^\d{20}$/, /^96\d{20}$/, /^(61|02)\d{18}$/],
+        url: function(n) { return 'https://www.fedex.com/fedextrack/?trknbr=' + n; }
+      },
+      {
+        name: 'UPS',
+        patterns: [/^1Z[A-Z0-9]{16}$/i, /^\d{18}$/, /^T\d{10}$/i],
+        url: function(n) { return 'https://www.ups.com/track?tracknum=' + n; }
+      },
+      {
+        name: 'USPS',
+        patterns: [/^(94|93|92|95)\d{20}$/, /^(94|93|92|95)\d{22}$/, /^(70|14|23|03)\d{14}$/, /^[MEVRCGU][A-Z]\d{9}US$/i],
+        url: function(n) { return 'https://tools.usps.com/go/TrackConfirmAction?tLabels=' + n; }
+      },
+      {
+        name: 'DHL',
+        patterns: [/^\d{10,11}$/, /^JD\d{18}$/i, /^1234\d{8}$/],
+        url: function(n) { return 'https://www.dhl.com/en/express/tracking.html?AWB=' + n + '&brand=DHL'; }
+      },
+      {
+        name: 'BlueDart',
+        patterns: [/^\d{11}$/, /^\d{9}$/, /^BD\d{9}$/i],
+        url: function(n) { return 'https://www.bluedart.com/tracking?trackFor=0&track=awb&trackNumber=' + n; }
+      }
+    ];
+
+    var detectedCarrier = null;
+
+    var input = document.getElementById('tracking-input');
+    var btn = document.getElementById('track-btn');
+    var detectedEl = document.getElementById('detected-carrier');
+    var carrierNameEl = document.getElementById('carrier-name');
+    var errorEl = document.getElementById('track-error');
+
+    input.addEventListener('input', function() {
+      var num = input.value.trim().replace(/\s+/g, '').toUpperCase();
+      detectedCarrier = null;
+      detectedEl.classList.remove('show');
+      errorEl.classList.remove('show');
+
+      if (!num) return;
+
+      for (var i = 0; i < CARRIERS.length; i++) {
+        var carrier = CARRIERS[i];
+        for (var j = 0; j < carrier.patterns.length; j++) {
+          if (carrier.patterns[j].test(num)) {
+            detectedCarrier = carrier;
+            carrierNameEl.textContent = carrier.name;
+            detectedEl.classList.add('show');
+            return;
+          }
+        }
+      }
+
+      if (num.length >= 8) {
+        errorEl.textContent = "⚠ Couldn't identify carrier. Please double-check your tracking number.";
+        errorEl.classList.add('show');
+      }
+    });
+
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') trackOrder();
+    });
+
+    btn.addEventListener('click', trackOrder);
+
+    function trackOrder() {
+      var num = input.value.trim().replace(/\s+/g, '');
+      if (!num) {
+        errorEl.textContent = '⚠ Please enter a tracking number first.';
+        errorEl.classList.add('show');
+        return;
+      }
+      if (!detectedCarrier) {
+        errorEl.textContent = "⚠ Couldn't identify carrier. Please double-check your tracking number.";
+        errorEl.classList.add('show');
+        return;
+      }
+      window.open(detectedCarrier.url(num), '_blank', 'noopener,noreferrer');
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Track Order",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Track Order"
+    }
+  ]
+}
+{% endschema %}
