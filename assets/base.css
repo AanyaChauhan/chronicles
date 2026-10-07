@@ -4029,3 +4029,8 @@ text-component {
 .jdgm-histogram__bar {
     border-radius: 0px !important;
 }
+
+
+.pify_modal_content{
+    background: red !important;
+}
