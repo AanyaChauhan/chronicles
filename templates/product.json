@@ -65,6 +65,10 @@
             "padding-inline-end": 0
           },
           "blocks": {
+            "wishlist_guru_app_block_pWxVEq": {
+              "type": "shopify://apps/wishlist-guru/blocks/app-block/2c17f518-d350-4883-a154-c9a194a4a585",
+              "settings": {}
+            },
             "group_icgrde": {
               "type": "group",
               "name": "Header",
@@ -104,24 +108,6 @@
                 "padding-inline-end": 0
               },
               "blocks": {
-                "swish_wishlist_king_wishlist_button_block_P7RNYz": {
-                  "type": "shopify://apps/swish-wishlist-king/blocks/wishlist-button-block/194f5011-a43c-4b22-b12e-eaf20dc4506a",
-                  "settings": {
-                    "button_style": "plain_accent_1",
-                    "button_alignment": "right",
-                    "button_content_alignment": "right",
-                    "button_margin_top": 0,
-                    "button_margin_bottom": -70,
-                    "button_max_width": 0,
-                    "button_padding_horizontal": 15,
-                    "button_full_width": false,
-                    "button_show_text": false,
-                    "button_show_icon": true,
-                    "icon_size": 18,
-                    "icon_stroke_width": 1,
-                    "icon_offset_vertical": 4
-                  }
-                },
                 "text_xrnftG": {
                   "type": "text",
                   "settings": {
@@ -477,23 +463,10 @@
                 "padding-inline-end": 0
               },
               "blocks": {}
-            },
-            "subscriptions_app_block_jj9XeK": {
-              "type": "shopify://apps/subscriptions/blocks/app-block/a3bfe9ec-96f8-4508-a003-df608a36d2ad",
-              "settings": {
-                "widget_style": "card",
-                "widget_style_card_selector": "dropdown",
-                "subscription_policy_url": "",
-                "color_text_body": "#6d7175",
-                "dividers_color": "#8f8d8d",
-                "background_color": "#ffffff",
-                "border_thickness": 1,
-                "border_radius": 0,
-                "product": "{{product}}"
-              }
             }
           },
           "block_order": [
+            "wishlist_guru_app_block_pWxVEq",
             "group_icgrde",
             "divider_VJhene",
             "variant_picker_R3rGDr",
