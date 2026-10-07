@@ -12,6 +12,10 @@
     "main": {
       "type": "product-information",
       "blocks": {
+        "wishlist_guru_app_block_b8hMDK": {
+          "type": "shopify://apps/wishlist-guru/blocks/app-block/2c17f518-d350-4883-a154-c9a194a4a585",
+          "settings": {}
+        },
         "media-gallery": {
           "type": "_product-media-gallery",
           "static": true,
@@ -158,7 +162,6 @@
                 }
               },
               "block_order": [
-                "swish_wishlist_king_wishlist_button_block_P7RNYz",
                 "text_xrnftG",
                 "price_tVjtKg"
               ]
@@ -472,11 +475,13 @@
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
             "group_JbmQwr",
-            "text_aEtTtq",
-            "subscriptions_app_block_jj9XeK"
+            "text_aEtTtq"
           ]
         }
       },
+      "block_order": [
+        "wishlist_guru_app_block_b8hMDK"
+      ],
       "settings": {
         "product": "{{ closest.product }}",
         "content_width": "content-center-aligned",
