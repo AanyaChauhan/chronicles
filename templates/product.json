@@ -12,10 +12,6 @@
     "main": {
       "type": "product-information",
       "blocks": {
-        "wishlist_guru_app_block_b8hMDK": {
-          "type": "shopify://apps/wishlist-guru/blocks/app-block/2c17f518-d350-4883-a154-c9a194a4a585",
-          "settings": {}
-        },
         "media-gallery": {
           "type": "_product-media-gallery",
           "static": true,
@@ -69,10 +65,6 @@
             "padding-inline-end": 0
           },
           "blocks": {
-            "wishlist_guru_app_block_pWxVEq": {
-              "type": "shopify://apps/wishlist-guru/blocks/app-block/2c17f518-d350-4883-a154-c9a194a4a585",
-              "settings": {}
-            },
             "group_icgrde": {
               "type": "group",
               "name": "Header",
@@ -469,7 +461,6 @@
             }
           },
           "block_order": [
-            "wishlist_guru_app_block_pWxVEq",
             "group_icgrde",
             "divider_VJhene",
             "variant_picker_R3rGDr",
@@ -479,9 +470,6 @@
           ]
         }
       },
-      "block_order": [
-        "wishlist_guru_app_block_b8hMDK"
-      ],
       "settings": {
         "product": "{{ closest.product }}",
         "content_width": "content-center-aligned",
